@@ -1,0 +1,11 @@
+{
+  "yamnet": {
+    "files": {
+      "yamnet.onnx": {"url": "https://huggingface.co/zeropointnine/yamnet-onnx/resolve/main/yamnet.onnx",
+                      "sha256": "1510041dce24a2e9e84ec546807ac408ae496da6d1ed41bc3ccba649623f8e19", "license": "Apache-2.0 (HF cardData; TF YAMNet ağırlıklarının ONNX dönüşümü)"},
+      "yamnet_class_map.csv": {"url": "https://raw.githubusercontent.com/tensorflow/models/master/research/audioset/yamnet/yamnet_class_map.csv",
+                               "sha256": "cdf24d193e196d9e95912a2667051ae203e92a2ba09449218ccb40ef787c6df2", "license": "Apache-2.0 (tensorflow/models)"}
+    },
+    "note": "Yerel çıkarım (onnxruntime); ses verisi makineden ÇIKMAZ. İndirme yalnız `bta model fetch` ile."
+  }
+}

@@ -1,0 +1,117 @@
+[
+  {
+    "tone_level_db": -31.47,
+    "tone_levels_db": [
+      -20.12,
+      -20.35,
+      -24.66,
+      -38.28,
+      -50.11,
+      -59.72
+    ],
+    "worst_spur_db": -77.33,
+    "worst_spur_hz": 23099.9,
+    "image_23100_db": -77.33,
+    "noise_floor_db": -201.99,
+    "sfdr_db": 45.86,
+    "quality": 0,
+    "cpu_s": 0.019,
+    "audio_s": 6,
+    "cpu_pct_of_one_core": 0.31,
+    "analyzed_s": 4.99,
+    "play_rc": 0,
+    "stream_node_resample_quality": 0
+  },
+  {
+    "tone_level_db": -20.3,
+    "tone_levels_db": [
+      -20.11,
+      -20.23,
+      -20.0,
+      -20.37,
+      -28.35,
+      -48.13
+    ],
+    "worst_spur_db": -125.36,
+    "worst_spur_hz": 23099.9,
+    "image_23100_db": -125.36,
+    "noise_floor_db": -198.08,
+    "sfdr_db": 105.06,
+    "quality": 4,
+    "cpu_s": 0.023,
+    "audio_s": 6,
+    "cpu_pct_of_one_core": 0.39,
+    "analyzed_s": 4.99,
+    "play_rc": 0,
+    "stream_node_resample_quality": 4
+  },
+  {
+    "tone_level_db": -20.17,
+    "tone_levels_db": [
+      -20.11,
+      -20.23,
+      -20.0,
+      -20.23,
+      -20.01,
+      -30.49
+    ],
+    "worst_spur_db": -180.76,
+    "worst_spur_hz": 15300.3,
+    "image_23100_db": -192.21,
+    "noise_floor_db": -196.84,
+    "sfdr_db": 160.59,
+    "quality": 8,
+    "cpu_s": 0.027,
+    "audio_s": 6,
+    "cpu_pct_of_one_core": 0.46,
+    "analyzed_s": 4.99,
+    "play_rc": 0,
+    "stream_node_resample_quality": 8
+  },
+  {
+    "tone_level_db": -20.17,
+    "tone_levels_db": [
+      -20.11,
+      -20.23,
+      -20.0,
+      -20.23,
+      -20.0,
+      -23.91
+    ],
+    "worst_spur_db": -177.03,
+    "worst_spur_hz": 23099.9,
+    "image_23100_db": -177.03,
+    "noise_floor_db": -196.48,
+    "sfdr_db": 156.86,
+    "quality": 10,
+    "cpu_s": 0.031,
+    "audio_s": 6,
+    "cpu_pct_of_one_core": 0.52,
+    "analyzed_s": 4.99,
+    "play_rc": 0,
+    "stream_node_resample_quality": 10
+  },
+  {
+    "tone_level_db": -20.06,
+    "tone_levels_db": [
+      -20.11,
+      -20.23,
+      -20.0,
+      -20.23,
+      -20.0,
+      -20.0
+    ],
+    "worst_spur_db": -176.49,
+    "worst_spur_hz": 23400.1,
+    "image_23100_db": -186.63,
+    "noise_floor_db": -191.12,
+    "sfdr_db": 156.43,
+    "quality": 14,
+    "cpu_s": 0.087,
+    "audio_s": 6,
+    "cpu_pct_of_one_core": 1.45,
+    "analyzed_s": 4.99,
+    "play_rc": 0,
+    "stream_node_resample_quality": 14
+  }
+]

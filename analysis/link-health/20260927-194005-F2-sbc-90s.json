@@ -1,0 +1,94 @@
+{
+  "seconds": 90.4,
+  "reduce_events": 0,
+  "increase_events": 48,
+  "min_bitrate_seen": null,
+  "recoveries": [
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53
+  ],
+  "verdict": "CLEAN",
+  "mode": "active-quiet-pink",
+  "codec": "sbc",
+  "transport": {
+    "sep1/fd0": {
+      "codec": "SBC",
+      "rates": [
+        48000
+      ],
+      "channel_modes": [
+        "joint"
+      ],
+      "block_lengths": [
+        16
+      ],
+      "subbands": [
+        8
+      ],
+      "allocation": [
+        "loudness"
+      ],
+      "min_bitpool": 2,
+      "max_bitpool": 53,
+      "raw": "11 15 02 35",
+      "state": "active",
+      "delay_us": 280000
+    }
+  },
+  "wifi": {
+    "channel": 108,
+    "freq_mhz": 5540,
+    "width_mhz": 160,
+    "band": "5GHz"
+  },
+  "other_bt_devices": [
+    "M96BT1",
+    "MX Master 3S"
+  ]
+}

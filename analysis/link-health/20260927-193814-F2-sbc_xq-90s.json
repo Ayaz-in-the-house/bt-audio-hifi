@@ -1,0 +1,65 @@
+{
+  "seconds": 90.7,
+  "reduce_events": 13,
+  "increase_events": 19,
+  "min_bitrate_seen": 30,
+  "recoveries": [
+    39,
+    39,
+    36,
+    37,
+    38,
+    39,
+    38,
+    39,
+    38,
+    35,
+    36,
+    37,
+    38,
+    39,
+    36,
+    31,
+    32,
+    33,
+    34
+  ],
+  "verdict": "DEGRADED",
+  "mode": "active-quiet-pink",
+  "codec": "sbc_xq",
+  "transport": {
+    "sep1/fd0": {
+      "codec": "SBC",
+      "rates": [
+        48000
+      ],
+      "channel_modes": [
+        "dual"
+      ],
+      "block_lengths": [
+        16
+      ],
+      "subbands": [
+        8
+      ],
+      "allocation": [
+        "loudness"
+      ],
+      "min_bitpool": 2,
+      "max_bitpool": 39,
+      "raw": "14 15 02 27",
+      "state": "active",
+      "delay_us": 280000
+    }
+  },
+  "wifi": {
+    "channel": 108,
+    "freq_mhz": 5540,
+    "width_mhz": 160,
+    "band": "5GHz"
+  },
+  "other_bt_devices": [
+    "M96BT1",
+    "MX Master 3S"
+  ]
+}

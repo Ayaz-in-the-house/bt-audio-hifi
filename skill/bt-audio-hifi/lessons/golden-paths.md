@@ -1,0 +1,1 @@
+../../../docs/lessons/golden-paths.md

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+analysis/tmp/
+*.wav
+!analysis/**/*.keep
+# C0: kullanıcı verisi repo dışında (XDG); eski yerleşim kalıntıları izlenmez
+analysis/console/
+profiles/
+state/backups/

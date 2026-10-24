@@ -1,0 +1,188 @@
+{
+  "bluez": {
+    "endpoints": {
+      "sep1": {
+        "allocation": [
+          "snr",
+          "loudness"
+        ],
+        "block_lengths": [
+          4,
+          8,
+          12,
+          16
+        ],
+        "channel_modes": [
+          "mono",
+          "dual",
+          "stereo",
+          "joint"
+        ],
+        "codec": "SBC",
+        "max_bitpool": 53,
+        "min_bitpool": 2,
+        "rates": [
+          16000,
+          32000,
+          44100,
+          48000
+        ],
+        "raw": "ff ff 02 35",
+        "subbands": [
+          4,
+          8
+        ]
+      },
+      "sep2": {
+        "bitrate": 0,
+        "channels": [
+          1,
+          2
+        ],
+        "codec": "AAC",
+        "object_types": [
+          "MPEG-2 AAC LC"
+        ],
+        "rates": [
+          8000,
+          11025,
+          12000,
+          16000,
+          22050,
+          24000,
+          32000,
+          44100,
+          48000
+        ],
+        "raw": "80 ff 8c 80 00 00",
+        "vbr": true
+      }
+    },
+    "transports": {
+      "sep2/fd0": {
+        "bitrate": 262144,
+        "channels": [
+          2
+        ],
+        "codec": "AAC",
+        "delay_us": 400000,
+        "object_types": [
+          "MPEG-2 AAC LC"
+        ],
+        "pipewire_forced_bandwidth_hz": null,
+        "pipewire_target_bitrate": 262144,
+        "rates": [
+          48000
+        ],
+        "raw": "80 00 84 84 00 00",
+        "state": "active",
+        "vbr": true
+      }
+    }
+  },
+  "card": {
+    "active_profile": "a2dp-sink",
+    "present": true,
+    "profiles": [
+      "a2dp-sink",
+      "a2dp-sink-sbc",
+      "a2dp-sink-sbc_xq",
+      "headset-head-unit",
+      "headset-head-unit-cvsd",
+      "off"
+    ]
+  },
+  "configs": {
+    "pipewire/pipewire-pulse.conf.d/60-bta-switch-on-connect.conf": {
+      "sha": "21932b5076ba8ea9f87f8be8f6133de852ca978dd29ebb0027d75be8f3c40ecf",
+      "status": "missing"
+    }
+  },
+  "defaults": {
+    "default.audio.sink": "bluez_output.02_00_00_00_00_02.1",
+    "default.audio.source": "alsa_input.pci-0000_04_00.6.HiFi__Mic1__source",
+    "default.configured.audio.sink": "bluez_output.02_00_00_00_00_02.1",
+    "default.configured.audio.source": "alsa_input.pci-0000_04_00.6.HiFi__Mic1__source"
+  },
+  "device": {
+    "address": "02:00:00:00:00:02",
+    "battery": 90,
+    "connected": "yes",
+    "name": "Solix Nexus ANC",
+    "paired": "yes",
+    "trusted": "yes"
+  },
+  "easyeffects": {
+    "installed": false
+  },
+  "graph_clock": {
+    "clock.allowed-rates": "[ 48000 ]",
+    "clock.force-quantum": "0",
+    "clock.force-rate": "0",
+    "clock.max-quantum": "2048",
+    "clock.min-quantum": "32",
+    "clock.quantum": "1024",
+    "clock.rate": "48000"
+  },
+  "label": "S2-pre-install-switch-on-connect",
+  "other_bt_devices": [
+    "M96BT1",
+    "MX Master 3S"
+  ],
+  "sink": {
+    "channels": 2,
+    "codec": "aac",
+    "format": "s16le",
+    "name": "bluez_output.02_00_00_00_00_02.1",
+    "present": true,
+    "profile": "a2dp-sink",
+    "rate": 48000,
+    "state": "RUNNING",
+    "volume_pct": "32%"
+  },
+  "streams": [
+    {
+      "app": "Zen",
+      "channels": 2,
+      "format": "F32LE",
+      "media_class": "Stream/Output/Audio",
+      "node": "Zen",
+      "rate": 48000,
+      "resample_quality": null,
+      "state": "idle"
+    }
+  ],
+  "taken_at": "2026-09-27T19:19:29+02:00",
+  "versions": {
+    "bluez": "5.87-6.fc44",
+    "fdk-aac-free": "2.0.3-2.fc44",
+    "kernel": "7.1.10-200.fc44.x86_64",
+    "pipewire": "1.6.8-1.fc44",
+    "pipewire-libs": "1.6.8-1.fc44",
+    "wireplumber": "0.5.14-1.fc44"
+  },
+  "wifi": {
+    "band": "5GHz",
+    "channel": 108,
+    "freq_mhz": 5540,
+    "width_mhz": 160
+  },
+  "wp_settings": {
+    "bluetooth.autoswitch-to-headset-profile": {
+      "saved": "false",
+      "value": "false"
+    },
+    "bluetooth.use-persistent-storage": {
+      "saved": null,
+      "value": "true"
+    }
+  },
+  "wp_state": {
+    "bluetooth-autoswitch": {
+      "saved-headset-profile:bluez_card.02_00_00_00_00_02": "headset-head-unit"
+    },
+    "default-profile": {
+      "bluez_card.02_00_00_00_00_02": "a2dp-sink"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+ "own_cpu_pct": 2.33,
+ "capture_cpu_pct": 0.33,
+ "classify_median_ms": 13.7,
+ "states": {
+  "dinliyor": 22,
+  "sessizlik": 8
+ },
+ "genre": "konuşma",
+ "scores": [
+  {
+   "id": "konuşma",
+   "label": "Konuşma",
+   "p": 0.82
+  },
+  {
+   "id": "elektronik",
+   "label": "Elektronik",
+   "p": 0.0
+  },
+  {
+   "id": "pop",
+   "label": "Pop",
+   "p": 0.0
+  },
+  {
+   "id": "hiphop",
+   "label": "Hip-hop / R&B",
+   "p": 0.0
+  }
+ ],
+ "instruments": [
+  [
+   "Drum kit",
+   0.001
+  ],
+  [
+   "Synthesizer",
+   0.001
+  ],
+  [
+   "Bass guitar",
+   0.0
+  ],
+  [
+   "Electric guitar",
+   0.0
+  ],
+  [
+   "Acoustic guitar",
+   0.0
+  ]
+ ],
+ "character": [
+  "dengeli"
+ ],
+ "excess": {
+  "sub": -22.02,
+  "bas": 2.83,
+  "alt_orta": 6.19,
+  "orta": 0.0,
+  "varlık": -10.18,
+  "hava": -8.53
+ },
+ "level_db": -23.28,
+ "offsets": {
+  "bas": 0.0,
+  "alt_orta": 0.0,
+  "varlık": 0.0,
+  "hava": 0.0
+ },
+ "apc_log": [
+  {
+   "t": 21280.269628761,
+   "to": "preset:konusma",
+   "genre": "konuşma",
+   "score": 0.62
+  }
+ ],
+ "applied_payloads": 7,
+ "errors": []
+}

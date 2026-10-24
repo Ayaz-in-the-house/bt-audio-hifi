@@ -1,0 +1,96 @@
+{
+  "output": {
+    "blocklist": [],
+    "plugins_order": [
+      "equalizer#0",
+      "limiter#0"
+    ],
+    "equalizer#0": {
+      "bypass": false,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "mode": "IIR",
+      "split-channels": false,
+      "num-bands": 3,
+      "left": {
+        "band0": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 40,
+          "q": 0.9,
+          "width": 4.0
+        },
+        "band1": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 90,
+          "q": 1.0,
+          "width": 4.0
+        },
+        "band2": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 200,
+          "q": 1.0,
+          "width": 4.0
+        }
+      },
+      "right": {
+        "band0": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 40,
+          "q": 0.9,
+          "width": 4.0
+        },
+        "band1": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 90,
+          "q": 1.0,
+          "width": 4.0
+        },
+        "band2": {
+          "type": "Bell",
+          "mode": "RLC (BT)",
+          "slope": "x1",
+          "solo": false,
+          "mute": false,
+          "gain": 0.0,
+          "frequency": 200,
+          "q": 1.0,
+          "width": 4.0
+        }
+      }
+    },
+    "limiter#0": {
+      "bypass": false,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "threshold": -1.0,
+      "attack": 5.0,
+      "release": 5.0,
+      "lookahead": 5.0
+    }
+  }
+}

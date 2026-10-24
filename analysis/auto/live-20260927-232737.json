@@ -1,0 +1,81 @@
+{
+ "own_cpu_pct": 15.03,
+ "capture_cpu_pct": 0.63,
+ "classify_median_ms": 12.9,
+ "states": {
+  "dinliyor": 30
+ },
+ "genre": "konuşma",
+ "scores": [
+  {
+   "id": "konuşma",
+   "label": "Konuşma",
+   "p": 0.916
+  },
+  {
+   "id": "caz_akustik",
+   "label": "Caz / Akustik",
+   "p": 0.0
+  },
+  {
+   "id": "elektronik",
+   "label": "Elektronik",
+   "p": 0.0
+  },
+  {
+   "id": "rock",
+   "label": "Rock / Metal",
+   "p": 0.0
+  }
+ ],
+ "instruments": [
+  [
+   "Bass guitar",
+   0.0
+  ],
+  [
+   "Electric guitar",
+   0.0
+  ],
+  [
+   "Acoustic guitar",
+   0.0
+  ],
+  [
+   "Drum kit",
+   0.0
+  ],
+  [
+   "Drum",
+   0.0
+  ]
+ ],
+ "character": [
+  "dengeli"
+ ],
+ "excess": {
+  "sub": -7.42,
+  "bas": 6.22,
+  "alt_orta": 5.66,
+  "orta": 0.0,
+  "varlık": -5.93,
+  "hava": -3.17
+ },
+ "level_db": -32.78,
+ "offsets": {
+  "bas": 0.0,
+  "alt_orta": 0.0,
+  "varlık": 0.0,
+  "hava": 0.0
+ },
+ "apc_log": [
+  {
+   "t": 21096.438216409,
+   "to": "preset:konusma",
+   "genre": "konuşma",
+   "score": 0.91
+  }
+ ],
+ "applied_payloads": 4,
+ "errors": []
+}

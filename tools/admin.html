@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Ses Konsolu — Yönetim</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316181d'/%3E%3Cpath d='M4 20c5 0 6-10 12-10s7 10 12 10' fill='none' stroke='%23f0b43c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+/* Tasarım sözleşmesi: docs/DESIGN.md — konsolla AYNI belirteçler (tek vurgu amber, OKLCH, 4 px ızgara). */
+:root {
+  --bg: oklch(0.975 0.003 255); --s1: oklch(1 0 0); --s2: oklch(0.965 0.004 255); --s3: oklch(0.93 0.006 255);
+  --line: oklch(0.86 0.008 255); --line-2: oklch(0.9 0.006 255);
+  --text: oklch(0.22 0.01 255); --text-2: oklch(0.42 0.012 255); --text-3: oklch(0.52 0.012 255);
+  --acc: oklch(0.55 0.13 70); --acc-ink: oklch(0.99 0.01 85); --acc-soft: oklch(0.55 0.13 70 / 0.12);
+  --ok: oklch(0.56 0.14 150); --warn: oklch(0.5 0.12 65); --bad: oklch(0.5 0.19 27);
+  --shadow: 0 1px 2px oklch(0.3 0.02 255 / 0.08), 0 4px 12px oklch(0.3 0.02 255 / 0.06);
+  --r-c: 6px; --r-p: 10px; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: oklch(0.16 0.008 255); --s1: oklch(0.2 0.009 255); --s2: oklch(0.24 0.01 255); --s3: oklch(0.285 0.012 255);
+  --line: oklch(0.33 0.012 255); --line-2: oklch(0.27 0.01 255);
+  --text: oklch(0.93 0.005 255); --text-2: oklch(0.76 0.01 255); --text-3: oklch(0.66 0.012 255);
+  --acc: oklch(0.8 0.13 85); --acc-ink: oklch(0.2 0.03 85); --acc-soft: oklch(0.8 0.13 85 / 0.14);
+  --ok: oklch(0.74 0.15 150); --warn: oklch(0.8 0.14 80); --bad: oklch(0.68 0.19 27); --shadow: none; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: oklch(0.16 0.008 255); --s1: oklch(0.2 0.009 255); --s2: oklch(0.24 0.01 255); --s3: oklch(0.285 0.012 255);
+  --line: oklch(0.33 0.012 255); --line-2: oklch(0.27 0.01 255);
+  --text: oklch(0.93 0.005 255); --text-2: oklch(0.76 0.01 255); --text-3: oklch(0.66 0.012 255);
+  --acc: oklch(0.8 0.13 85); --acc-ink: oklch(0.2 0.03 85); --acc-soft: oklch(0.8 0.13 85 / 0.14);
+  --ok: oklch(0.74 0.15 150); --warn: oklch(0.8 0.14 80); --bad: oklch(0.68 0.19 27); --shadow: none; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--bg); color: var(--text); }
+body { font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+.num { font-variant-numeric: tabular-nums; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: var(--r-c); text-decoration: none;
+  border: 1px solid var(--line); background: var(--s1); color: var(--text); white-space: nowrap; }
+.btn:hover { background: var(--s3); } .btn:disabled { opacity: .45; cursor: default; }
+.btn.primary { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); font-weight: 600; }
+.btn.ghost { border-color: transparent; background: transparent; }
+.btn.sm { height: 28px; padding: 0 10px; font-size: 13px; }
+.btn.danger { color: var(--bad); }
+header.top { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line-2); }
+.topbar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; min-height: 52px; flex-wrap: wrap; }
+.topbar h1 { font-size: 16px; margin: 0 8px 0 0; font-weight: 650; }
+.grow { flex: 1; }
+main { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; padding: 16px; max-width: 1560px; margin: 0 auto; }
+@media (max-width: 1000px) { main { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--s1); border: 1px solid var(--line-2); border-radius: var(--r-p); box-shadow: var(--shadow); min-width: 0; padding: 12px; }
+.col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+h2 { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); margin: 0 0 10px; }
+.hint { font-size: 12px; color: var(--text-2); margin: 6px 0 0; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font-size: 12px; color: var(--text-2); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 7px 8px; border-bottom: 1px solid var(--line-2); vertical-align: middle; }
+tr.sel td { background: var(--acc-soft); }
+tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--acc); }
+td .n { font-weight: 600; }
+.badge { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 4px; font-size: 11px; font-weight: 700; background: var(--s3); color: var(--text-2); }
+.badge.auto { background: var(--acc); color: var(--acc-ink); } .badge.act { background: var(--ok); color: oklch(0.2 0.03 150); }
+.tag { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--s3); margin-right: 3px; white-space: nowrap; }
+.tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 560px; overflow: auto; }
+.tl li { border: 1px solid var(--line-2); border-radius: var(--r-c); padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; }
+.tl li.cur { border-color: var(--acc); background: var(--acc-soft); }
+.tl .h { font-weight: 600; } .tl .m { font-size: 12px; color: var(--text-2); }
+.tl .d { grid-column: 1 / -1; font-size: 12px; color: var(--text-2); margin: 0; padding-left: 16px; }
+.tl .d li { display: list-item; border: 0; padding: 0; background: none; }
+@media (max-width: 700px) { .c-size, .c-upd { display: none; } }
+.seg { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--r-c); overflow: hidden; }
+.seg button { height: 32px; border: 0; background: var(--s2); color: var(--text-2); font-size: 12px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--acc); color: var(--acc-ink); font-weight: 600; }
+@media (max-width: 520px) { .seg { grid-template-columns: 1fr 1fr; } .seg button:nth-child(3) { border-left: 0; } .seg button:nth-child(n+3) { border-top: 1px solid var(--line); } }
+.kv { display: grid; grid-template-columns: 140px 1fr; gap: 4px 10px; font-size: 13px; }
+.kv dt { color: var(--text-2); } .kv dd { margin: 0; }
+.empty { color: var(--text-2); font-size: 13px; padding: 8px 0; }
+#toasts { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); display: grid; gap: 8px; z-index: 60; width: min(520px, calc(100vw - 32px)); }
+.toast { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: var(--r-c); background: var(--s3); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.toast.err { border-color: var(--bad); }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="topbar">
+    <a class="btn ghost" href="/" id="back">← Konsol</a>
+    <h1>Yönetim</h1>
+    <span class="grow"></span>
+    <a class="btn" id="b-export-all" href="/api/admin/export-all" download="bta-profiller.json">Tüm profilleri dışa aktar</a>
+    <button class="btn" id="b-import">Paket içe aktar…</button>
+    <input type="file" id="f-import" accept="application/json,.json" hidden>
+    <button class="btn ghost" id="b-theme" aria-label="Tema">Tema</button>
+  </div>
+</header>
+
+<main>
+  <div class="col">
+    <section class="panel" aria-labelledby="h-prof">
+      <h2 id="h-prof">Profiller</h2>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Ad</th><th>Durum</th><th>Tür</th><th class="num">Sürüm</th><th class="num c-size">Boyut</th><th class="c-upd">Güncellendi</th><th></th></tr></thead>
+        <tbody id="ptbl"></tbody>
+      </table></div>
+      <p class="hint" id="pdir"></p>
+    </section>
+    <section class="panel" aria-labelledby="h-trash">
+      <h2 id="h-trash">Çöp kutusu</h2>
+      <ul class="tl" id="trash"></ul>
+      <p class="hint">Silinen profiller burada durur; geri yükleyebilirsin. Hiçbir profil kalıcı silinmez.</p>
+    </section>
+  </div>
+  <div class="col">
+    <section class="panel" aria-labelledby="h-tl">
+      <h2 id="h-tl">Sürüm geçmişi</h2>
+      <p class="hint" id="tl-head">Soldan bir profil seç.</p>
+      <ul class="tl" id="tl"></ul>
+    </section>
+    <section class="panel" aria-labelledby="h-auto">
+      <h2 id="h-auto">Otomasyon</h2>
+      <div class="seg" id="mode" role="group" aria-label="Otomatik mod"></div>
+      <dl class="kv" style="margin-top:10px" id="auto-kv"></dl>
+      <div class="row" style="margin-top:10px">
+        <button class="btn sm" data-nudge="-2">− Daha az bas</button><button class="btn sm" data-nudge="2">+ Daha çok bas</button>
+        <button class="btn sm danger" id="b-reset-learn">Öğrenileni sıfırla</button>
+      </div>
+      <h2 style="margin-top:14px">Son geçişler</h2>
+      <ul class="tl" id="alog"></ul>
+    </section>
+  </div>
+</main>
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const nf0 = new Intl.NumberFormat("tr-TR", {maximumFractionDigits: 0}), nf1 = new Intl.NumberFormat("tr-TR", {minimumFractionDigits: 1, maximumFractionDigits: 1});
+const store = {get(k, d) { try { const v = localStorage.getItem("bta." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+               set(k, v) { try { localStorage.setItem("bta." + k, JSON.stringify(v)); } catch {} }};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const GEN = {elektronik: "Elektronik", hiphop: "Hip-hop / R&B", rock: "Rock / Metal", pop: "Pop", klasik: "Klasik", caz_akustik: "Caz / Akustik", "konuşma": "Konuşma"};
+function toast(msg, {err = false, action = null, ms = 4000} = {}) {
+  const t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.setAttribute("role", err ? "alert" : "status");
+  t.innerHTML = `<span class="grow">${esc(msg)}</span>`;
+  if (action) { const b = document.createElement("button"); b.className = "btn sm"; b.textContent = action.label; b.onclick = () => { action.run(); t.remove(); }; t.appendChild(b); }
+  $("toasts").appendChild(t); while ($("toasts").children.length > 3) $("toasts").firstElementChild.remove(); setTimeout(() => t.remove(), ms);
+}
+async function api(p, b) {
+  const r = await fetch(p, b === undefined ? {} : {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(b)});
+  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(j.error || ("HTTP " + r.status)); e.status = r.status; throw e; } return j;
+}
+function size(b) { return b >= 1024 ? nf1.format(b / 1024) + " KB" : nf0.format(b) + " B"; }
+function when(t) { if (t == null) return "—"; const d = typeof t === "number" ? new Date(t * 1000) : new Date(String(t).replace(/([+-]\d\d)(\d\d)$/, "$1:$2"));
+  return isNaN(d) ? "—" : d.toLocaleString("tr-TR", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit"}); }
+function setTheme(t) { document.documentElement.dataset.theme = t; store.set("theme", t); $("b-theme").textContent = {auto: "Tema: otomatik", dark: "Tema: koyu", light: "Tema: açık"}[t]; }
+$("b-theme").onclick = () => setTheme({auto: "dark", dark: "light", light: "auto"}[document.documentElement.dataset.theme] || "auto");
+
+let P = null, sel = store.get("admin.sel", null), A = null;
+async function loadProfiles() {
+  P = await api("/api/admin/profiles"); const st = await api("/api/auto"); const act = st.active && st.active.kind === "profile" ? st.active.id : null;
+  $("ptbl").innerHTML = P.profiles.length ? P.profiles.map(p => `<tr data-id="${esc(p.id)}" class="${p.id === sel ? "sel" : ""}">
+    <td><span class="n">${esc(p.name)}</span>${p.derived_from ? `<div class="hint" style="margin:0">← ${esc(p.derived_from.name)}</div>` : ""}</td>
+    <td>${p.auto ? '<span class="badge auto">ÖZEL</span>' : '<span class="badge">ANA</span>'} ${p.id === act ? '<span class="badge act">aktif</span>' : ""}</td>
+    <td>${(p.genres || []).map(g => `<span class="tag">${esc(GEN[g] || g)}</span>`).join("") || '<span class="hint">—</span>'}</td>
+    <td class="num">${nf0.format(p.versions)}</td><td class="num c-size">${size(p.bytes + p.journal_bytes)}</td><td class="num c-upd">${esc(when(p.updated))}</td>
+    <td class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="hist">Geçmiş</button><button class="btn sm" data-a="load">Yükle</button>
+      <a class="btn sm" href="/api/profile/export?id=${encodeURIComponent(p.id)}" download>Dışa aktar</a><button class="btn sm danger" data-a="del">Sil</button></td></tr>`).join("")
+    : '<tr><td colspan="7" class="empty">Henüz profil yok. Konsolda bir ayara dokunduğunda otomatik "Özel 1" açılır.</td></tr>';
+  $("pdir").textContent = "Konum: " + P.dirs.profiles + " — her Özel profilin değişiklik günlüğü .journal/ altında.";
+  $("trash").innerHTML = P.trash.length ? P.trash.map(t => `<li><span><span class="h">${esc(t.name)}</span><br><span class="m">silindi ${esc(when(t.deleted))}</span></span><button class="btn sm" data-token="${esc(t.token)}">Geri yükle</button></li>`).join("") : '<li class="empty" style="border:0">Çöp kutusu boş.</li>';
+  if (sel && P.profiles.some(p => p.id === sel)) loadTimeline(sel); else { sel = null; $("tl").innerHTML = ""; $("tl-head").textContent = "Soldan bir profil seç."; }
+}
+async function loadTimeline(id) {
+  sel = id; store.set("admin.sel", id); for (const tr of $("ptbl").querySelectorAll("tr[data-id]")) tr.classList.toggle("sel", tr.dataset.id === id);
+  const T = await api("/api/admin/timeline?id=" + encodeURIComponent(id));
+  $("tl-head").textContent = T.locked ? `“${T.name}” ana profil — değişmez; üzerinde yapılan düzenlemeler bir Özel çalışma kopyasına gider.` : `“${T.name}” — ${T.versions.length} sürüm, en yeni üstte. Geri yükleme geçmişi silmez, yeni sürüm ekler.`;
+  $("tl").innerHTML = T.versions.slice().reverse().map(v => `<li class="${v.v === T.ptr ? "cur" : ""}" data-v="${v.v}">
+    <span><span class="h">Sürüm ${v.v}${v.v === T.ptr ? " · şu an" : ""}</span> <span class="m">${esc(when(v.t))}</span><br>
+    <span class="m">${v.summary.bands_on} bant · preamp ${nf1.format(v.summary.preamp_db)} dB · crossfeed ${v.summary.crossfeed ? "açık" : "kapalı"} · genişlik ${esc(v.summary.width)}</span></span>
+    ${!T.locked && v.v !== T.ptr ? `<button class="btn sm" data-restore="${v.v}">Bu sürüme dön</button>` : "<span></span>"}
+    <ul class="d">${v.diff.map(d => `<li>${esc(d)}</li>`).join("")}</ul></li>`).join("");
+}
+$("ptbl").addEventListener("click", async ev => { const b = ev.target.closest("button[data-a]"); const tr = ev.target.closest("tr[data-id]"); if (!tr) return; const id = tr.dataset.id;
+  const name = (P.profiles.find(p => p.id === id) || {}).name || id;
+  try {
+    if (!b || b.dataset.a === "hist") return loadTimeline(id);
+    if (b.dataset.a === "load") { await api("/api/profile/load", {id}); toast(`“${name}” yüklendi — sesin değişti`); await loadProfiles(); }
+    if (b.dataset.a === "del") { const v = await api("/api/profile/delete", {id}); await loadProfiles();
+      toast(`“${name}” çöp kutusuna taşındı`, {ms: 8000, action: {label: "Geri al", run: async () => { await api("/api/profile/restore", {token: v.trash}); loadProfiles(); }}}); }
+  } catch (e) { toast(e.message, {err: true}); } });
+$("tl").addEventListener("click", async ev => { const b = ev.target.closest("[data-restore]"); if (!b) return;
+  try { await api("/api/admin/restore", {id: sel, v: +b.dataset.restore}); await loadProfiles(); toast(`Sürüm ${b.dataset.restore} geri yüklendi (yeni sürüm olarak) — konsolda geri al ile dönebilirsin`); } catch (e) { toast(e.message, {err: true}); } });
+$("trash").addEventListener("click", async ev => { const b = ev.target.closest("[data-token]"); if (!b) return;
+  try { await api("/api/profile/restore", {token: b.dataset.token}); await loadProfiles(); toast("Geri yüklendi"); } catch (e) { toast(e.message, {err: true}); } });
+$("b-import").onclick = () => $("f-import").click();
+$("f-import").onchange = async e => { const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try { const doc = JSON.parse(await f.text());
+    const r = doc && doc.schema === "bta-bundle/1" ? await api("/api/admin/import-bundle", {bundle: doc}) : await api("/api/profile/import", {doc});
+    await loadProfiles(); toast(r.imported && Array.isArray(r.imported) ? `${r.imported.length} profil içe aktarıldı` : "Profil içe aktarıldı");
+  } catch (err) { toast("İçe aktarılamadı: " + err.message, {err: true}); } };
+
+// ── otomasyon ──
+function renderAuto() { const a = A && A.auto; if (!a) { $("mode").innerHTML = '<span class="hint">Bu oturumda otomasyon motoru yok.</span>'; return; }
+  $("mode").innerHTML = a.modes.map(m => `<button type="button" data-m="${m.id}" aria-pressed="${m.id === a.mode}">${esc(m.label)}</button>`).join("");
+  const off = a.offsets || {}; const sg = v => (v > 0 ? "+" : v < 0 ? "−" : "±") + nf1.format(Math.abs(v || 0));
+  $("auto-kv").innerHTML = [["Durum", a.mode === "off" ? "kapalı" : a.state],
+    ["Tür", a.state === "dinliyor" ? (a.genre_label || "emin değil") + (a.scores[0] ? ` (%${nf0.format(a.scores[0].p * 100)})` : "") : "—"],
+    ["Karakter", (a.character || []).join(", ") || "—"],
+    ["Canlı düzeltme", ["bas", "alt_orta", "varlık", "hava"].map(k => `${{bas: "bas", alt_orta: "alt-orta", "varlık": "varlık", hava: "hava"}[k]} ${sg(off[k])}`).join(" · ") + " dB"],
+    ["Öğrenilen bas", sg(a.bias.bas) + " dB · " + nf0.format(a.learned_s) + " sn dinlendi"],
+    ["Sınıflayıcı", a.classifier.available ? `YAMNet yerel · ${a.classifier.ms != null ? nf1.format(a.classifier.ms) + " ms/2 sn" : "bekliyor"}` : "kapalı: " + (a.classifier.reason || "")]]
+    .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
+  $("alog").innerHTML = a.log.length ? a.log.slice().reverse().map(l => `<li><span class="m">${esc(l.to)} ← ${esc(GEN[l.genre] || l.genre || "düşük güven")} (%${nf0.format((l.score || 0) * 100)})</span></li>`).join("") : '<li class="empty" style="border:0">Henüz geçiş yok.</li>';
+}
+async function pollAuto() { try { A = await api("/api/auto"); renderAuto(); } catch {} if (document.visibilityState === "visible") setTimeout(pollAuto, 1500); }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") pollAuto(); });
+$("mode").addEventListener("click", async ev => { const b = ev.target.closest("button[data-m]"); if (!b) return; try { await api("/api/auto", {mode: b.dataset.m}); A = await api("/api/auto"); renderAuto(); } catch (e) { toast(e.message, {err: true}); } });
+document.addEventListener("click", async ev => { const b = ev.target.closest("[data-nudge]"); if (!b) return; try { await api("/api/auto", {nudge: {band: "bas", delta: +b.dataset.nudge}}); A = await api("/api/auto"); renderAuto(); } catch (e) { toast(e.message, {err: true}); } });
+$("b-reset-learn").onclick = async () => { const prev = A && A.auto ? A.auto.bias.bas : 0;
+  await api("/api/auto", {reset_learning: true}); A = await api("/api/auto"); renderAuto(); toast("Öğrenilen tercih ve referans sıfırlandı" + (prev ? ` (bas ${nf1.format(prev)} dB idi)` : "")); };
+
+(async () => { setTheme(store.get("theme", "auto")); try { await loadProfiles(); } catch (e) { toast("Sunucuya bağlanılamadı: " + e.message, {err: true, ms: 15000}); } pollAuto(); })();
+</script>
+</body>
+</html>

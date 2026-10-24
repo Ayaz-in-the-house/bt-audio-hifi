@@ -1,0 +1,41 @@
+{
+  "seconds": 90.3,
+  "reduce_events": 0,
+  "increase_events": 84,
+  "min_bitrate_seen": null,
+  "recoveries": [],
+  "verdict": "CLEAN",
+  "mode": "active-quiet-pink",
+  "codec": "aac",
+  "transport": {
+    "sep2/fd0": {
+      "codec": "AAC",
+      "object_types": [
+        "MPEG-2 AAC LC"
+      ],
+      "rates": [
+        48000
+      ],
+      "channels": [
+        2
+      ],
+      "vbr": true,
+      "bitrate": 262144,
+      "raw": "80 00 84 84 00 00",
+      "state": "active",
+      "delay_us": 280000,
+      "pipewire_target_bitrate": 262144,
+      "pipewire_forced_bandwidth_hz": null
+    }
+  },
+  "wifi": {
+    "channel": 108,
+    "freq_mhz": 5540,
+    "width_mhz": 160,
+    "band": "5GHz"
+  },
+  "other_bt_devices": [
+    "M96BT1",
+    "MX Master 3S"
+  ]
+}

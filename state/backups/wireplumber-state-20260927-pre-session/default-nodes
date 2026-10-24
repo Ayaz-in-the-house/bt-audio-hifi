@@ -1,0 +1,10 @@
+[default-nodes]
+default.configured.audio.sink=bluez_output.02_00_00_00_00_02.1
+default.configured.audio.source=alsa_input.pci-0000_04_00.6.HiFi__Mic1__source
+default.configured.audio.sink.0=bluez_output.02_00_00_00_00_05.1
+default.configured.audio.sink.1=alsa_output.pci-0000_04_00.6.HiFi__Speaker__sink
+default.configured.audio.sink.2=alsa_output.usb-DisplayLink_Dell_Universal_Dock_D6000_1911076147-02.analog-stereo
+default.configured.audio.sink.3=bluez_output.02:00:00:00:00:07
+default.configured.audio.source.0=alsa_input.usb-DisplayLink_Dell_Universal_Dock_D6000_1911076147-02.iec958-stereo
+default.configured.audio.source.1=alsa_input.pci-0000_04_00.6.HiFi__Mic2__source
+default.configured.audio.sink.4=raop_sink.macbooks-MacBook-Pro.local.192.168.255.1.7000

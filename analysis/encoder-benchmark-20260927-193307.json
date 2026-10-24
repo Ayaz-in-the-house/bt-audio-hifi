@@ -1,0 +1,507 @@
+{
+  "pembe-gurultu": {
+    "PCM-kontrol": {
+      "snr_20_20k": 79.4,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 85.3,
+      "snr_4k_10k": 75.9,
+      "snr_10k_16k": 73.0,
+      "snr_16k_20k": 71.5,
+      "kbps": null
+    },
+    "PCM-44k1-gidis-donus": {
+      "snr_20_20k": 66.9,
+      "cutoff_hz": 21211,
+      "snr_20_4k": 68.3,
+      "snr_4k_10k": 66.2,
+      "snr_10k_16k": 64.7,
+      "snr_16k_20k": 59.7,
+      "kbps": null
+    },
+    "AAC-CBR-262k-oto-bant": {
+      "snr_20_20k": 15.3,
+      "cutoff_hz": 17039,
+      "snr_20_4k": 26.0,
+      "snr_4k_10k": 18.2,
+      "snr_10k_16k": 17.1,
+      "snr_16k_20k": 1.3,
+      "kbps": 263
+    },
+    "AAC-CBR-262k-bant19293": {
+      "snr_20_20k": 18.2,
+      "cutoff_hz": 19336,
+      "snr_20_4k": 24.5,
+      "snr_4k_10k": 15.8,
+      "snr_10k_16k": 14.7,
+      "snr_16k_20k": 6.8,
+      "kbps": 263
+    },
+    "AAC-CBR-320k-bant19293": {
+      "snr_20_20k": 20.3,
+      "cutoff_hz": 19336,
+      "snr_20_4k": 27.5,
+      "snr_4k_10k": 20.0,
+      "snr_10k_16k": 18.9,
+      "snr_16k_20k": 7.4,
+      "kbps": 322
+    },
+    "AAC-VBR3": {
+      "snr_20_20k": 10.6,
+      "cutoff_hz": 15797,
+      "snr_20_4k": 16.0,
+      "snr_4k_10k": 8.1,
+      "snr_10k_16k": 6.7,
+      "snr_16k_20k": -0.0,
+      "kbps": 133
+    },
+    "AAC-VBR4": {
+      "snr_20_20k": 13.0,
+      "cutoff_hz": 16547,
+      "snr_20_4k": 19.9,
+      "snr_4k_10k": 12.1,
+      "snr_10k_16k": 11.1,
+      "snr_16k_20k": 0.6,
+      "kbps": 185
+    },
+    "AAC-VBR5": {
+      "snr_20_20k": 18.4,
+      "cutoff_hz": 19336,
+      "snr_20_4k": 24.1,
+      "snr_4k_10k": 16.2,
+      "snr_10k_16k": 15.3,
+      "snr_16k_20k": 7.1,
+      "kbps": 267
+    },
+    "SBC-XQ(48k,dual,bp39)": {
+      "snr_20_20k": 28.6,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 39.5,
+      "snr_4k_10k": 25.1,
+      "snr_10k_16k": 21.4,
+      "snr_16k_20k": 19.3,
+      "kbps": 504
+    },
+    "SBC(48k,joint,bp53)": {
+      "snr_20_20k": 19.7,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 29.3,
+      "snr_4k_10k": 15.3,
+      "snr_10k_16k": 13.0,
+      "snr_16k_20k": 11.1,
+      "kbps": 357
+    },
+    "HFP-mSBC(baslangic)": {
+      "snr_20_20k": 8.0,
+      "cutoff_hz": 7746,
+      "snr_20_4k": 20.0,
+      "snr_4k_10k": 4.3,
+      "snr_10k_16k": -0.0,
+      "snr_16k_20k": -0.0,
+      "kbps": 61
+    }
+  },
+  "beyaz-gurultu": {
+    "PCM-kontrol": {
+      "snr_20_20k": 81.1,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 81.1,
+      "snr_4k_10k": 81.1,
+      "snr_10k_16k": 81.1,
+      "snr_16k_20k": 81.1,
+      "kbps": null
+    },
+    "PCM-44k1-gidis-donus": {
+      "snr_20_20k": 46.1,
+      "cutoff_hz": 21270,
+      "snr_20_4k": 46.1,
+      "snr_4k_10k": 46.0,
+      "snr_10k_16k": 46.0,
+      "snr_16k_20k": 46.4,
+      "kbps": null
+    },
+    "AAC-CBR-262k-oto-bant": {
+      "snr_20_20k": 7.8,
+      "cutoff_hz": 17045,
+      "snr_20_4k": 19.5,
+      "snr_4k_10k": 17.8,
+      "snr_10k_16k": 17.8,
+      "snr_16k_20k": 1.2,
+      "kbps": 263
+    },
+    "AAC-CBR-262k-bant19293": {
+      "snr_20_20k": 12.0,
+      "cutoff_hz": 19342,
+      "snr_20_4k": 18.1,
+      "snr_4k_10k": 15.1,
+      "snr_10k_16k": 15.1,
+      "snr_16k_20k": 6.8,
+      "kbps": 263
+    },
+    "AAC-CBR-320k-bant19293": {
+      "snr_20_20k": 13.3,
+      "cutoff_hz": 19342,
+      "snr_20_4k": 21.3,
+      "snr_4k_10k": 19.5,
+      "snr_10k_16k": 19.4,
+      "snr_16k_20k": 7.2,
+      "kbps": 322
+    },
+    "AAC-VBR3": {
+      "snr_20_20k": 5.1,
+      "cutoff_hz": 15809,
+      "snr_20_4k": 10.7,
+      "snr_4k_10k": 8.9,
+      "snr_10k_16k": 7.9,
+      "snr_16k_20k": -0.0,
+      "kbps": 139
+    },
+    "AAC-VBR4": {
+      "snr_20_20k": 6.6,
+      "cutoff_hz": 16553,
+      "snr_20_4k": 14.3,
+      "snr_4k_10k": 12.6,
+      "snr_10k_16k": 12.6,
+      "snr_16k_20k": 0.5,
+      "kbps": 192
+    },
+    "AAC-VBR5": {
+      "snr_20_20k": 12.6,
+      "cutoff_hz": 19342,
+      "snr_20_4k": 18.9,
+      "snr_4k_10k": 16.9,
+      "snr_10k_16k": 16.9,
+      "snr_16k_20k": 7.0,
+      "kbps": 280
+    },
+    "SBC-XQ(48k,dual,bp39)": {
+      "snr_20_20k": 23.7,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 29.4,
+      "snr_4k_10k": 24.6,
+      "snr_10k_16k": 24.5,
+      "snr_16k_20k": 20.3,
+      "kbps": 504
+    },
+    "SBC(48k,joint,bp53)": {
+      "snr_20_20k": 13.0,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 20.4,
+      "snr_4k_10k": 15.4,
+      "snr_10k_16k": 12.6,
+      "snr_16k_20k": 9.4,
+      "kbps": 357
+    },
+    "HFP-mSBC(baslangic)": {
+      "snr_20_20k": 1.9,
+      "cutoff_hz": 7758,
+      "snr_20_4k": 16.1,
+      "snr_4k_10k": 3.5,
+      "snr_10k_16k": -0.0,
+      "snr_16k_20k": 0.0,
+      "kbps": 61
+    }
+  },
+  "gecici-sesler": {
+    "PCM-kontrol": {
+      "snr_20_20k": 65.2,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 72.0,
+      "snr_4k_10k": 55.3,
+      "snr_10k_16k": 48.6,
+      "snr_16k_20k": 46.9,
+      "kbps": null
+    },
+    "PCM-44k1-gidis-donus": {
+      "snr_20_20k": 62.4,
+      "cutoff_hz": 21158,
+      "snr_20_4k": 69.5,
+      "snr_4k_10k": 53.1,
+      "snr_10k_16k": 46.4,
+      "snr_16k_20k": 42.3,
+      "kbps": null
+    },
+    "AAC-CBR-262k-oto-bant": {
+      "snr_20_20k": 26.2,
+      "cutoff_hz": 17016,
+      "snr_20_4k": 37.0,
+      "snr_4k_10k": 28.8,
+      "snr_10k_16k": 28.8,
+      "snr_16k_20k": 1.3,
+      "kbps": 263
+    },
+    "AAC-CBR-262k-bant19293": {
+      "snr_20_20k": 30.7,
+      "cutoff_hz": 19312,
+      "snr_20_4k": 34.9,
+      "snr_4k_10k": 31.0,
+      "snr_10k_16k": 28.5,
+      "snr_16k_20k": 7.7,
+      "kbps": 263
+    },
+    "AAC-CBR-320k-bant19293": {
+      "snr_20_20k": 31.3,
+      "cutoff_hz": 19312,
+      "snr_20_4k": 37.0,
+      "snr_4k_10k": 29.4,
+      "snr_10k_16k": 28.9,
+      "snr_16k_20k": 7.7,
+      "kbps": 322
+    },
+    "AAC-VBR3": {
+      "snr_20_20k": 19.4,
+      "cutoff_hz": 16770,
+      "snr_20_4k": 22.3,
+      "snr_4k_10k": 12.5,
+      "snr_10k_16k": 7.7,
+      "snr_16k_20k": -0.0,
+      "kbps": 86
+    },
+    "AAC-VBR4": {
+      "snr_20_20k": 22.1,
+      "cutoff_hz": 16734,
+      "snr_20_4k": 26.2,
+      "snr_4k_10k": 15.7,
+      "snr_10k_16k": 11.7,
+      "snr_16k_20k": 0.6,
+      "kbps": 114
+    },
+    "AAC-VBR5": {
+      "snr_20_20k": 26.9,
+      "cutoff_hz": 19324,
+      "snr_20_4k": 29.5,
+      "snr_4k_10k": 20.7,
+      "snr_10k_16k": 16.4,
+      "snr_16k_20k": 7.1,
+      "kbps": 159
+    },
+    "SBC-XQ(48k,dual,bp39)": {
+      "snr_20_20k": 35.5,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 42.9,
+      "snr_4k_10k": 24.6,
+      "snr_10k_16k": 19.8,
+      "snr_16k_20k": 17.3,
+      "kbps": 504
+    },
+    "SBC(48k,joint,bp53)": {
+      "snr_20_20k": 32.2,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 37.5,
+      "snr_4k_10k": 20.0,
+      "snr_10k_16k": 20.7,
+      "snr_16k_20k": 15.9,
+      "kbps": 357
+    },
+    "HFP-mSBC(baslangic)": {
+      "snr_20_20k": 16.4,
+      "cutoff_hz": 7723,
+      "snr_20_4k": 21.7,
+      "snr_4k_10k": 6.5,
+      "snr_10k_16k": -0.0,
+      "snr_16k_20k": -0.0,
+      "kbps": 61
+    }
+  },
+  "cok-tonlu": {
+    "PCM-kontrol": {
+      "snr_20_20k": 83.8,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 89.6,
+      "snr_4k_10k": 81.1,
+      "snr_10k_16k": 77.1,
+      "snr_16k_20k": 75.9,
+      "kbps": null
+    },
+    "PCM-44k1-gidis-donus": {
+      "snr_20_20k": 67.5,
+      "cutoff_hz": 21445,
+      "snr_20_4k": 73.6,
+      "snr_4k_10k": 65.8,
+      "snr_10k_16k": 62.2,
+      "snr_16k_20k": 57.0,
+      "kbps": null
+    },
+    "AAC-CBR-262k-oto-bant": {
+      "snr_20_20k": 14.9,
+      "cutoff_hz": 17145,
+      "snr_20_4k": 36.3,
+      "snr_4k_10k": 33.0,
+      "snr_10k_16k": 33.3,
+      "snr_16k_20k": 0.0,
+      "kbps": 263
+    },
+    "AAC-CBR-262k-bant19293": {
+      "snr_20_20k": 35.1,
+      "cutoff_hz": 20953,
+      "snr_20_4k": 36.4,
+      "snr_4k_10k": 32.9,
+      "snr_10k_16k": 32.8,
+      "snr_16k_20k": 31.0,
+      "kbps": 263
+    },
+    "AAC-CBR-320k-bant19293": {
+      "snr_20_20k": 35.1,
+      "cutoff_hz": 20953,
+      "snr_20_4k": 36.4,
+      "snr_4k_10k": 32.9,
+      "snr_10k_16k": 32.8,
+      "snr_16k_20k": 31.0,
+      "kbps": 322
+    },
+    "AAC-VBR3": {
+      "snr_20_20k": 14.2,
+      "cutoff_hz": 17145,
+      "snr_20_4k": 23.2,
+      "snr_4k_10k": 20.9,
+      "snr_10k_16k": 21.4,
+      "snr_16k_20k": 0.0,
+      "kbps": 44
+    },
+    "AAC-VBR4": {
+      "snr_20_20k": 14.6,
+      "cutoff_hz": 16723,
+      "snr_20_4k": 26.8,
+      "snr_4k_10k": 23.4,
+      "snr_10k_16k": 24.1,
+      "snr_16k_20k": -0.0,
+      "kbps": 50
+    },
+    "AAC-VBR5": {
+      "snr_20_20k": 29.4,
+      "cutoff_hz": 20250,
+      "snr_20_4k": 30.2,
+      "snr_4k_10k": 27.9,
+      "snr_10k_16k": 27.8,
+      "snr_16k_20k": 26.0,
+      "kbps": 66
+    },
+    "SBC-XQ(48k,dual,bp39)": {
+      "snr_20_20k": 33.8,
+      "cutoff_hz": 22436,
+      "snr_20_4k": 43.2,
+      "snr_4k_10k": 31.2,
+      "snr_10k_16k": 25.7,
+      "snr_16k_20k": 25.8,
+      "kbps": 504
+    },
+    "SBC(48k,joint,bp53)": {
+      "snr_20_20k": 45.4,
+      "cutoff_hz": 24000,
+      "snr_20_4k": 54.8,
+      "snr_4k_10k": 43.3,
+      "snr_10k_16k": 38.0,
+      "snr_16k_20k": 35.6,
+      "kbps": 357
+    },
+    "HFP-mSBC(baslangic)": {
+      "snr_20_20k": 7.7,
+      "cutoff_hz": 7500,
+      "snr_20_4k": 23.2,
+      "snr_4k_10k": 3.6,
+      "snr_10k_16k": 0.0,
+      "snr_16k_20k": 0.0,
+      "kbps": 61
+    }
+  },
+  "brahms-senfoni1(CC0)": {
+    "PCM-kontrol": {
+      "snr_20_20k": 74.9,
+      "cutoff_hz": 17783,
+      "snr_20_4k": 81.9,
+      "snr_4k_10k": 55.5,
+      "snr_10k_16k": 37.9,
+      "snr_16k_20k": 28.6,
+      "kbps": null
+    },
+    "PCM-44k1-gidis-donus": {
+      "snr_20_20k": 74.5,
+      "cutoff_hz": 17783,
+      "snr_20_4k": 81.5,
+      "snr_4k_10k": 55.1,
+      "snr_10k_16k": 37.5,
+      "snr_16k_20k": 28.2,
+      "kbps": null
+    },
+    "AAC-CBR-262k-oto-bant": {
+      "snr_20_20k": 35.0,
+      "cutoff_hz": 16986,
+      "snr_20_4k": 35.2,
+      "snr_4k_10k": 23.9,
+      "snr_10k_16k": 17.6,
+      "snr_16k_20k": 2.5,
+      "kbps": 262
+    },
+    "AAC-CBR-262k-bant19293": {
+      "snr_20_20k": 34.7,
+      "cutoff_hz": 17777,
+      "snr_20_4k": 35.0,
+      "snr_4k_10k": 23.2,
+      "snr_10k_16k": 16.3,
+      "snr_16k_20k": 7.9,
+      "kbps": 262
+    },
+    "AAC-CBR-320k-bant19293": {
+      "snr_20_20k": 36.0,
+      "cutoff_hz": 17771,
+      "snr_20_4k": 36.1,
+      "snr_4k_10k": 26.0,
+      "snr_10k_16k": 21.5,
+      "snr_16k_20k": 10.3,
+      "kbps": 320
+    },
+    "AAC-VBR3": {
+      "snr_20_20k": 25.4,
+      "cutoff_hz": 15744,
+      "snr_20_4k": 25.9,
+      "snr_4k_10k": 10.1,
+      "snr_10k_16k": 4.8,
+      "snr_16k_20k": 0.0,
+      "kbps": 108
+    },
+    "AAC-VBR4": {
+      "snr_20_20k": 29.5,
+      "cutoff_hz": 16377,
+      "snr_20_4k": 30.1,
+      "snr_4k_10k": 13.9,
+      "snr_10k_16k": 5.6,
+      "snr_16k_20k": 0.6,
+      "kbps": 138
+    },
+    "AAC-VBR5": {
+      "snr_20_20k": 33.4,
+      "cutoff_hz": 17771,
+      "snr_20_4k": 33.7,
+      "snr_4k_10k": 20.3,
+      "snr_10k_16k": 11.7,
+      "snr_16k_20k": 5.1,
+      "kbps": 209
+    },
+    "SBC-XQ(48k,dual,bp39)": {
+      "snr_20_20k": 53.6,
+      "cutoff_hz": 18006,
+      "snr_20_4k": 57.8,
+      "snr_4k_10k": 32.8,
+      "snr_10k_16k": 20.8,
+      "snr_16k_20k": 11.0,
+      "kbps": 504
+    },
+    "SBC(48k,joint,bp53)": {
+      "snr_20_20k": 44.9,
+      "cutoff_hz": 18000,
+      "snr_20_4k": 49.4,
+      "snr_4k_10k": 23.7,
+      "snr_10k_16k": 11.6,
+      "snr_16k_20k": 3.5,
+      "kbps": 357
+    },
+    "HFP-mSBC(baslangic)": {
+      "snr_20_20k": 27.4,
+      "cutoff_hz": 7658,
+      "snr_20_4k": 29.2,
+      "snr_4k_10k": 7.8,
+      "snr_10k_16k": 0.0,
+      "snr_16k_20k": 0.0,
+      "kbps": 61
+    }
+  }
+}
