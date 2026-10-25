@@ -79,6 +79,17 @@ class TestDocsGate(unittest.TestCase):
                 self.assertIn(sec, t, f"{os.path.basename(p)}: '{sec}' bölümü yok")
             self.assertRegex(t, r"Son doğrulama: \d{4}-\d{2}-\d{2}", os.path.basename(p))
 
+    def test_u79_append_only_ledgers_are_not_truncated(self):
+        """U79: kayıt defterleri yalnız EKLENİR. Ölçülen olay (14af43c): üç defter tek satırla ezildi
+        (findings 78→2, errors 38→1, STATE-LOG 39→2) ve on gün fark edilmedi — kimlik dizisi kopuksa kırmızı."""
+        for rel, prefix in (("docs/lessons/errors.md", "E"), ("docs/research/findings.md", "R")):
+            ids = [int(n) for n in re.findall(r"^\|\s*" + prefix + r"(\d+)\s*\|", open(os.path.join(REPO, rel)).read(), re.M)]
+            self.assertTrue(ids, f"{rel}: kayıt yok")
+            missing = sorted(set(range(1, max(ids) + 1)) - set(ids))
+            self.assertEqual(missing, [], f"{rel}: kayıp kimlikler (defter ezilmiş olabilir)")
+        log = open(os.path.join(REPO, "docs", "STATE-LOG.md")).read()
+        self.assertTrue(log.startswith("# Durum günlüğü"), "STATE-LOG.md başlığı yok (defter ezilmiş olabilir)")
+
     def test_u67_feature_catalog_ids_exist_and_links_resolve(self):
         planned = set()
         for r in plan_rows():
