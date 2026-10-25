@@ -6,7 +6,7 @@
 |---|---|
 | katman | [domain](../layers/L5-bta-software.md#domain) |
 | rol | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları |
-| boyut | 674 satır |
+| boyut | 689 satır |
 | içe aktarır (iç) | [`dsp`](dsp.md), [`paths`](paths.md) |
 | içe aktarır (dış) | `numpy` |
 | standart kitaplık | `__future__`, `copy`, `json`, `math`, `os`, `re` |
@@ -36,6 +36,8 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 | `BS2B_PRESETS` | `{'default': {'fcut': 700, 'feed': 4.5, 'label': 'Varsayılan (bs2b)'…` |
 | `DEFAULT_FREQS` | `[32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]` |
 | `ZERO` | `{'b0': 0.0, 'b1': 0.0, 'b2': 0.0, 'a0': 1.0, 'a1': 0.0, 'a2': 0.0}` |
+| `RECOMMENDED_PRESET` | `'hifi_uzay'` |
+| `RECOMMENDED_LOUD_DB` | `6.0` |
 | `GRID` | `np.geomspace(20, 20000, 240).tolist()` |
 | `CATEGORIES` | `['Referans', 'Bas', 'Tür', 'Karakter', 'Kullanım', 'Uzay']` |
 | `KINDS` | `{'hedef': 'Araştırma hedef eğrisinden (ölçülmüş veri)', 'kaynak': '…` |
@@ -54,6 +56,7 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 ## Genel API
 
 - `default_state() -> dict` — Şeffaf başlangıç durumu: 10 kapalı bant, crossfeed kapalı, genişlik 1, denge 0.
+- `recommended_state() -> dict` — U80: ilk kurulum varsayılanı = `hifi_uzay` hazır tarzı (ölçülü Harman bas rafı + hafif uzay). 'Nötr' (default_state) şeffaf referans olarak kalır; bu yalnız hiç durumu olmayan kuruluma verilir.
 - `sanitize(st: dict) -> dict` — Dış girdiyi sözleşmeye zorlar: tip listesi, sınır kırpma, eksik alan tamamlama (her yazımdan önce).
 - `bs2b_coeffs(fcut: float, feed_db: float, fs: int=FS) -> dict` — bs2b.c init(): level=feed dB, GB_lo=level·(−5/6)−3, GB_hi=level/6−3 …
 - `stereo_model(st: dict, freqs, include_preamp=False, fs=FS) -> dict` — Karmaşık transfer fonksiyonları: LL (L giriş→L çıkış), LR (L→R), RL, RR, mono (L=R→L).
@@ -84,6 +87,7 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 - [`tests/test_commit_isolation.py`](../../tests/test_commit_isolation.py) — T-L37, U49, U72
 - [`tests/test_console.py`](../../tests/test_console.py) — U31, U35
 - [`tests/test_crossfade.py`](../../tests/test_crossfade.py) — U57, U68, U77
+- [`tests/test_first_run.py`](../../tests/test_first_run.py) — U80
 - [`tests/test_identity.py`](../../tests/test_identity.py) — U72
 - [`tests/test_loud_limiter.py`](../../tests/test_loud_limiter.py) — U77, U78
 - [`tests/test_presets.py`](../../tests/test_presets.py) — U43

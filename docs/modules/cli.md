@@ -6,7 +6,7 @@
 |---|---|
 | katman | [cli](../layers/L5-bta-software.md#cli) |
 | rol | `bta` komutları (durum, kurulum, konsol, ölçümler, model) |
-| boyut | 837 satır |
+| boyut | 857 satır |
 | içe aktarır (iç) | [`abx`](abx.md), [`abxsession`](abxsession.md), [`analyzer`](analyzer.md), [`autoengine`](autoengine.md), [`bass`](bass.md), [`bench`](bench.md), [`btmon`](btmon.md), [`classifier`](classifier.md), [`collect`](collect.md), [`console`](console.md), [`consoleserver`](consoleserver.md), [`crossfade`](crossfade.md), [`eqconf`](eqconf.md), [`link`](link.md), [`paths`](paths.md), [`procs`](procs.md), [`state`](state.md), [`tones`](tones.md), [`tuner`](tuner.md), [`tunerserver`](tunerserver.md) |
 | içe aktarır (dış) | — |
 | standart kitaplık | `__future__`, `datetime`, `glob`, `json`, `os`, `shlex`, `shutil`, `subprocess`, `sys`, `time`, `urllib`, `webbrowser` |
@@ -86,5 +86,6 @@ bta abx [a] [b] [--clip f] [--start s] [--dur s] [--n 12] [--apply]   kör ABX d
 
 - [`tests/live/test_live.py`](../../tests/live/test_live.py) — T-L01, T-L10, T-L12, T-L13, T-L14, T-L20
 - [`tests/test_commit_isolation.py`](../../tests/test_commit_isolation.py) — T-L37, U49, U72
+- [`tests/test_first_run.py`](../../tests/test_first_run.py) — U80
 - [`tests/test_service.py`](../../tests/test_service.py) — U74, U76
 - [`tests/test_state.py`](../../tests/test_state.py) — U07, U10

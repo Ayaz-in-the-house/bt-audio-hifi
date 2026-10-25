@@ -25,7 +25,7 @@
 |---|---|---|---|---|---|---|
 | F10 | 10 bant parametrik EQ, grafikten sürükle, 6 filtre tipi | ✅ | `bta console` | L4–L6 | console, dsp, consoleserver | U30 T-L32 T-U04 |
 | F11 | Uzay: crossfeed (bs2b), stereo genişlik, denge | ✅ | Uzay sekmesi | L4–L6 | console | U31–U35 T-L32 |
-| F12 | 31 hazır tarz (Harman, VLC, AutoEq, EasyEffects kaynaklı + tasarım), kaynaklı ve ölçülmüş | ✅ | Profiller sekmesi | L5 | console, presetfit | U43 |
+| F12 | 32 hazır tarz (Harman, VLC, AutoEq, EasyEffects kaynaklı + tasarım), kaynaklı ve ölçülmüş | ✅ | Profiller sekmesi | L5 | console, presetfit | U43 |
 | F13 | Canlı analizör (1/6 okt, EQ öncesi/sonrası, metre, parça ortalaması) | ✅ | Analiz sekmesi | L4–L6 | analyzer | U44 U45 U46 T-L34 T-L35 |
 | F14 | "Açılışta kullan" — ayar kalıcı config olur, repo kirlenmez | ✅ | üst çubuk | L3–L5 | cli, paths | U49 T-L37 |
 | F15 | Kullanıcı verisi repo dışında (XDG), paylaşılabilir profil (dışa/içe aktar) | ✅ | Profillerim menüsü | L3, L5 | paths, profiles | U40 U41 |

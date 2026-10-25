@@ -10,7 +10,7 @@
 | [`autoctl`](autoctl.md) | APC (otomatik profil) + ADL (canlı uyarlama) karar mantığı | 137 |
 | [`bass`](bass.md) | Bas analizi: eşleştirme → kulakta yanıt → EQ tasarımı (F8) | 93 |
 | [`codecs`](codecs.md) | A2DP codec bayt çözücüleri (AAC/SBC) | 124 |
-| [`console`](console.md) | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları | 674 |
+| [`console`](console.md) | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları | 689 |
 | [`dsp`](dsp.md) | RBJ biquad katsayıları + frekans yanıtı (numpy) | 72 |
 | [`eqconf`](eqconf.md) | EQ tasarımı → filter-chain config metni | 89 |
 | [`features`](features.md) | Müzik karakteri öznitelikleri (bölge fazlası, karakter etiketleri) | 50 |
@@ -63,4 +63,4 @@
 
 | modül | rol | satır |
 |---|---|---|
-| [`cli`](cli.md) | `bta` komutları (durum, kurulum, konsol, ölçümler, model) | 837 |
+| [`cli`](cli.md) | `bta` komutları (durum, kurulum, konsol, ölçümler, model) | 857 |

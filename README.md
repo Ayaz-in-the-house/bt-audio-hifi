@@ -6,7 +6,7 @@
 
 Tools that make a **Bluetooth headphone** on Linux (Fedora 44 · PipeWire 1.6.8 · WirePlumber 0.5.14) sound its best —
 measurably and reversibly: stay on the high-quality profile, measure codecs, a **professional EQ console** (10 bands you
-drag on the graph, spatial controls, 31 presets, live analyzer), **working copies saved the moment you touch a control**
+drag on the graph, spatial controls, 32 presets, live analyzer), **working copies saved the moment you touch a control**
 (undo/redo), an **auto mode that recognises the music and picks the setting itself**, and an admin page.
 
 Reference device: Solix Nexus ANC (TWS, AAC/SBC). It works with other Bluetooth headphones too; speaker/HDMI/USB outputs
@@ -36,6 +36,10 @@ bin/bta console                # ⭐ console — opens in the browser (127.0.0.1
 bin/bta model fetch            # (optional) local genre classifier for auto mode (YAMNet, sha256-pinned)
 ```
 
+A fresh install starts with the **Hi-fi balanced + space** preset (second after *Neutral*): a measured, moderate bass shelf
+(+6 dB below 105 Hz, Harman over-ear amount), gentle bs2b crossfeed and 10 % extra width, loudness +6 dB to offset the
+preamp. Pick *Neutral* for no processing at all.
+
 Requires: Python 3.11+, numpy, scipy · onnxruntime for auto mode · playwright for the tests.
 
 ## What it does
@@ -44,7 +48,7 @@ Requires: Python 3.11+, numpy, scipy · onnxruntime for auto mode · playwright 
 |---|---|---|
 | 🎧 | Headphone always on A2DP (high quality); an app opening the microphone does not drop audio to mono 16 kHz | automatic |
 | 📡 | Codec measurement (AAC / SBC), link health, blind ABX listening test | `bta bench` · `bta link-test` · `bta abx` |
-| 🎛️ | 10-band parametric EQ (drag on the graph), crossfeed, width, balance, 31 sourced presets | console |
+| 🎛️ | 10-band parametric EQ (drag on the graph), crossfeed, width, balance, 32 sourced presets | console |
 | 📈 | Live analyzer: 1/6-octave spectrum before/after EQ, meters, track average | Analysis tab |
 | 💾 | First touch creates a "Custom N" working copy — the base profiles never change; every change is saved instantly (< 1 ms), with undo/redo | automatic |
 | 🔇 | Click-free parameter changes (A/B chain crossfade) | automatic |

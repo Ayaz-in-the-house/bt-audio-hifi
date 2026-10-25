@@ -460,6 +460,25 @@ def _latest_console_state():
     return json.load(open(files[-1])) if files else None
 
 
+def _initial_state():
+    """(durum, ilk_kurulum): kurulu konsol durumu > eski bas ayarı > U80 önerilen varsayılan (hiç durum yoksa)."""
+    from . import console
+    st = _latest_console_state()
+    if st:
+        return console.sanitize(st), False
+    if _latest_tuned()[0]:
+        return _migrate_bass_state(), False
+    return console.recommended_state(), True
+
+
+def _seed_first_run_loud(fresh, path=None):
+    """U80: ilk kurulumda ses yükseltme önerilen değerle başlar; var olan ayar ya da var olan kurulum ezilmez."""
+    from . import console
+    path = path or console.loud_path()
+    if fresh and not os.path.exists(path):
+        console.save_loud_db(console.RECOMMENDED_LOUD_DB, path)
+
+
 def _migrate_bass_state():
     """Eski 3-bant bas ayarını (bass-tune) konsol bantlarına taşı — ses aynı kalsın."""
     from . import console
@@ -574,7 +593,8 @@ def cmd_console(args):
     mig = paths.migrate(collect.REPO)                     # C0: eski repo-içi kullanıcı verisini KOPYALA (idempotent)
     if mig["copied"]:
         print("taşındı (kopya):", *mig["copied"], sep="\n  ")
-    state = _latest_console_state() or _migrate_bass_state()
+    state, fresh = _initial_state()
+    _seed_first_run_loud(fresh)
     init = _opt(args, "--initial", None)                 # sürüm geçişinde canlı sesi koru (sunucu yeniden başlatma)
     if init:
         state = console.sanitize(json.load(open(init)))
