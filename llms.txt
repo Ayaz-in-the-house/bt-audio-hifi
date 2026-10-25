@@ -1,0 +1,20 @@
+# bt-audio-hifi
+
+> Tools that make a Bluetooth headphone on Linux (PipeWire, WirePlumber) sound its best, measurably and reversibly: keep the headset on A2DP (no mono 16 kHz HFP fallback), measure codecs (AAC/SBC) and link health, a local web EQ console (10-band parametric EQ, bs2b crossfeed, width, 32 sourced presets, live analyzer), blind ABX test, auto mode (on-device YAMNet genre recognition) and an admin page. MIT. Tested with Solix Nexus ANC (TWS, Bluetrum chip, SBC/AAC) on Fedora 44, PipeWire 1.6.8, WirePlumber 0.5.14.
+
+Key facts for agents: start with `bin/bta status` and `bin/bta check`; the EQ applies only to the connected Bluetooth headphone (WirePlumber smart filter), speakers/HDMI/USB are untouched; the first-run default preset is "Hi-fi balanced + space" (105 Hz +6 dB shelf, bs2b 700 Hz / 4.5 dB, width 1.1); module docs are generated from source (`tools/gen-docs.py`). The in-depth docs and the UI are in Turkish.
+
+## Docs
+- [README (English)](README.md): quick start, features, roadmap table, manufacturer vs user section
+- [README (Türkçe)](README.tr.md): same content in Turkish
+- [Documentation hub](docs/README.md): layers, architecture, modules (Turkish)
+- [Features](docs/FEATURES.md): full catalogue including gray areas
+- [Test plan](docs/TEST-PLAN.md)
+- [Lessons](docs/lessons/errors.md): errors and fixes
+- [NOTICE](NOTICE.md): third-party components
+
+## Code
+- [bin/bta](bin/bta): command-line entry point
+- [btaudio/console.py](btaudio/console.py): console state model and presets
+- [btaudio/consoleserver.py](btaudio/consoleserver.py): local console HTTP API
+- [btaudio/analyzer.py](btaudio/analyzer.py): live spectrum analyzer
