@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/icon.svg" width="96" alt="bt-audio-hifi"></p>
+
 # bt-audio-hifi
 
 Linux'ta (Fedora 44 · PipeWire 1.6.8 · WirePlumber 0.5.14) bir **Bluetooth kulaklığın** sesini ölçülebilir, geri
@@ -9,6 +11,16 @@ Referans cihaz: Solix Nexus ANC (TWS, AAC/SBC). Başka Bluetooth kulaklıklarla 
 bilerek dokunmaz ([neden](docs/USER-DECISIONS.md#0-önce-kısa-cevap-bu-proje-tüm-çıkış-aygıtlarını-yönetir-mi)).
 
 **Lisans: [MIT](LICENSE)** — herkes kullanabilir, değiştirebilir, dağıtabilir. Üçüncü taraf bileşenler: [NOTICE](NOTICE.md).
+
+## Ekran görüntüleri
+
+![Ses konsolu: grafikten sürüklemeli EQ, canlı analizör, hazır tarzlar](analysis/ui/console-v2-dark-1440.png)
+
+| Kör dinleme testi (AAC ↔ SBC) | Yönetim: profiller, sürüm geçmişi, otomasyon |
+|---|---|
+| ![Kör dinleme testi](analysis/ui/abx-trial-dark.png) | ![Yönetim sayfası](analysis/ui/admin-dark-1440.png) |
+
+<img src="analysis/ui/console-v2-mobile-390.png" width="260" alt="Telefonda konsol">
 
 ## Hızlı başlangıç
 
