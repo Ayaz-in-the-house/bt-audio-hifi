@@ -79,7 +79,7 @@ Cost and gain are estimates; not measured on this headphone.
 | Tune the default internal EQ to a known target (e.g. Harman in-ear) | Firmware only — **zero** parts cost | **Biggest gain:** balanced sound without the user doing anything |
 | Publish factory measurements | **Zero** — already measured on the production line | The community builds an accurate correction per headphone (databases like AutoEq) |
 | Allow AAC at a higher, constant bitrate (e.g. 256–320 kbps CBR) and a high SBC bitpool | Firmware setting only | High-frequency cutoff lifted, transport reaches AirPods level |
-| Ship several ear-tip sizes (foam if needed) in the box | A few cents | Better seal: bass and isolation consistent from ear to ear |
+| Add foam tips next to the silicone tips already in the box, and state which size is fitted at the factory | A few cents | Better seal: bass and isolation consistent from ear to ear |
 | Document the control protocol | Writing a document | ANC/EQ adjustable from any platform; users without the app are not left out |
 | If a hidden limiter/compression is used, document it or make it switchable | Firmware only | Dynamic range preserved, the user's EQ behaves predictably |
 | Firmware updates that also work from Linux | Software work | Fixes and improvements reach every user |
