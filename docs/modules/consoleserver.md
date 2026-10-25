@@ -84,7 +84,7 @@ HTTP hata kodu taşıyan API istisnası.
 
 - [`tests/live/test_live_auto.py`](../../tests/live/test_live_auto.py) — T-L39, T-L40, T-L41, T-L42, U62
 - [`tests/test_admin.py`](../../tests/test_admin.py) — U63
-- [`tests/test_analyzer.py`](../../tests/test_analyzer.py) — T-L40, U44, U46
+- [`tests/test_analyzer.py`](../../tests/test_analyzer.py) — T-L40, U44, U46, U81
 - [`tests/test_autoengine.py`](../../tests/test_autoengine.py) — U58, U59, U60, U73
 - [`tests/test_loud_limiter.py`](../../tests/test_loud_limiter.py) — U77, U78
 - [`tests/test_profiles.py`](../../tests/test_profiles.py) — U41, U42

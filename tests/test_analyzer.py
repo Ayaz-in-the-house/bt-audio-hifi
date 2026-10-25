@@ -240,3 +240,43 @@ class TestLifecycle(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FakePw:
+    """pw-link yerine: port listeleri zamanla belirir; bağlantılar kaydedilir (gerçek grafa dokunulmaz)."""
+    def __init__(self, src_after=0, dst_after=0, drop=False):
+        self.calls, self.links, self.src_after, self.dst_after, self.drop = 0, set(), src_after, dst_after, drop
+
+    def __call__(self, args):
+        self.calls += 1
+        if args[1:] == ["-o"]:
+            return "\n".join(["eff:monitor_FL", "eff:monitor_FR"] if self.calls > self.src_after else []) + "\n"
+        if args[1:] == ["-i"]:
+            return "\n".join(["tap:input_FL", "tap:input_FR"] if self.calls > self.dst_after else []) + "\n"
+        if args[1:] == ["-l"]:
+            return "\n".join(f"{s}\n  |-> {d}" for s, d in sorted(self.links)) + "\n"
+        if not self.drop:
+            self.links.add((args[1], args[2]))
+        return ""
+
+
+class TestLinkHeal(unittest.TestCase):
+    """U81: analizör dokunuşu kaynak portlar GEÇ belirse de bağlanır, bağlantı DOĞRULANIR, kopuk bağlantı abonede onarılır.
+    Ölçülen olay (10-25): konsol yeniden başlatıldıktan sonra kayıt düğümleri vardı ama hiçbir bağlantı yoktu →
+    panel 'idle', müzik çalarken spektrum boş; elle pw-link ile kare geldi."""
+    SRC = ["eff:monitor_FL", "eff:monitor_FR"]
+
+    def test_u81_links_when_ports_appear_late_and_verifies(self):
+        pw = FakePw(src_after=40)                          # eski 5 sn sınırını aşan gecikme (0,1 sn adımla ~4 sn+)
+        self.assertTrue(analyzer._link(self.SRC, "tap", timeout=5.0, run=pw, sleep=lambda s: None))
+        self.assertEqual(pw.links, {("eff:monitor_FL", "tap:input_FL"), ("eff:monitor_FR", "tap:input_FR")})
+
+    def test_u81_unverified_link_is_reported_as_failure(self):
+        pw = FakePw(drop=True)                             # pw-link sessizce başarısız: bağlantı oluşmadı
+        self.assertFalse(analyzer._link(self.SRC, "tap", timeout=0.5, run=pw, sleep=lambda s: None, clock=iter(range(10**6)).__next__))
+
+    def test_u81_linked_check(self):
+        pw = FakePw()
+        self.assertFalse(analyzer._linked(self.SRC, "tap", run=pw))
+        pw.links |= {("eff:monitor_FL", "tap:input_FL"), ("eff:monitor_FR", "tap:input_FR")}
+        self.assertTrue(analyzer._linked(self.SRC, "tap", run=pw))

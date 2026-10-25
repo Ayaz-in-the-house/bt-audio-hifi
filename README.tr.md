@@ -14,6 +14,33 @@ bilerek dokunmaz ([neden](docs/USER-DECISIONS.md#0-önce-kısa-cevap-bu-proje-t�
 
 **Lisans: [MIT](LICENSE)** — herkes kullanabilir, değiştirebilir, dağıtabilir. Üçüncü taraf bileşenler: [NOTICE](NOTICE.md).
 
+## Yol haritası — ne yapılırsa nereye ulaşılır
+
+Yazılım tarafı (L2'nin üst kısmı ile L3–L6) sınıflarıyla ve durumlarıyla çıkarıldı. Kulaklığın içi (çip, DSP, DAC, ANC, TWS) ve radyo/protokol yığınının alt katmanları ise henüz ayrıştırılmadı — "donanımın potansiyelini tam kullanıyor muyuz" sorusunun cevabı en çok orada. Tablodaki kazançlar **beklentidir, ölçülmüş sonuç değildir**.
+
+| katman | bugün bilinen (yapıldı) | yapılmadı · test edilmedi · bilinmiyor | yapılınca nereye ulaşılır | nasıl / kaynak |
+|---|---|---|---|---|
+| **L1a** akustik ve sürücü | Bas Harman hedefine yaklaştırıldı (105 Hz raf) | Kulaklığın frekans yanıtı ölçülmedi; bu modelin bilinen bir ölçümü yok. Orta ve tize hiç dokunulmuyor | **En büyük kazanç ihtimali:** her frekans hedefe çekilir — tüm frekansları düzgün duymak | Ucuz ölçüm mikrofonu + basit düzenek; ölçüm → parametrik EQ |
+| **L1b** çip, firmware, DSP, DAC, amfi, ANC | Çip üreticisi belirlendi (Bluetrum, LMP'den); servis kanalı (SPP) bulundu, dinlemede 0 bayt | İç DSP zinciri, kendi ses limiti, firmware sürümü, iç EQ/bas takviyesi/sınırlayıcı var mı — bilinmiyor. Ayrı katman olarak hiç yazılmadı | İç işlem varsa bizim EQ ile üst üste binmesi önlenir, iki katman birlikte ayarlanır; belki ANC modu / iç EQ Linux'tan değiştirilir | Bluetrum SDK belgeleri ve kılavuzları; **önce yalnız okuma** — komut göndermek cihazı bozabilir |
+| **L1c** TWS (iki kulaklık arası aktarım) | — | Hiç incelenmedi: ses ana tekliğe mi gidiyor, öbürüne nasıl aktarılıyor, gecikme ve kayıp | Kaliteden çok güvenilirlik: ~40 sn yeniden bağlanma beklemesi, teklikler arası gecikme, takılmalar | Bluetooth çekirdek spesifikasyonu + cihaz üzerinde ölçüm |
+| **L2a** radyo ve LMP | AX210 adaptör, BlueZ 5.87, profil ve kopma davranışı | Radyo kaydı (btmon) hiç alınmadı (sudo gerekir); Wi-Fi ile çakışma ölçülmedi | SBC-XQ'nun neden paket kaybettiği görülür (sinyal mi, Wi-Fi mi); düzeltilebilirse SBC-XQ yeniden aday | `sudo bash tools/btmon-capture.sh 60` → `bta btmon-report` |
+| **L2b** L2CAP ve AVDTP | Bağlantı kuruluyor, akış çalışıyor | Protokol durum makineleri belgelenmedi; MTU / paket boyutu / gecikme ölçülmedi | Takılma ve gecikmenin kaynağı ayrıştırılır | Bluetooth çekirdek spesifikasyonu + btmon kaydı |
+| **L2c** A2DP ve codec | **Güçlü:** AAC ve SBC bayt bayt çözüldü, SBC-XQ ölçülüp elendi, kalite karşılaştırıldı; AAC ~17 kHz'de kesiyor | AAC ↔ SBC kararı kör ABX testini bekliyor; AAC'yi daha yüksek bit hızına zorlamak denenmedi | Codec seçimi kulağa göre verilir; belki AAC'nin üst frekans kesimi kalkar | `bta abx` (kör test, konsolda) |
+| **L3–L6** Linux, PipeWire, bta, arayüz | **Ayrıntılı:** süreçler, graf, resampler, API, durum geçişleri | Küçük gri alanlar ([FEATURES](docs/FEATURES.md)) | — | `docs/layers/` |
+
+**Aşılamayacak tavan.** Kulaklık yalnız SBC ve AAC destekliyor; LDAC/aptX hiçbir yazılımla gelmez. Aktarımın tavanı AirPods düzeyidir (AirPods da AAC kullanır); ötesi sürücünün fiziğidir. Gerçekçi hedef: AirPods kalitesinde aktarım + bu kulaklığa özel ölçülmüş düzeltme — pahalı kulaklıklara kulakla yaklaşabilir, fiziği değiştiremez.
+
+**Açık kaynak tarafı.** Ucuz TWS kulaklıkların büyük kısmı Bluetrum çipli. Ölçüm yöntemi ve araçlar katman katman belgelenirse proje "bir kulaklığın ayarı" olmaktan çıkar, aynı sınıftaki başka kulaklık sahiplerinin de kullanabileceği bir yönteme dönüşür.
+
+**Plan:** L1 ve L2 ayrı katmanlara bölünür, her biri aynı şablonla (seçenekler · durumlar · değişkenler · ölçüm yöntemi) doldurulur. Önerilen sıra: L1a (ölçüm) → L1b (salt okuma) → L2a (radyo kaydı).
+
+- [ ] **L1a** akustik ve sürücü
+- [ ] **L1b** çip, firmware, DSP, DAC, amfi ve ANC — en çok bilinmeyen burada
+- [ ] **L1c** TWS aktarımı
+- [ ] **L2a** radyo ve LMP
+- [ ] **L2b** L2CAP ve AVDTP
+- [ ] **L2c** A2DP ve codec
+
 ## Ekran görüntüleri
 
 ![Ses konsolu: grafikten sürüklemeli EQ, canlı analizör, hazır tarzlar](analysis/ui/console-v2-dark-1440.png)
@@ -91,31 +118,3 @@ wpctl settings --save bluetooth.autoswitch-to-headset-profile true
 tests/run.sh            # birim + tarayıcı (başsız, ses çıkmaz)
 tests/run.sh --live     # + canlı/headful (gerçek PipeWire; ölçümler null sink'te, kulaklığa ton karıştırmaz)
 ```
-
-
-## Yol haritası — henüz incelenmemiş katmanlar
-
-Yazılım tarafı (L2'nin üst kısmı ile L3–L6) sınıflarıyla ve durumlarıyla çıkarıldı. Ama kulaklığın içi (çip, DSP, DAC,
-ANC, TWS) ve radyo/protokol yığınının alt katmanları ayrıştırılmadı. "Donanım potansiyelini tam kullanıyor muyuz"
-sorusunun cevabı da en çok orada; örneğin kulaklığın kendi içinde EQ ya da limiter uygulayıp uygulamadığını bilmiyoruz.
-
-| katman | bilinen | eksik |
-|---|---|---|
-| Akustik / sürücü | — | Ayrı bir katman olarak incelenmedi. |
-| Çip / mikrodenetleyici / DSP | Üretici belirlendi (Bluetrum, LMP'den) | İç DSP zinciri, kendi ses limiti, firmware sürümü. Ayrı bir katman olarak hiç yazılmadı, L1'in içinde iki satır kalıyor. |
-| TWS (iki kulaklık arası aktarım) | — | Hiç incelenmedi: ses ana tekliğe mi gidiyor, öbürüne nasıl aktarılıyor, gecikme ve kayıp. |
-| Bluetooth radyo / protokol yığını (radyo katmanı, LMP, L2CAP, AVDTP) | AX210 adaptör, BlueZ 5.87, profil ve kopma davranışı | Radyo kaydı (btmon) hiç alınmadı; sudo gerektiriyor. Wi-Fi ile çakışma ölçülmedi. Protokol durum makineleri belgelenmedi. |
-| A2DP / codec | Güçlü: AAC ve SBC bayt bayt çözüldü, SBC-XQ ölçülüp elendi, kalite karşılaştırması yapıldı | AAC ↔ SBC kararı kör ABX testini bekliyor. |
-| Linux / PipeWire / bta / arayüz (L3–L6) | Ayrıntılı: süreçler, graf, resampler, API, durum geçişleri | Küçük gri alanlar. |
-
-Plan: L1 ve L2'yi ayrı katmanlara bölüp her birini aynı şablonla (seçenekler, durumlar, değişkenler, ölçüm yöntemi) doldurmak:
-
-- [ ] **L1a** akustik ve sürücü
-- [ ] **L1b** çip, firmware, DSP, DAC, amfi ve ANC — buradan başlanacak, en çok bilinmeyen burada
-- [ ] **L1c** TWS aktarımı
-- [ ] **L2a** radyo ve LMP
-- [ ] **L2b** L2CAP ve AVDTP
-- [ ] **L2c** A2DP ve codec
-
-Kaynaklar: çip üreticisinin SDK belgeleri ve kılavuzları, Bluetooth çekirdek spesifikasyonu ve cihaz üzerindeki ölçümler.
-Radyo kaydı için bir kez root komutu gerekir (`sudo bash tools/btmon-capture.sh 60`, ardından `bta btmon-report`).

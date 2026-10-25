@@ -34,7 +34,7 @@
 
 | modül | rol | satır |
 |---|---|---|
-| [`analyzer`](analyzer.md) | Canlı analizör: pw-record dokunuşları, 1/6 okt spektrum, metre, SSE, hafif mod | 450 |
+| [`analyzer`](analyzer.md) | Canlı analizör: pw-record dokunuşları, 1/6 okt spektrum, metre, SSE, hafif mod | 477 |
 | [`bench`](bench.md) | Encoder benchmark (fdk-aac / libsbc) | 175 |
 | [`btmon`](btmon.md) | btmon/RSSI kaydı ayrıştırma (root kaydı kullanıcıdan) | 73 |
 | [`classifier`](classifier.md) | YAMNet ONNX tür/enstrüman sınıflayıcı (sha256 kilitli, yerel) | 118 |

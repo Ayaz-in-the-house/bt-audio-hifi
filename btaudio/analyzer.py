@@ -141,16 +141,36 @@ def pw_record_cmd(node_name: str) -> list:
     return ["pw-record", "--raw", "--format", "f32", "--rate", str(FS), "--channels", "2", "-P", props, "-"]
 
 
-def _link(src_ports, node_name, timeout=5.0):
-    """Kayıt düğümünün giriş portları görünene dek bekle, sonra kaynak portlara ELLE bağla (R17)."""
-    t0 = time.time()
-    while time.time() - t0 < timeout:
-        out = subprocess.run(["pw-link", "-i"], capture_output=True, text=True, timeout=5).stdout
-        if f"{node_name}:input_FL" in out and f"{node_name}:input_FR" in out:
-            for src, ch in zip(src_ports, ("FL", "FR")):
-                subprocess.run(["pw-link", src, f"{node_name}:input_{ch}"], capture_output=True, timeout=5)
-            return True
-        time.sleep(0.1)
+def _pw(args):
+    return subprocess.run(args, capture_output=True, text=True, timeout=5).stdout
+
+
+def _linked(src_ports, node_name, run=_pw):
+    """Her kaynak port kayıt düğümünün aynı kanalına GERÇEKTEN bağlı mı (`pw-link -l` çıktısından)."""
+    have, cur = set(), None
+    for ln in run(["pw-link", "-l"]).splitlines():
+        s = ln.strip()
+        if not ln.startswith((" ", "\t")):
+            cur = s
+        elif s.startswith("|->") and cur:
+            have.add((cur, s[3:].strip()))
+    return all((src, f"{node_name}:input_{ch}") in have for src, ch in zip(src_ports, ("FL", "FR")))
+
+
+def _link(src_ports, node_name, timeout=30.0, run=_pw, sleep=time.sleep, clock=time.monotonic):
+    """Kaynak VE kayıt portları görünene dek bekle, ELLE bağla (R17), bağlantıyı doğrula (U81).
+    Eski sürüm yalnız kayıt portlarını 5 sn bekliyor ve sonucu doğrulamıyordu → yeniden başlatmadan sonra dokunuş
+    bağlantısız kalabiliyordu (10-25 ölçüldü: panel 'idle', müzik çalarken spektrum boş)."""
+    t0 = clock()
+    dst = [f"{node_name}:input_{ch}" for ch in ("FL", "FR")]
+    while clock() - t0 < timeout:
+        outs, ins = set(run(["pw-link", "-o"]).split()), set(run(["pw-link", "-i"]).split())
+        if all(p in outs for p in src_ports) and all(p in ins for p in dst):
+            for src, d in zip(src_ports, dst):
+                run(["pw-link", src, d])
+            if _linked(src_ports, node_name, run=run):
+                return True
+        sleep(0.2)
     return False
 
 
@@ -207,6 +227,11 @@ class _Tap:
             threading.Thread(target=_link, args=(self.spec["ports"], self.node), daemon=True).start()
         self.thread = threading.Thread(target=self._read, args=(on_frame,), daemon=True)
         self.thread.start()
+
+    def heal(self):
+        """Bağlantı yoksa yeniden kur (idempotent; bağlıysa yalnız tek `pw-link -l` okuması)."""
+        if self.alive() and not _linked(self.spec["ports"], self.node):
+            _link(self.spec["ports"], self.node, timeout=5.0)
 
     def _read(self, on_frame):
         nbytes = HOP * 2 * 4
@@ -306,6 +331,8 @@ class Analyzer:
                 self.taps[n] = t
                 t.start(self._on_frame)
             else:
+                if "ports" in t.spec:                  # U81: canlı dokunuşun bağlantısı koptuysa abonede onar
+                    threading.Thread(target=t.heal, daemon=True).start()
                 if t.light and not light:
                     t.sp = Spectrum(response=self.response)   # tam moda dönüş: eski yarım pencere yok
                 t.light = light
