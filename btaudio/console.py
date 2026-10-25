@@ -30,9 +30,9 @@ W_MIN, W_MAX = 0.0, 1.6
 BS2B_FCUT = (300, 2000)            # bs2b.h BS2B_MINFCUT/MAXFCUT
 BS2B_FEED = (1.0, 15.0)            # bs2b.h BS2B_MINFEED/MAXFEED (dB)
 BS2B_PRESETS = {                   # bs2b.h:56-58
-    "default": {"fcut": 700, "feed": 4.5, "label": "Varsayılan (bs2b)"},
-    "cmoy": {"fcut": 700, "feed": 6.0, "label": "Chu Moy"},
-    "jmeier": {"fcut": 650, "feed": 9.5, "label": "Jan Meier"},
+    "default": {"fcut": 700, "feed": 4.5, "label": "Varsayılan (bs2b)", "label_en": "Default (bs2b)"},
+    "cmoy": {"fcut": 700, "feed": 6.0, "label": "Chu Moy", "label_en": "Chu Moy"},
+    "jmeier": {"fcut": 650, "feed": 9.5, "label": "Jan Meier", "label_en": "Jan Meier"},
 }
 DEFAULT_FREQS = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
 ZERO = {"b0": 0.0, "b1": 0.0, "b2": 0.0, "a0": 1.0, "a1": 0.0, "a2": 0.0}
@@ -414,6 +414,82 @@ PRESETS = {
                         "bands": _bands(), "spatial": {"crossfeed": {"enabled": True, "fcut": 700, "feed": 6.0}, "width": 1.0}},
 }
 
+# U84 arayüz dili: hazır tarzların İngilizce adı/açıklaması/kaynağı. Kimlikler ve TR alanları DEĞİŞMEZ (API sözleşmesi);
+# metin çeviri değil, İngilizce ses ürünü diliyle yeniden yazıldı — terim seçimleri docs/i18n-glossary.md.
+DESIGN_EN = ("Design choice (no single authoritative source). Range boundaries: TeachMeAudio sub 20–60 / bass 60–250 Hz; "
+             "iZotope EQ cheat sheet warmth 120–400 Hz, presence 1–4 kHz, air 8–12 kHz")
+VLC_SRC_EN = ("VLC equalizer_presets.h (LGPL-2.1+) '{n}': 10 bands normalised to 1 kHz, scaled ×0.5 (in-ear + auto preamp), "
+              "parametric fit within 1 dB (btaudio.presetfit)")
+EE_SRC_EN = "JackHack96/EasyEffects-Presets '{n}.json' (MIT): 10 bell bands, values copied as-is"
+NO_OPEN_PRESET_EN = " (no published open preset exists for this genre)"
+PRESETS_EN = {
+    "notr": ("Flat", "No processing. Use it as the reference to compare against.", "—"),
+    "hifi_uzay": ("Balanced hi-fi + soundstage",
+                  "The first-run default: a measured bass lift (+6 dB low shelf below 105 Hz) with light crossfeed (bs2b) "
+                  "and 1.1× stereo width. Balanced top to bottom, and less of that 'music inside your head' feeling.",
+                  "AutoEq targets: 'Harman over-ear 2018' minus 'without bass' = low shelf 105 Hz, Q 0.7, +6.0 dB; "
+                  "bs2b.h BS2B_DEFAULT_CLEVEL 700 Hz / 4.5 dB; width 1.1 (design choice)"),
+    "harman_bas": ("Harman bass (in-ear 2019)",
+                   "The bass part of the Harman in-ear target: a +9 dB low shelf below 105 Hz — the amount of bass "
+                   "listeners preferred most in Harman's in-ear research.",
+                   "AutoEq targets: 'Harman in-ear 2019' minus 'without bass' = low shelf 105 Hz, Q 0.7, +9.0 dB "
+                   "(max error 0.06 dB, verified by running it)"),
+    "harman_oe": ("Harman bass (over-ear 2018)",
+                  "The gentler +6 dB low shelf from the over-ear target. A safe starting point for long sessions.",
+                  "AutoEq targets: 'Harman over-ear 2018' minus 'without bass' = low shelf 105 Hz, Q 0.7, +6.0 dB "
+                  "(max error 0.04 dB)"),
+    "hafif_bas": ("Light bass", "A modest +4 dB low shelf. Vocals stay exactly where they were.", DESIGN_EN),
+    "zengin_bas": ("Rich bass",
+                   "Full, warm, wide bass: a deep low shelf plus body around 200 Hz. The vocal range is left alone, "
+                   "with a touch of air on top.",
+                   DESIGN_EN + ". Shelf corner close to Harman's (105→120 Hz); body sits in iZotope's 'warmth' range"),
+    "derin_sub": ("Deep sub-bass", "Focused below 60 Hz: rumble you feel, without a bloated mid-bass.",
+                  DESIGN_EN + ". Sub = 20–60 Hz (TeachMeAudio); mud cut at 250 Hz (iZotope)"),
+    "vurucu_bas": ("Punchy bass", "Pushes the kick drum forward: 70 Hz peak, 300 Hz mud cut and a 3 kHz attack lift.",
+                   DESIGN_EN + ". Tom fundamental 60–120 Hz / mud 250–600 Hz (iZotope)"),
+    "guclu_bas": ("Heavy bass", "Big, punchy bass for EDM and hip-hop — the strongest bass preset here.", DESIGN_EN),
+    "ee_bass_boosted": ("Bass Boosted (EasyEffects)",
+                        "The popular 'Bass Boosted' curve from the Linux EasyEffects community: extra low end with a "
+                        "little sparkle up top.", EE_SRC_EN.format(n="Bass Boosted")),
+    "elektronik": ("Electronic / Techno", "Strong low end and bright highs, with the mids pulled back.",
+                   VLC_SRC_EN.format(n="Techno")),
+    "dans": ("Dance / Club", "Club-system feel: full bass and smoothed upper mids.", VLC_SRC_EN.format(n="Dance")),
+    "rock": ("Rock", "Sparkle on guitars and cymbals, punch on the drums, less boxiness in the low mids.",
+             VLC_SRC_EN.format(n="Rock")),
+    "pop": ("Pop", "Vocals and low mids forward, both ends slightly back — the radio sound.", VLC_SRC_EN.format(n="Pop")),
+    "hiphop": ("Hip-hop / Rap", "808 sub-bass and clear vocals: strong low end, a clean 400 Hz, and a 3 kHz lift so "
+                                "every word lands.", DESIGN_EN + NO_OPEN_PRESET_EN),
+    "klasik": ("Classical", "Natural timbre with smooth, non-fatiguing treble.", VLC_SRC_EN.format(n="Classical")),
+    "akustik_caz": ("Acoustic / Jazz", "Warmth for upright bass and wooden instrument bodies, more presence, air on the "
+                                       "cymbals.", DESIGN_EN + NO_OPEN_PRESET_EN),
+    "konser": ("Live concert", "Front-row feel: full mids and tight lows, with light crossfeed to open things up.",
+               VLC_SRC_EN.format(n="Live") + " + bs2b default crossfeed"),
+    "parti": ("Party", "Both ends turned up — high energy, all fun.", VLC_SRC_EN.format(n="Party")),
+    "v_sekli": ("V-shaped", "Bass and treble forward, mids slightly back. Lively and fun.", DESIGN_EN),
+    "bas_tiz": ("Bass + treble (VLC)", "A classic 'loudness' curve: both ends emphasised, low mids scooped.",
+                VLC_SRC_EN.format(n="Full bass & treble")),
+    "sicak": ("Warm", "Full low mids and soft treble — easy on the ears for long listening.", DESIGN_EN),
+    "parlak": ("Bright", "More detail and air from a high shelf.", DESIGN_EN),
+    "vokal": ("Vocal clarity", "Brings voices forward: cleaner low mids plus a presence lift.", DESIGN_EN),
+    "ee_boosted": ("Lively (EasyEffects Boosted)",
+                   "The EasyEffects community 'Boosted' curve: more low end and 4 kHz presence.",
+                   EE_SRC_EN.format(n="Boosted")),
+    "konusma": ("Speech / podcast", "Clearer speech, with rumble and sibilance tamed.", DESIGN_EN),
+    "gece": ("Night / low volume", "Makes up for the bass and treble your ears lose at low volume (loudness compensation).",
+             "ISO 226:2003 equal-loudness contours: at low listening levels bass and treble need more SPL "
+             "(btaudio.loudness)"),
+    "film": ("Movies / TV", "Low end for explosions, clearer dialogue and a wider soundstage.",
+             DESIGN_EN + " + bs2b default crossfeed"),
+    "oyun": ("Gaming (footsteps)", "Footsteps and positional cues forward (2–5 kHz), explosion rumble pulled back.",
+             DESIGN_EN + " (no measurement-based gaming EQ source found — research note R30)"),
+    "sahne": ("Wide soundstage", "Crossfeed (bs2b) plus a little extra width: less of that 'inside your head' feeling.",
+              "bs2b.h BS2B_DEFAULT_CLEVEL 700 Hz / 4.5 dB + width 1.15 (design choice)"),
+    "studyo": ("Studio monitors", "Like sitting in front of a pair of speakers: strong crossfeed (Jan Meier), no EQ.",
+               "bs2b.h BS2B_JMEIER_CLEVEL 650 Hz / 9.5 dB"),
+    "dogal_crossfeed": ("Natural crossfeed", "Moderate crossfeed (Chu Moy) that cuts listening fatigue on long sessions.",
+                        "bs2b.h BS2B_CMOY_CLEVEL 700 Hz / 6.0 dB"),
+}
+
 PREVIEW_F = [round(f, 1) for f in np.geomspace(20, 20000, 48)]
 
 
@@ -421,7 +497,7 @@ _CATALOG = None
 
 
 def preset_catalog() -> dict:
-    """Arayüz için: meta + küçük önizleme eğrisi (EQ, preamp hariç). Hazır tarzlar koddadır → bir kez hesaplanır."""
+    """Arayüz için: meta (TR + `*_en` İngilizce, U84) + küçük önizleme eğrisi (EQ, preamp hariç). Hazır tarzlar koddadır → bir kez hesaplanır."""
     global _CATALOG
     if _CATALOG is not None:
         return _CATALOG
@@ -430,6 +506,7 @@ def preset_catalog() -> dict:
         prev = dsp.response_db([b for b in p["bands"] if b["enabled"]], PREVIEW_F) if any(b["enabled"] for b in p["bands"]) \
             else [0.0] * len(PREVIEW_F)
         out[pid] = {k: p[k] for k in ("label", "group", "desc", "source", "kind", "tags")}
+        out[pid]["label_en"], out[pid]["desc_en"], out[pid]["source_en"] = PRESETS_EN[pid]
         out[pid]["spatial"] = "spatial" in p
         out[pid]["preview"] = [round(v, 2) for v in prev]
     _CATALOG = out
@@ -627,8 +704,12 @@ def _db1(v):
     return f"{v:+.1f}".replace(".", ",")                 # Türkçe ondalık (metnin geri kalanına dokunmadan)
 
 
+def _db1_en(v):
+    return f"{v:+.1f}"
+
+
 def protection_warnings(state: dict, codec: str | None = None) -> list:
-    """Uyarılar: [{code, level: warn|info, text}]. Girdi = SESE GİDEN durum (ADL katmanı dahil)."""
+    """Uyarılar: [{code, level: warn|info, text, text_en}] (U85: TR + İngilizce). Girdi = SESE GİDEN durum (ADL katmanı dahil)."""
     import numpy as np
     on = [b for b in state.get("bands", []) if b.get("enabled")]
     if not on:
@@ -639,12 +720,17 @@ def protection_warnings(state: dict, codec: str | None = None) -> list:
         out.append({"code": "bass_high", "level": "warn",
                     "text": f"Bas takviyesi {_db1(max(lo))} dB (20–100 Hz). Yüksek seste 12 mm sürücü zorlanabilir, "
                             "bozulma (distorsiyon) duyulursa sesi ya da bası kıs. Harman araştırması: bas sevenler "
-                            "hedefe +4–6 dB ekler (R38)."})
+                            "hedefe +4–6 dB ekler (R38).",
+                    "text_en": f"Bass boost is {_db1_en(max(lo))} dB (20–100 Hz). Loud playback can push a 12 mm driver too "
+                               "hard — if you hear distortion, turn down the volume or the bass. Harman research: bass "
+                               "lovers add +4–6 dB on top of the target (R38)."})
     infra = dsp.response_db(on, list(np.geomspace(10, 20, 8)))
     if max(infra) > INFRA_WARN_DB:
         out.append({"code": "sub_infra", "level": "warn",
                     "text": f"20 Hz altı {_db1(max(infra))} dB yükseltiliyor: kulak duymaz, yalnız sürücü yorulur. "
-                            "Bas rafının frekansını 30 Hz üstüne al."})
+                            "Bas rafının frekansını 30 Hz üstüne al.",
+                    "text_en": f"Boosting {_db1_en(max(infra))} dB below 20 Hz: you can't hear it, it only adds driver "
+                               "excursion. Move the bass shelf above 30 Hz."})
     if (codec or "").lower() == "aac":
         hf = dsp.response_db(on, list(np.geomspace(17000, 20000, 10)))
         if max(hf) > HF_AAC_DB:
@@ -652,7 +738,10 @@ def protection_warnings(state: dict, codec: str | None = None) -> list:
             out.append({"code": "hf_aac", "level": "info",
                         "text": f"17 kHz üstü {_db1(max(hf))} dB: AAC bağlantısı bu bölgeyi zaten kesiyor (duyulmaz), "
                                 f"ama kırpılmayı önleyen preamp tüm sesi {_db1(abs(pa))[1:]} dB kısıyor. Tizi 12–16 kHz'e çekersen "
-                                "ses daha yüksek ve aynı parlaklıkta olur."})
+                                "ses daha yüksek ve aynı parlaklıkta olur.",
+                        "text_en": f"{_db1_en(max(hf))} dB above 17 kHz: the AAC link already cuts this range, so you won't "
+                                   f"hear it — but the anti-clipping preamp turns everything down by {_db1_en(abs(pa))[1:]} dB. "
+                                   "Move the treble boost to 12–16 kHz for the same brightness at a higher level."})
     return out
 
 

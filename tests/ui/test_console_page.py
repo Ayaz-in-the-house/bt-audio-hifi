@@ -58,7 +58,7 @@ class TestConsolePage(unittest.TestCase):
         sess, errors = self.sess, []
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, executable_path=CHROME)
-            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, accept_downloads=True, color_scheme="dark",
+            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, accept_downloads=True, color_scheme="dark", locale="tr-TR",
                                 bypass_csp=True)   # CSP üretimde eval yasaklar; Playwright wait_for_function eval kullanır
             pg = ctx.new_page()
             pg.on("pageerror", lambda e: errors.append(str(e)))
@@ -111,7 +111,7 @@ class TestConsolePage(unittest.TestCase):
             self.assertEqual(sess.store.list()[0]["notes"], "orta boy kulak ucu")
             self.assertEqual((sess.active["kind"], sess.active["locked"], sess.dirty()), ("profile", True, False))
             self.assertTrue(pg.locator("#b-save-over").is_hidden())
-            pg.screenshot(path=os.path.join(UI, "console-v2-dark-1440.png"), full_page=True)
+            pg.screenshot(path=os.path.join(UI, "console-v2-dark-1440-tr.png"), full_page=True)
 
             # ── klavye: ana profilde ↑↑ → Özel 2 (ana DEĞİŞMEZ) → "ana profile uygula" ──
             g0 = sess.state["bands"][0]["gain"]
@@ -239,7 +239,7 @@ class TestConsolePage(unittest.TestCase):
             m.goto(self.url)
             m.wait_for_selector("#pgrid .pcard")
             self.assertLessEqual(m.evaluate("document.scrollingElement.scrollWidth"), 390)   # yatay taşma yok
-            m.screenshot(path=os.path.join(UI, "console-v2-mobile-390.png"), full_page=True)
+            m.screenshot(path=os.path.join(UI, "console-v2-mobile-390-tr.png"), full_page=True)
             m.close()
             b.close()
         # tek beklenen kayıt: çakışma akışının BİLEREK tetiklediği 409 (Chrome ağ günlüğü). JS hatası yok.

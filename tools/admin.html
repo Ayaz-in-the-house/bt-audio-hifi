@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<title>Ses Konsolu — Yönetim</title>
+<title data-i18n="a.title">Ses Konsolu — Yönetim</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316181d'/%3E%3Cpath d='M4 20c5 0 6-10 12-10s7 10 12 10' fill='none' stroke='%23f0b43c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<script src="/i18n/i18n.js"></script>
 <style>
 /* Tasarım sözleşmesi: docs/DESIGN.md — konsolla AYNI belirteçler (tek vurgu amber, OKLCH, 4 px ızgara). */
 :root {
@@ -81,6 +82,11 @@ td .n { font-weight: 600; }
 .kv { display: grid; grid-template-columns: 140px 1fr; gap: 4px 10px; font-size: 13px; }
 .kv dt { color: var(--text-2); } .kv dd { margin: 0; }
 .empty { color: var(--text-2); font-size: 13px; padding: 8px 0; }
+.i18n-wait body { visibility: hidden; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-c); overflow: hidden; }
+.lang button { height: 28px; min-width: 32px; padding: 0 6px; border: 0; background: transparent; color: var(--text-2); font-size: 12px; font-weight: 600; }
+.lang button + button { border-left: 1px solid var(--line); }
+.lang button[aria-pressed="true"] { background: var(--s3); color: var(--text); }
 #toasts { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); display: grid; gap: 8px; z-index: 60; width: min(520px, calc(100vw - 32px)); }
 .toast { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: var(--r-c); background: var(--s3); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .toast.err { border-color: var(--bad); }
@@ -89,47 +95,48 @@ td .n { font-weight: 600; }
 <body>
 <header class="top">
   <div class="topbar">
-    <a class="btn ghost" href="/" id="back">← Konsol</a>
-    <h1>Yönetim</h1>
+    <a class="btn ghost" href="/" id="back" data-i18n="a.back">← Konsol</a>
+    <h1 data-i18n="a.h1">Yönetim</h1>
     <span class="grow"></span>
-    <a class="btn" id="b-export-all" href="/api/admin/export-all" download="bta-profiller.json">Tüm profilleri dışa aktar</a>
-    <button class="btn" id="b-import">Paket içe aktar…</button>
+    <a class="btn" id="b-export-all" href="/api/admin/export-all" download="bta-profiller.json" data-i18n="a.export_all">Tüm profilleri dışa aktar</a>
+    <button class="btn" id="b-import" data-i18n="a.import">Paket içe aktar…</button>
     <input type="file" id="f-import" accept="application/json,.json" hidden>
-    <button class="btn ghost" id="b-theme" aria-label="Tema">Tema</button>
+    <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" lang="tr" title="Türkçe">TR</button><button type="button" data-lang="en" lang="en" title="English">EN</button></div>
+    <button class="btn ghost" id="b-theme" aria-label="Tema" data-i18n-aria-label="a.theme" data-i18n="a.theme">Tema</button>
   </div>
 </header>
 
 <main>
   <div class="col">
     <section class="panel" aria-labelledby="h-prof">
-      <h2 id="h-prof">Profiller</h2>
+      <h2 id="h-prof" data-i18n="a.profiles">Profiller</h2>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>Ad</th><th>Durum</th><th>Tür</th><th class="num">Sürüm</th><th class="num c-size">Boyut</th><th class="c-upd">Güncellendi</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="a.th_name">Ad</th><th data-i18n="a.th_state">Durum</th><th data-i18n="a.th_genre">Tür</th><th class="num" data-i18n="a.th_versions">Sürüm</th><th class="num c-size" data-i18n="a.th_size">Boyut</th><th class="c-upd" data-i18n="a.th_updated">Güncellendi</th><th></th></tr></thead>
         <tbody id="ptbl"></tbody>
       </table></div>
       <p class="hint" id="pdir"></p>
     </section>
     <section class="panel" aria-labelledby="h-trash">
-      <h2 id="h-trash">Çöp kutusu</h2>
+      <h2 id="h-trash" data-i18n="a.trash">Çöp kutusu</h2>
       <ul class="tl" id="trash"></ul>
-      <p class="hint">Silinen profiller burada durur; geri yükleyebilirsin. Hiçbir profil kalıcı silinmez.</p>
+      <p class="hint" data-i18n="a.trash_hint">Silinen profiller burada durur; geri yükleyebilirsin. Hiçbir profil kalıcı silinmez.</p>
     </section>
   </div>
   <div class="col">
     <section class="panel" aria-labelledby="h-tl">
-      <h2 id="h-tl">Sürüm geçmişi</h2>
-      <p class="hint" id="tl-head">Soldan bir profil seç.</p>
+      <h2 id="h-tl" data-i18n="a.history">Sürüm geçmişi</h2>
+      <p class="hint" id="tl-head" data-i18n="a.pick">Soldan bir profil seç.</p>
       <ul class="tl" id="tl"></ul>
     </section>
     <section class="panel" aria-labelledby="h-auto">
-      <h2 id="h-auto">Otomasyon</h2>
-      <div class="seg" id="mode" role="group" aria-label="Otomatik mod"></div>
+      <h2 id="h-auto" data-i18n="a.auto">Otomasyon</h2>
+      <div class="seg" id="mode" role="group" aria-label="Otomatik mod" data-i18n-aria-label="c.auto_mode"></div>
       <dl class="kv" style="margin-top:10px" id="auto-kv"></dl>
       <div class="row" style="margin-top:10px">
-        <button class="btn sm" data-nudge="-2">− Daha az bas</button><button class="btn sm" data-nudge="2">+ Daha çok bas</button>
-        <button class="btn sm danger" id="b-reset-learn">Öğrenileni sıfırla</button>
+        <button class="btn sm" data-nudge="-2" data-i18n="c.less_bass">− Daha az bas</button><button class="btn sm" data-nudge="2" data-i18n="c.more_bass">+ Daha çok bas</button>
+        <button class="btn sm danger" id="b-reset-learn" data-i18n="a.reset_learn">Öğrenileni sıfırla</button>
       </div>
-      <h2 style="margin-top:14px">Son geçişler</h2>
+      <h2 style="margin-top:14px" data-i18n="c.log_h">Son geçişler</h2>
       <ul class="tl" id="alog"></ul>
     </section>
   </div>
@@ -139,11 +146,16 @@ td .n { font-weight: 600; }
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const nf0 = new Intl.NumberFormat("tr-TR", {maximumFractionDigits: 0}), nf1 = new Intl.NumberFormat("tr-TR", {minimumFractionDigits: 1, maximumFractionDigits: 1});
+// ── dil (tools/i18n/i18n.js; metinler tools/i18n/{en,tr}.json) ──
+const tx = (k, v) => I18N.t(k, v);
+const EN = I18N.lang === "en";
+const tv = (prefix, v) => I18N.has(prefix + v) ? tx(prefix + v) : v;
+const loc = (o, f) => (o && EN && o[f + "_en"]) || (o && o[f]);
+const autoName = n => EN && typeof n === "string" ? n.replace(/^Özel (\d+)$/, "Custom $1") : n;
+const nf0 = new Intl.NumberFormat(I18N.locale, {maximumFractionDigits: 0}), nf1 = new Intl.NumberFormat(I18N.locale, {minimumFractionDigits: 1, maximumFractionDigits: 1});
 const store = {get(k, d) { try { const v = localStorage.getItem("bta." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
                set(k, v) { try { localStorage.setItem("bta." + k, JSON.stringify(v)); } catch {} }};
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
-const GEN = {elektronik: "Elektronik", hiphop: "Hip-hop / R&B", rock: "Rock / Metal", pop: "Pop", klasik: "Klasik", caz_akustik: "Caz / Akustik", "konuşma": "Konuşma"};
 function toast(msg, {err = false, action = null, ms = 4000} = {}) {
   const t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.setAttribute("role", err ? "alert" : "status");
   t.innerHTML = `<span class="grow">${esc(msg)}</span>`;
@@ -152,79 +164,84 @@ function toast(msg, {err = false, action = null, ms = 4000} = {}) {
 }
 async function api(p, b) {
   const r = await fetch(p, b === undefined ? {} : {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(b)});
-  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(j.error || ("HTTP " + r.status)); e.status = r.status; throw e; } return j;
+  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(loc(j, "error") || ("HTTP " + r.status)); e.status = r.status; throw e; } return j;
 }
 function size(b) { return b >= 1024 ? nf1.format(b / 1024) + " KB" : nf0.format(b) + " B"; }
 function when(t) { if (t == null) return "—"; const d = typeof t === "number" ? new Date(t * 1000) : new Date(String(t).replace(/([+-]\d\d)(\d\d)$/, "$1:$2"));
-  return isNaN(d) ? "—" : d.toLocaleString("tr-TR", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit"}); }
-function setTheme(t) { document.documentElement.dataset.theme = t; store.set("theme", t); $("b-theme").textContent = {auto: "Tema: otomatik", dark: "Tema: koyu", light: "Tema: açık"}[t]; }
+  return isNaN(d) ? "—" : d.toLocaleString(I18N.locale, {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit"}); }
+function setTheme(t) { document.documentElement.dataset.theme = t; store.set("theme", t); $("b-theme").textContent = tx("c.theme_is", {name: tx("theme." + t)}); }
 $("b-theme").onclick = () => setTheme({auto: "dark", dark: "light", light: "auto"}[document.documentElement.dataset.theme] || "auto");
 
 let P = null, sel = store.get("admin.sel", null), A = null;
 async function loadProfiles() {
   P = await api("/api/admin/profiles"); const st = await api("/api/auto"); const act = st.active && st.active.kind === "profile" ? st.active.id : null;
   $("ptbl").innerHTML = P.profiles.length ? P.profiles.map(p => `<tr data-id="${esc(p.id)}" class="${p.id === sel ? "sel" : ""}">
-    <td><span class="n">${esc(p.name)}</span>${p.derived_from ? `<div class="hint" style="margin:0">← ${esc(p.derived_from.name)}</div>` : ""}</td>
-    <td>${p.auto ? '<span class="badge auto">ÖZEL</span>' : '<span class="badge">ANA</span>'} ${p.id === act ? '<span class="badge act">aktif</span>' : ""}</td>
-    <td>${(p.genres || []).map(g => `<span class="tag">${esc(GEN[g] || g)}</span>`).join("") || '<span class="hint">—</span>'}</td>
+    <td><span class="n">${esc(autoName(p.name))}</span>${p.derived_from ? `<div class="hint" style="margin:0">← ${esc(derivedName(p.derived_from))}</div>` : ""}</td>
+    <td>${p.auto ? `<span class="badge auto">${tx("c.badge_custom")}</span>` : `<span class="badge">${tx("a.badge_main")}</span>`} ${p.id === act ? `<span class="badge act">${tx("a.badge_active")}</span>` : ""}</td>
+    <td>${(p.genres || []).map(g => `<span class="tag">${esc(tv("genre.", g))}</span>`).join("") || '<span class="hint">—</span>'}</td>
     <td class="num">${nf0.format(p.versions)}</td><td class="num c-size">${size(p.bytes + p.journal_bytes)}</td><td class="num c-upd">${esc(when(p.updated))}</td>
-    <td class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="hist">Geçmiş</button><button class="btn sm" data-a="load">Yükle</button>
-      <a class="btn sm" href="/api/profile/export?id=${encodeURIComponent(p.id)}" download>Dışa aktar</a><button class="btn sm danger" data-a="del">Sil</button></td></tr>`).join("")
-    : '<tr><td colspan="7" class="empty">Henüz profil yok. Konsolda bir ayara dokunduğunda otomatik "Özel 1" açılır.</td></tr>';
-  $("pdir").textContent = "Konum: " + P.dirs.profiles + " — her Özel profilin değişiklik günlüğü .journal/ altında.";
-  $("trash").innerHTML = P.trash.length ? P.trash.map(t => `<li><span><span class="h">${esc(t.name)}</span><br><span class="m">silindi ${esc(when(t.deleted))}</span></span><button class="btn sm" data-token="${esc(t.token)}">Geri yükle</button></li>`).join("") : '<li class="empty" style="border:0">Çöp kutusu boş.</li>';
-  if (sel && P.profiles.some(p => p.id === sel)) loadTimeline(sel); else { sel = null; $("tl").innerHTML = ""; $("tl-head").textContent = "Soldan bir profil seç."; }
+    <td class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="hist">${tx("a.b_history")}</button><button class="btn sm" data-a="load">${tx("c.load")}</button>
+      <a class="btn sm" href="/api/profile/export?id=${encodeURIComponent(p.id)}" download>${tx("a.b_export")}</a><button class="btn sm danger" data-a="del">${tx("c.m_delete")}</button></td></tr>`).join("")
+    : `<tr><td colspan="7" class="empty">${tx("a.no_profiles")}</td></tr>`;
+  $("pdir").textContent = tx("a.location", {dir: P.dirs.profiles});
+  $("trash").innerHTML = P.trash.length ? P.trash.map(t => `<li><span><span class="h">${esc(autoName(t.name))}</span><br><span class="m">${tx("a.deleted_at", {when: esc(when(t.deleted))})}</span></span><button class="btn sm" data-token="${esc(t.token)}">${tx("a.restore")}</button></li>`).join("") : `<li class="empty" style="border:0">${tx("a.trash_empty")}</li>`;
+  if (sel && P.profiles.some(p => p.id === sel)) loadTimeline(sel); else { sel = null; $("tl").innerHTML = ""; $("tl-head").textContent = tx("a.pick"); }
 }
+let PRESET_EN = {};                                                      // EN: hazır tarz adları (/api/state, salt okuma)
+function derivedName(d) { return EN && d.kind === "preset" ? (PRESET_EN[d.id] || d.name) : autoName(d.name); }
 async function loadTimeline(id) {
   sel = id; store.set("admin.sel", id); for (const tr of $("ptbl").querySelectorAll("tr[data-id]")) tr.classList.toggle("sel", tr.dataset.id === id);
   const T = await api("/api/admin/timeline?id=" + encodeURIComponent(id));
-  $("tl-head").textContent = T.locked ? `“${T.name}” ana profil — değişmez; üzerinde yapılan düzenlemeler bir Özel çalışma kopyasına gider.` : `“${T.name}” — ${T.versions.length} sürüm, en yeni üstte. Geri yükleme geçmişi silmez, yeni sürüm ekler.`;
+  $("tl-head").textContent = T.locked ? tx("a.tl_locked", {name: autoName(T.name)}) : tx("a.tl_versions", {name: autoName(T.name), n: T.versions.length});
   $("tl").innerHTML = T.versions.slice().reverse().map(v => `<li class="${v.v === T.ptr ? "cur" : ""}" data-v="${v.v}">
-    <span><span class="h">Sürüm ${v.v}${v.v === T.ptr ? " · şu an" : ""}</span> <span class="m">${esc(when(v.t))}</span><br>
-    <span class="m">${v.summary.bands_on} bant · preamp ${nf1.format(v.summary.preamp_db)} dB · crossfeed ${v.summary.crossfeed ? "açık" : "kapalı"} · genişlik ${esc(v.summary.width)}</span></span>
-    ${!T.locked && v.v !== T.ptr ? `<button class="btn sm" data-restore="${v.v}">Bu sürüme dön</button>` : "<span></span>"}
-    <ul class="d">${v.diff.map(d => `<li>${esc(d)}</li>`).join("")}</ul></li>`).join("");
+    <span><span class="h">${tx("a.version", {v: v.v})}${v.v === T.ptr ? tx("a.current") : ""}</span> <span class="m">${esc(when(v.t))}</span><br>
+    <span class="m">${tx(v.summary.bands_on === 1 ? "a.summary_one" : "a.summary", {bands: v.summary.bands_on, pre: nf1.format(v.summary.preamp_db), cf: v.summary.crossfeed ? tx("a.cf_on") : tx("a.cf_off"), w: esc(v.summary.width)})}</span></span>
+    ${!T.locked && v.v !== T.ptr ? `<button class="btn sm" data-restore="${v.v}">${tx("a.revert")}</button>` : "<span></span>"}
+    <ul class="d">${(EN && v.diff_en ? v.diff_en : v.diff).map(d => `<li>${esc(d)}</li>`).join("")}</ul></li>`).join("");
 }
 $("ptbl").addEventListener("click", async ev => { const b = ev.target.closest("button[data-a]"); const tr = ev.target.closest("tr[data-id]"); if (!tr) return; const id = tr.dataset.id;
-  const name = (P.profiles.find(p => p.id === id) || {}).name || id;
+  const name = autoName((P.profiles.find(p => p.id === id) || {}).name || id);
   try {
     if (!b || b.dataset.a === "hist") return loadTimeline(id);
-    if (b.dataset.a === "load") { await api("/api/profile/load", {id}); toast(`“${name}” yüklendi — sesin değişti`); await loadProfiles(); }
+    if (b.dataset.a === "load") { await api("/api/profile/load", {id}); toast(tx("a.loaded", {name})); await loadProfiles(); }
     if (b.dataset.a === "del") { const v = await api("/api/profile/delete", {id}); await loadProfiles();
-      toast(`“${name}” çöp kutusuna taşındı`, {ms: 8000, action: {label: "Geri al", run: async () => { await api("/api/profile/restore", {token: v.trash}); loadProfiles(); }}}); }
+      toast(tx("a.trashed", {name}), {ms: 8000, action: {label: tx("c.undo_short"), run: async () => { await api("/api/profile/restore", {token: v.trash}); loadProfiles(); }}}); }
   } catch (e) { toast(e.message, {err: true}); } });
 $("tl").addEventListener("click", async ev => { const b = ev.target.closest("[data-restore]"); if (!b) return;
-  try { await api("/api/admin/restore", {id: sel, v: +b.dataset.restore}); await loadProfiles(); toast(`Sürüm ${b.dataset.restore} geri yüklendi (yeni sürüm olarak) — konsolda geri al ile dönebilirsin`); } catch (e) { toast(e.message, {err: true}); } });
+  try { await api("/api/admin/restore", {id: sel, v: +b.dataset.restore}); await loadProfiles(); toast(tx("a.reverted", {v: b.dataset.restore})); } catch (e) { toast(e.message, {err: true}); } });
 $("trash").addEventListener("click", async ev => { const b = ev.target.closest("[data-token]"); if (!b) return;
-  try { await api("/api/profile/restore", {token: b.dataset.token}); await loadProfiles(); toast("Geri yüklendi"); } catch (e) { toast(e.message, {err: true}); } });
+  try { await api("/api/profile/restore", {token: b.dataset.token}); await loadProfiles(); toast(tx("a.restored")); } catch (e) { toast(e.message, {err: true}); } });
 $("b-import").onclick = () => $("f-import").click();
 $("f-import").onchange = async e => { const f = e.target.files[0]; e.target.value = ""; if (!f) return;
   try { const doc = JSON.parse(await f.text());
     const r = doc && doc.schema === "bta-bundle/1" ? await api("/api/admin/import-bundle", {bundle: doc}) : await api("/api/profile/import", {doc});
-    await loadProfiles(); toast(r.imported && Array.isArray(r.imported) ? `${r.imported.length} profil içe aktarıldı` : "Profil içe aktarıldı");
-  } catch (err) { toast("İçe aktarılamadı: " + err.message, {err: true}); } };
+    await loadProfiles(); toast(r.imported && Array.isArray(r.imported) ? tx("a.imported_n", {n: r.imported.length}) : tx("a.imported_one"));
+  } catch (err) { toast(tx("c.import_failed", {msg: err.message}), {err: true}); } };
 
 // ── otomasyon ──
-function renderAuto() { const a = A && A.auto; if (!a) { $("mode").innerHTML = '<span class="hint">Bu oturumda otomasyon motoru yok.</span>'; return; }
-  $("mode").innerHTML = a.modes.map(m => `<button type="button" data-m="${m.id}" aria-pressed="${m.id === a.mode}">${esc(m.label)}</button>`).join("");
+function renderAuto() { const a = A && A.auto; if (!a) { $("mode").innerHTML = `<span class="hint">${tx("a.no_engine")}</span>`; return; }
+  $("mode").innerHTML = a.modes.map(m => `<button type="button" data-m="${m.id}" aria-pressed="${m.id === a.mode}">${esc(EN ? tv("auto.mode.", m.id) : m.label)}</button>`).join("");
   const off = a.offsets || {}; const sg = v => (v > 0 ? "+" : v < 0 ? "−" : "±") + nf1.format(Math.abs(v || 0));
-  $("auto-kv").innerHTML = [["Durum", a.mode === "off" ? "kapalı" : a.state],
-    ["Tür", a.state === "dinliyor" ? (a.genre_label || "emin değil") + (a.scores[0] ? ` (%${nf0.format(a.scores[0].p * 100)})` : "") : "—"],
-    ["Karakter", (a.character || []).join(", ") || "—"],
-    ["Canlı düzeltme", ["bas", "alt_orta", "varlık", "hava"].map(k => `${{bas: "bas", alt_orta: "alt-orta", "varlık": "varlık", hava: "hava"}[k]} ${sg(off[k])}`).join(" · ") + " dB"],
-    ["Öğrenilen bas", sg(a.bias.bas) + " dB · " + nf0.format(a.learned_s) + " sn dinlendi"],
-    ["Sınıflayıcı", a.classifier.available ? `YAMNet yerel · ${a.classifier.ms != null ? nf1.format(a.classifier.ms) + " ms/2 sn" : "bekliyor"}` : "kapalı: " + (a.classifier.reason || "")]]
+  const genre = EN ? (a.genre ? tv("genre.", a.genre) : null) : a.genre_label;
+  $("auto-kv").innerHTML = [[tx("a.kv_state"), a.mode === "off" ? tv("auto.state.", "kapalı") : tv("auto.state.", a.state)],
+    [tx("a.kv_genre"), a.state === "dinliyor" ? (genre || tx("c.unsure")) + (a.scores[0] ? ` (${tx("c.pct", {n: nf0.format(a.scores[0].p * 100)})})` : "") : "—"],
+    [tx("a.kv_char"), (a.character || []).map(c => EN ? tv("char.", c) : c).join(", ") || "—"],
+    [tx("a.kv_adl"), ["bas", "alt_orta", "varlık", "hava"].map(k => `${tx("aband." + k)} ${sg(off[k])}`).join(" · ") + " dB"],
+    [tx("a.kv_bias"), tx("a.bias_val", {v: sg(a.bias.bas), s: nf0.format(a.learned_s)})],
+    [tx("a.kv_cls"), a.classifier.available ? tx("a.cls_on", {state: a.classifier.ms != null ? tx("a.cls_ms", {ms: nf1.format(a.classifier.ms)}) : tx("c.waiting")}) : tx("a.cls_off", {reason: loc(a.classifier, "reason") || ""})]]
     .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
-  $("alog").innerHTML = a.log.length ? a.log.slice().reverse().map(l => `<li><span class="m">${esc(l.to)} ← ${esc(GEN[l.genre] || l.genre || "düşük güven")} (%${nf0.format((l.score || 0) * 100)})</span></li>`).join("") : '<li class="empty" style="border:0">Henüz geçiş yok.</li>';
+  $("alog").innerHTML = a.log.length ? a.log.slice().reverse().map(l => `<li><span class="m">${esc(l.to)} ← ${esc(l.genre ? tv("genre.", l.genre) : tx("c.low_conf"))} (${tx("c.pct", {n: nf0.format((l.score || 0) * 100)})})</span></li>`).join("") : `<li class="empty" style="border:0">${tx("a.no_switches")}</li>`;
 }
 async function pollAuto() { try { A = await api("/api/auto"); renderAuto(); } catch {} if (document.visibilityState === "visible") setTimeout(pollAuto, 1500); }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") pollAuto(); });
 $("mode").addEventListener("click", async ev => { const b = ev.target.closest("button[data-m]"); if (!b) return; try { await api("/api/auto", {mode: b.dataset.m}); A = await api("/api/auto"); renderAuto(); } catch (e) { toast(e.message, {err: true}); } });
 document.addEventListener("click", async ev => { const b = ev.target.closest("[data-nudge]"); if (!b) return; try { await api("/api/auto", {nudge: {band: "bas", delta: +b.dataset.nudge}}); A = await api("/api/auto"); renderAuto(); } catch (e) { toast(e.message, {err: true}); } });
 $("b-reset-learn").onclick = async () => { const prev = A && A.auto ? A.auto.bias.bas : 0;
-  await api("/api/auto", {reset_learning: true}); A = await api("/api/auto"); renderAuto(); toast("Öğrenilen tercih ve referans sıfırlandı" + (prev ? ` (bas ${nf1.format(prev)} dB idi)` : "")); };
+  await api("/api/auto", {reset_learning: true}); A = await api("/api/auto"); renderAuto(); toast(tx("a.learn_reset") + (prev ? tx("a.learn_was", {v: nf1.format(prev)}) : "")); };
 
-(async () => { setTheme(store.get("theme", "auto")); try { await loadProfiles(); } catch (e) { toast("Sunucuya bağlanılamadı: " + e.message, {err: true, ms: 15000}); } pollAuto(); })();
+(async () => { await I18N.load();
+  if (EN) try { PRESET_EN = Object.fromEntries(Object.entries((await api("/api/state")).presets).map(([id, p]) => [id, p.label_en])); } catch {}
+  setTheme(store.get("theme", "auto")); try { await loadProfiles(); } catch (e) { toast(tx("c.no_server", {msg: e.message}), {err: true, ms: 15000}); } pollAuto(); })();
 </script>
 </body>
 </html>

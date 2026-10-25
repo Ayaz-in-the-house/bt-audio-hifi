@@ -87,13 +87,13 @@ Maliyet ve kazanç tahminidir; bu kulaklıkta ölçülmedi.
 
 ## Ekran görüntüleri
 
-![Ses konsolu: grafikten sürüklemeli EQ, canlı analizör, hazır tarzlar](analysis/ui/console-v2-dark-1440.png)
+![Ses konsolu: grafikten sürüklemeli EQ, canlı analizör, hazır tarzlar](analysis/ui/console-v2-dark-1440-tr.png)
 
 | Kör dinleme testi (AAC ↔ SBC) | Yönetim: profiller, sürüm geçmişi, otomasyon |
 |---|---|
-| ![Kör dinleme testi](analysis/ui/abx-trial-dark.png) | ![Yönetim sayfası](analysis/ui/admin-dark-1440.png) |
+| ![Kör dinleme testi](analysis/ui/abx-trial-dark-tr.png) | ![Yönetim sayfası](analysis/ui/admin-dark-1440-tr.png) |
 
-<img src="analysis/ui/console-v2-mobile-390.png" width="260" alt="Telefonda konsol">
+<img src="analysis/ui/console-v2-mobile-390-tr.png" width="260" alt="Telefonda konsol">
 
 ## Test edilen donanım
 
@@ -143,6 +143,8 @@ Gereken: Python 3.11+, numpy, scipy · otomatik mod için onnxruntime · testler
 Tam katalog (gri alanlar dahil): [docs/FEATURES.md](docs/FEATURES.md).
 
 ## Belgeler
+
+Konsol ve yönetim arayüzü iki dillidir (Türkçe / İngilizce): tarayıcı dili Türkçe ise Türkçe, değilse İngilizce açılır; başlıktaki TR / EN düğmesi seçimi hatırlar. İngilizce terimler: [docs/i18n-glossary.md](docs/i18n-glossary.md).
 
 - **Buradan başla:** [docs/README.md](docs/README.md) (belge merkezi, ajanlar ve geliştiriciler için)
 - Katmanlar: [kulaklık](docs/layers/L1-headphone.md) · [Bluetooth](docs/layers/L2-bluetooth.md) · [Linux](docs/layers/L3-linux-os.md) ·

@@ -49,6 +49,7 @@
 | F30 | Yetim süreç koruması (ebeveynle ölen alt süreçler) | ✅ | otomatik | L3 | procs | U64 |
 | F32 | **Konsolda kör dinleme testi** (AAC ↔ SBC): kendi müziğinden 12 sn klip, düğmeli 12 deneme, sade sonuç, tercih → kalıcı | ✅ (kullanıcı testi bekliyor) | Analiz → Kör dinleme testi | L2, L5–L6 | abxsession, abx | U69 U70 T-U08 T-L44 |
 | F31 | Belge güncelliği kapısı (modül belgeleri kaynaktan) | ✅ | `python3 tools/gen-docs.py` | — | — | U67 |
+| F36 | **İki dilli arayüz (EN/TR)**: konsol + yönetim; tarayıcı dili Türkçe ise TR, değilse EN; başlıktaki TR/EN düğmesi kalıcı; hazır tarzlar, uyarılar ve sunucu hataları iki dilde | ✅ | başlık → TR / EN · `?lang=en` | L6 | consoleserver, console | U82 U83 U84 U85 U86 T-U09 |
 
 ## Gri alanlar (girilmedi / geliştirilmedi / ölçülemedi)
 
@@ -61,7 +62,7 @@
 | G5 | Kulaklığın gerçek frekans yanıtı / sürücü malzemesi | ölçüm/üretici verisi yok | ölçüm düzeneği | L1 |
 | G6 | LE Audio / LC3, aptX, LDAC | kulaklık desteklemiyor | farklı kulaklık | L2 |
 | G7 | Uygulama başına EQ | smart filter sink başına | ayrı filter düğümleri + akış yönlendirme | L4 |
-| G8 | İngilizce / çok dilli arayüz | metinler Türkçe | i18n katmanı | L6 |
+| G8 | Üçüncü dil + eski sayfalar (`tools/bass-tune.html`, `tools/loudness-match.html` yalnız TR) | EN/TR yapıldı (F36); eski sayfalar konsolun yerini aldı, gelişmiş/eski | yeni `tools/i18n/<dil>.json` + `I18N_FILES` satırı | L6 |
 | G9 | Diğer dağıtımlar (Ubuntu/Arch/Debian) | denenmedi | CI matrisi | L3 |
 | G10 | Yönetimde gelişmiş uzay (kanal trim, Haas gecikmesi) | opsiyonel bırakıldı | graf düğümü + arayüz | L4–L6 |
 | G11 | `bta uninstall` uçtan uca testi | planlandı, yazılmadı | T-H40 | L3 |

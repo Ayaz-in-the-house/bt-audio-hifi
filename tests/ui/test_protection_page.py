@@ -40,7 +40,7 @@ class TestProtectionPage(unittest.TestCase):
         sess, errors = self.sess, []
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, executable_path=CHROME)
-            pg = b.new_page(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True)   # CSP eval yasaklar
+            pg = b.new_page(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True, locale="tr-TR")   # CSP eval yasaklar
             pg.on("pageerror", lambda e: errors.append(str(e)))
             pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
             pg.goto(self.url)

@@ -6,7 +6,7 @@
 |---|---|
 | katman | [application](../layers/L5-bta-software.md#application) |
 | rol | Session (tek durum sahibi) + yerel HTTP API + güvenlik kapıları |
-| boyut | 762 satır |
+| boyut | 852 satır |
 | içe aktarır (iç) | [`abxsession`](abxsession.md), [`autoctl`](autoctl.md), [`console`](console.md), [`history`](history.md), [`journal`](journal.md), [`paths`](paths.md), [`profiles`](profiles.md), [`tunerserver`](tunerserver.md) |
 | içe aktarır (dış) | — |
 | standart kitaplık | `__future__`, `http`, `json`, `os`, `re`, `threading`, `time`, `urllib` |
@@ -26,6 +26,9 @@ Kullanıcı profilleri repo DIŞINDA (`paths.profiles_dir()`, C0); dışa/içe a
 | `ADMIN_PAGE` | `os.path.join(ROOT, 'tools', 'admin.html')` |
 | `BUNDLE_SCHEMA` | `'bta-bundle/1'` |
 | `NODE` | `'effect_input.bta_console'` |
+| `I18N_FILES` | `{'/i18n/en.json': ('en.json', 'application/json; charset=utf-8'), '…` |
+| `I18N_DIR` | `os.path.join(ROOT, 'tools', 'i18n')` |
+| `ERRORS_EN` | `[('yasak host', 'Forbidden host'), ('application/json gerekli', 'Co…` |
 | `MAX_BODY` | `256 * 1024` |
 | `CSP` | `"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src '…` |
 
@@ -77,6 +80,7 @@ HTTP hata kodu taşıyan API istisnası.
 
 - `__init__(self, code, msg, **extra)`
 
+- `error_en(msg)` — Sunucu iletisinin İngilizcesi (U85). Tanınmayan ileti olduğu gibi döner (istemci TR metnini gösterir).
 - `make_handler(sess: Session, stop: threading.Event, allow_hosts=())` — Session'a bağlı HTTP işleyici sınıfı üretir (Host/JSON/boyut kapıları, CSP, rotalar). allow_hosts: loopback dışında açıkça adlandırılmış Host adları (ör. `tailscale serve` tailnet adı).
 - `serve(sess: Session, port: int=0, allow_hosts=())` — 127.0.0.1'de iş parçacıklı sunucu + boşta kalma bekçisi başlatır → (httpd, url, stop olayı).
 
@@ -86,6 +90,7 @@ HTTP hata kodu taşıyan API istisnası.
 - [`tests/test_admin.py`](../../tests/test_admin.py) — U63
 - [`tests/test_analyzer.py`](../../tests/test_analyzer.py) — T-L40, U44, U46, U81
 - [`tests/test_autoengine.py`](../../tests/test_autoengine.py) — U58, U59, U60, U73
+- [`tests/test_i18n.py`](../../tests/test_i18n.py) — U82, U83, U84, U85, U86
 - [`tests/test_loud_limiter.py`](../../tests/test_loud_limiter.py) — U77, U78
 - [`tests/test_profiles.py`](../../tests/test_profiles.py) — U41, U42
 - [`tests/test_protection.py`](../../tests/test_protection.py) — U65
@@ -96,4 +101,5 @@ HTTP hata kodu taşıyan API istisnası.
 - [`tests/ui/test_admin_page.py`](../../tests/ui/test_admin_page.py) — T-U06
 - [`tests/ui/test_auto_page.py`](../../tests/ui/test_auto_page.py) — T-U05
 - [`tests/ui/test_console_page.py`](../../tests/ui/test_console_page.py) — T-U04
+- [`tests/ui/test_i18n_page.py`](../../tests/ui/test_i18n_page.py) — T-U04, T-U06, T-U08, T-U09
 - [`tests/ui/test_protection_page.py`](../../tests/ui/test_protection_page.py) — T-U07, U65

@@ -17,6 +17,75 @@ PAGE = os.path.join(ROOT, "tools", "console.html")
 ADMIN_PAGE = os.path.join(ROOT, "tools", "admin.html")
 BUNDLE_SCHEMA = "bta-bundle/1"
 NODE = "effect_input.bta_console"
+# U86: arayüz dili dosyaları — TAM YOL izin listesi (dosya sistemi yolu açılmaz, U36)
+I18N_FILES = {"/i18n/en.json": ("en.json", "application/json; charset=utf-8"),
+              "/i18n/tr.json": ("tr.json", "application/json; charset=utf-8"),
+              "/i18n/i18n.js": ("i18n.js", "text/javascript; charset=utf-8")}
+I18N_DIR = os.path.join(ROOT, "tools", "i18n")
+
+# U85: sunucu iletilerinin İngilizcesi. Makine alanı `error` (TR) DEĞİŞMEZ; yanıta `error_en` eklenir, metni istemci
+# dile göre seçer (karar: docs/ARCHITECTURE.md → Arayüz dili). Desen = tam ileti; {0}… = yakalanan parçalar
+# (`*` önekli parça yeniden çevrilir: iç içe ileti). Yeni bir Türkçe raise iletisi eklenirse test_i18n U85 kırmızı olur.
+ERRORS_EN = [
+    (r"yasak host", "Forbidden host"),
+    (r"application/json gerekli", "Content-Type must be application/json"),
+    (r"istek çok büyük \(> (\d+) KB\)", "Request too large (over {0} KB)"),
+    (r"geçersiz JSON: (.*)", "Invalid JSON: {*0}"),
+    (r"JSON nesnesi bekleniyor", "Expected a JSON object"),
+    (r"profil yok", "Profile not found"),
+    (r"yok", "Not found"),
+    (r"bulunamadı / eksik alan: (.*)", "Not found or missing field: {*0}"),
+    (r"'sürüm (\d+)'", "'version {0}'"),
+    (r"sürüm (\d+)", "version {0}"),
+    (r"loud_db sayı olmalı", "loud_db must be a number"),
+    (r"çalışma kopyasının yazılabilecek bir ana profili yok", "This working copy has no parent profile to save into"),
+    (r"bu oturumda ton çalınamıyor \(kulaklık yok\)", "Test tones aren't available in this session (no headphones)"),
+    (r"kör test bu oturumda yok", "The blind test isn't available in this session"),
+    (r"kayıt yapılamıyor \(konsol kulaklığa bağlı değil\)", "Can't record: the console isn't connected to headphones"),
+    (r"hazır klip yok", "No built-in clip available"),
+    (r"kilitli \(ana\) profilin sürüm geçmişi yok — yalnız çalışma kopyaları \(Özel N\) sürüm tutar",
+     "Saved profiles are locked and have no version history — only working copies (Custom N) keep versions"),
+    (r"paket şeması tanınmadı \(beklenen (.+)\)", "Unrecognised bundle schema (expected {0})"),
+    (r"otomasyon motoru bu oturumda yok", "Auto mode isn't available in this session"),
+    (r"profil adı boş", "Profile name can't be empty"),
+    (r"profil JSON nesnesi değil", "The profile isn't a JSON object"),
+    (r"desteklenmeyen şema: (.*)", "Unsupported schema: {0}"),
+    (r"profilde 'state' yok", "The profile has no 'state' field"),
+    (r"profil durumu bozuk: (.*)", "The profile's settings are corrupt: {*0}"),
+    (r"klip seviyesi (\S+) dBFS — müzik çalmıyor ya da çok kısık",
+     "Clip level is {0} dBFS — nothing is playing, or it's too quiet"),
+    (r"test zaten sürüyor", "A test is already running"),
+    (r"önce test klibi seç", "Pick a test clip first"),
+    (r"test başlamadı", "The test hasn't started"),
+    (r"bir çalma sürüyor", "Playback is still running"),
+    (r"codec (\S+) etkinleşmedi", "Codec {0} didn't switch on"),
+    (r"çalma bitmeden cevap verilemez", "Wait for playback to finish before answering"),
+    (r"önce X'i dinle", "Listen to X first"),
+    (r"fark kanıtlanmadan tercih sorulmaz", "A preference is only asked for once a difference is proven"),
+    (r"test bitmedi", "The test isn't finished"),
+    (r"geçersiz mod: (\S+) \(geçerli: (.*)\)", "Invalid mode: {0} (valid: {1})"),
+    (r"bilinmeyen bant: (.*)", "Unknown band: {0}"),
+    (r"(\S+) bant bekleniyor, (\S+) geldi", "Expected {0} bands, got {1}"),
+    (r"bilinmeyen filtre tipi: (.*)", "Unknown filter type: {0}"),
+    (r"güvensiz smart filter hedefi: (.*)", "Unsafe smart filter target: {0}"),
+    (r"sınıflayıcı yok", "No classifier loaded"),
+    (r"model yok/doğrulanamadı: (.*) — `bta model fetch`", "Model missing or unverified: {0} — run `bta model fetch`"),
+    (r"(.+): sha256 uyuşmuyor — reddedildi", "{0}: sha256 mismatch — rejected"),
+    (r"ISO 226 tablo frekansı değil: (.*)", "Not an ISO 226 table frequency: {0}"),
+]
+_ERRORS_EN = [(re.compile(rx + r"\Z", re.S), en) for rx, en in ERRORS_EN]
+
+
+def error_en(msg):
+    """Sunucu iletisinin İngilizcesi (U85). Tanınmayan ileti olduğu gibi döner (istemci TR metnini gösterir)."""
+    if not isinstance(msg, str):
+        return msg
+    for rx, en in _ERRORS_EN:
+        m = rx.match(msg)
+        if m:
+            return re.sub(r"\{(\*?)(\d)\}", lambda g: error_en(m.group(int(g.group(2)) + 1)) if g.group(1)
+                          else m.group(int(g.group(2)) + 1), en)
+    return msg
 
 
 class Session:
@@ -168,13 +237,23 @@ class Session:
                 "warnings": console.protection_warnings(self._effective(), codec=(self.device or {}).get("codec")),
                 "tone": self.tone, "can_tone": self.tone_player is not None,
                 "loud": {"db": console.load_loud_db(self.loud_file), "max": console.LOUD_MAX_DB},
-                "auto": self.engine.status() if self.engine else None,
+                "auto": self._auto_status(),
                 "analyzer": self.analyzer.info() if self.analyzer else None}
 
     def auto_view(self):
         """Hafif otomasyon görünümü (1 sn yoklama için): motor durumu, ADL katmanı + eğrisi, aktif profil."""
-        return {"auto": self.engine.status() if self.engine else None, "auto_offsets": self.auto_offsets,
+        return {"auto": self._auto_status(), "auto_offsets": self.auto_offsets,
                 **self._auto_curve(), "active": self.active}
+
+    def _auto_status(self):
+        """Motor durumu + sınıflayıcı nedeninin İngilizcesi (`classifier.reason_en`, U85)."""
+        if not self.engine:
+            return None
+        st = self.engine.status()
+        c = st.get("classifier")
+        if isinstance(c, dict) and "reason" in c:
+            st["classifier"] = {**c, "reason_en": error_en(c["reason"])}
+        return st
 
     def _auto_curve(self):
         if not self.auto_offsets:
@@ -427,7 +506,8 @@ class Session:
         if self.abx is None:
             return {"available": False}
         env = self.abx_env() if self.abx_env else {}
-        return {"available": True, **self.abx.status(), "clip_ready": self.abx_clip,
+        st = self.abx.status()
+        return {"available": True, **st, "error_en": error_en(st.get("error")), "clip_ready": self.abx_clip,
                 "default_clip": bool(self.abx_default_clip), "can_record": self.abx_recorder is not None, **env}
 
     def abx_clip_from(self, source):
@@ -463,33 +543,36 @@ class Session:
                 "crossfeed": bool(cf.get("enabled")), "width": st.get("width"), "balance": st.get("balance")}
 
     @staticmethod
-    def _tr(v, fmt):
-        return format(v, fmt).replace(".", ",")          # Türkçe ondalık ayırıcı
+    def _tr(v, fmt, en=False):
+        return format(v, fmt) if en else format(v, fmt).replace(".", ",")   # Türkçe ondalık ayırıcı (EN: nokta)
 
     @classmethod
-    def _diff(cls, a, b):
-        """İki sürüm arasında ne değişti — okunur kısa satırlar (hızlı fark analizi)."""
+    def _diff(cls, a, b, en=False):
+        """İki sürüm arasında ne değişti — okunur kısa satırlar (hızlı fark analizi). en=True → İngilizce (U85)."""
+        w = (lambda tr, e: e) if en else (lambda tr, e: tr)
         out = []
         for i, (x, y) in enumerate(zip(a.get("bands", []), b.get("bands", []))):
             if x == y:
                 continue
             if x.get("enabled") != y.get("enabled"):
-                out.append(f"bant {i + 1} {'açıldı' if y.get('enabled') else 'kapandı'}")
+                out.append(w(f"bant {i + 1} {'açıldı' if y.get('enabled') else 'kapandı'}",
+                             f"band {i + 1} {'on' if y.get('enabled') else 'off'}"))
                 continue
             parts = []
             if x.get("type") != y.get("type"):
                 parts.append(f"{x.get('type')}→{y.get('type')}")
             if x.get("freq") != y.get("freq"):
-                parts.append(f"{cls._tr(x.get('freq'), 'g')}→{cls._tr(y.get('freq'), 'g')} Hz")
+                parts.append(f"{cls._tr(x.get('freq'), 'g', en)}→{cls._tr(y.get('freq'), 'g', en)} Hz")
             if x.get("gain") != y.get("gain"):
-                parts.append(f"{cls._tr(x.get('gain'), '+.1f')}→{cls._tr(y.get('gain'), '+.1f')} dB")
+                parts.append(f"{cls._tr(x.get('gain'), '+.1f', en)}→{cls._tr(y.get('gain'), '+.1f', en)} dB")
             if x.get("q") != y.get("q"):
-                parts.append(f"Q {cls._tr(x.get('q'), 'g')}→{cls._tr(y.get('q'), 'g')}")
-            out.append(f"bant {i + 1}: " + ", ".join(parts))
+                parts.append(f"Q {cls._tr(x.get('q'), 'g', en)}→{cls._tr(y.get('q'), 'g', en)}")
+            out.append(w(f"bant {i + 1}: ", f"band {i + 1}: ") + ", ".join(parts))
         if a.get("crossfeed") != b.get("crossfeed"):
-            out.append("crossfeed " + ("açık" if b.get("crossfeed", {}).get("enabled") else "kapalı")
+            on = b.get("crossfeed", {}).get("enabled")
+            out.append("crossfeed " + (w("açık", "on") if on else w("kapalı", "off"))
                        + f" ({b.get('crossfeed', {}).get('fcut')} Hz, {b.get('crossfeed', {}).get('feed')} dB)")
-        for k, lbl in (("width", "genişlik"), ("balance", "denge"), ("preamp", "preamp")):
+        for k, lbl in (("width", w("genişlik", "width")), ("balance", w("denge", "balance")), ("preamp", "preamp")):
             if a.get(k) != b.get(k):
                 out.append(f"{lbl} {a.get(k)}→{b.get(k)}")
         return out
@@ -527,6 +610,7 @@ class Session:
         for x in tl["versions"]:
             x["summary"] = self._summary(x["state"])
             x["diff"] = self._diff(prev, x["state"]) if prev is not None else ["ilk sürüm"]
+            x["diff_en"] = self._diff(prev, x["state"], en=True) if prev is not None else ["first version"]
             prev = x["state"]
         return {"id": pid, "name": doc["name"], "locked": doc.get("locked", True), "ptr": tl["ptr"],
                 "versions": tl["versions"], "active": bool(self.active and self.active.get("id") == pid)}
@@ -594,6 +678,8 @@ def make_handler(sess: Session, stop: threading.Event, allow_hosts=()):
             pass
 
         def _send(self, code, body, ctype="application/json", extra_headers=None):
+            if isinstance(body, dict) and "error" in body and "error_en" not in body:
+                body = {**body, "error_en": error_en(body["error"])}      # U85: metni istemci dile göre seçer
             data = body if isinstance(body, bytes) else json.dumps(body, ensure_ascii=False).encode()
             self.send_response(code)
             self.send_header("Content-Type", ctype)
@@ -643,6 +729,10 @@ def make_handler(sess: Session, stop: threading.Event, allow_hosts=()):
                 return self._send(200, json.dumps(sess.admin_export_all(), indent=1, ensure_ascii=False).encode(),
                                   "application/json",
                                   {"Content-Disposition": 'attachment; filename="bta-profiller.json"'})
+            if path in I18N_FILES:
+                fn, ctype = I18N_FILES[path]
+                with open(os.path.join(I18N_DIR, fn), "rb") as f:
+                    return self._send(200, f.read(), ctype)
             if path in ("/", "/index.html"):
                 with open(PAGE, "rb") as f:
                     return self._send(200, f.read(), "text/html; charset=utf-8")
