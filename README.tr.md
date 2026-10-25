@@ -6,7 +6,7 @@
 
 Linux'ta (Fedora 44 · PipeWire 1.6.8 · WirePlumber 0.5.14) bir **Bluetooth kulaklığın** sesini ölçülebilir, geri
 alınabilir ve kulağa göre en iyi hâle getiren araçlar: yüksek kalite profilde kalma, codec ölçümü, **profesyonel EQ
-konsolu** (grafikten sürüklemeli 10 bant, uzay, 31 hazır tarz, canlı analizör), **dokunduğun an otomatik kaydedilen
+konsolu** (grafikten sürüklemeli 10 bant, uzay, 32 hazır tarz, canlı analizör), **dokunduğun an otomatik kaydedilen
 çalışma kopyaları** (geri/ileri al), **müziği tanıyıp ayarı kendisi seçen otomatik mod**, yönetim sayfası.
 
 Referans cihaz: Solix Nexus ANC (TWS, AAC/SBC). Başka Bluetooth kulaklıklarla da çalışır; hoparlör/HDMI/USB çıkışlarına
@@ -36,6 +36,10 @@ bin/bta console                # ⭐ konsol — tarayıcıda açılır (yalnız 
 bin/bta model fetch            # (isteğe bağlı) otomatik mod için yerel tür sınıflayıcısı (YAMNet, sha256 kilitli)
 ```
 
+İlk kurulum **Hi-fi dengeli + uzay** hazır tarzıyla başlar (*Nötr*'den sonra 2. seçenek): ölçülü dolgun bas (105 Hz altına
++6 dB raf, Harman kulaküstü miktarı), hafif bs2b crossfeed ve %10 fazla genişlik; ses yükseltme +6 dB (preamp'i dengeler).
+Hiç işlem istemeyen *Nötr*'ü seçer.
+
 Gereken: Python 3.11+, numpy, scipy · otomatik mod için onnxruntime · testler için playwright.
 
 ## Ne yapar
@@ -44,7 +48,7 @@ Gereken: Python 3.11+, numpy, scipy · otomatik mod için onnxruntime · testler
 |---|---|---|
 | 🎧 | Kulaklık hep A2DP (yüksek kalite); mikrofon açan uygulama sesi mono 16 kHz'e düşürmez | otomatik |
 | 📡 | Codec ölçümü (AAC / SBC), bağlantı sağlığı, kör ABX dinleme testi | `bta bench` · `bta link-test` · `bta abx` |
-| 🎛️ | 10 bant parametrik EQ (grafikten sürükle), crossfeed, genişlik, denge, 31 kaynaklı hazır tarz | konsol |
+| 🎛️ | 10 bant parametrik EQ (grafikten sürükle), crossfeed, genişlik, denge, 32 kaynaklı hazır tarz | konsol |
 | 📈 | Canlı analizör: EQ öncesi/sonrası 1/6 oktav spektrum, metre, parça ortalaması | Analiz sekmesi |
 | 💾 | İlk dokunuşta "Özel N" çalışma kopyası — ana profiller hiç değişmez; her değişiklik anında (< 1 ms) kaydedilir, geri/ileri alınır | otomatik |
 | 🔇 | Tıksız ayar değişimi (A/B zincirli geçiş) | otomatik |

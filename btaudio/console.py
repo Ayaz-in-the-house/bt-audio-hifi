@@ -48,6 +48,16 @@ def default_state() -> dict:
     }
 
 
+RECOMMENDED_PRESET = "hifi_uzay"   # U80: konsolda Nötr'den sonra 2. hazır tarz
+RECOMMENDED_LOUD_DB = 6.0          # U80: preamp'i (≈ −6 dB) dengeler → orta bölge kaynakla aynı seviye (U78 ölçümü)
+
+
+def recommended_state() -> dict:
+    """U80: ilk kurulum varsayılanı = `hifi_uzay` hazır tarzı (ölçülü Harman bas rafı + hafif uzay).
+    'Nötr' (default_state) şeffaf referans olarak kalır; bu yalnız hiç durumu olmayan kuruluma verilir."""
+    return apply_preset(default_state(), RECOMMENDED_PRESET)
+
+
 def _clip(v, lo, hi):
     return float(min(max(float(v), lo), hi))
 
@@ -277,6 +287,11 @@ PRESETS = {
     # ── Referans ──
     "notr": {"label": "Nötr", "group": "Referans", "kind": "standart", "tags": ["referans"],
              "desc": "Hiçbir işlem yok — karşılaştırma noktası.", "source": "—", "bands": _bands()},
+    "hifi_uzay": {"label": "Hi-fi dengeli + uzay", "group": "Referans", "kind": "hedef", "tags": ["dengeli", "bas", "uzay", "varsayılan"],
+                  "desc": "İlk kurulum varsayılanı: ölçülü dolgun bas (105 Hz altına +6 dB raf) + hafif uzay (bs2b crossfeed, genişlik 1,1). Tüm frekanslar dengeli, 'kafa içi' hissi azalır.",
+                  "source": "AutoEq targets: 'Harman over-ear 2018' − 'without bass' = lowshelf 105 Hz Q0,7 +6,0 dB + bs2b.h BS2B_DEFAULT_CLEVEL 700 Hz / 4,5 dB + genişlik 1,1 (tasarım)",
+                  "bands": _bands(("lowshelf", 105, 6.0, 0.7)),
+                  "spatial": {"crossfeed": {"enabled": True, "fcut": 700, "feed": 4.5}, "width": 1.1}},
     "harman_bas": {"label": "Harman bas (kulakiçi 2019)", "group": "Referans", "kind": "hedef", "tags": ["bas", "dengeli"],
                    "desc": "Harman kulakiçi hedefinin bas bileşeni: 105 Hz altına +9 dB raf. Kulakiçi için araştırmayla en çok beğenilen bas miktarı.",
                    "source": "AutoEq targets: 'Harman in-ear 2019' − 'without bass' = lowshelf 105 Hz Q0,7 +9,0 dB (max hata 0,06 dB, çalıştırılarak)",
