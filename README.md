@@ -14,6 +14,33 @@ are intentionally left untouched ([why](docs/USER-DECISIONS.md#0-önce-kısa-cev
 
 **License: [MIT](LICENSE)** — anyone may use, modify and redistribute it. Third-party components: [NOTICE](NOTICE.md).
 
+## Roadmap — what doing it unlocks
+
+The software side (upper part of L2 and L3–L6) has been mapped with its classes and states. The inside of the headphone (chip, DSP, DAC, ANC, TWS) and the lower layers of the radio/protocol stack have not — that is where the question "are we using the hardware's full potential?" is mostly answered. Gains in the table are **expectations, not measured results**.
+
+| layer | known today (done) | not done · untested · unknown | when done, it unlocks | method / source |
+|---|---|---|---|---|
+| **L1a** acoustics and driver | Bass brought toward the Harman target (105 Hz shelf) | The headphone's frequency response is not measured; no measurement of this model exists. Mids and treble are untouched | **Biggest potential gain:** every frequency pulled to the target — hearing all frequencies evenly | Cheap measurement mic + simple rig; measurement → parametric EQ |
+| **L1b** chip, firmware, DSP, DAC, amp, ANC | Chip vendor identified (Bluetrum, from LMP); service channel (SPP) found, 0 bytes when listening | Internal DSP chain, own volume limit, firmware version, whether it applies its own EQ/bass boost/limiter — unknown. Never written up as its own layer | If it processes internally, our EQ stops stacking on it and both layers are tuned together; possibly ANC mode / internal EQ changed from Linux | Bluetrum SDK documents and manuals; **read-only first** — sending commands can brick the device |
+| **L1c** TWS (relay between the earbuds) | — | Never studied: does audio go to the primary earbud, how is it relayed, latency and loss | Reliability rather than quality: the ~40 s reconnect wait, inter-earbud latency, stutters | Bluetooth Core Specification + on-device measurement |
+| **L2a** radio and LMP | AX210 adapter, BlueZ 5.87, profile and disconnect behaviour | No radio capture (btmon) yet (needs sudo); Wi-Fi coexistence not measured | Shows why SBC-XQ dropped packets (signal or Wi-Fi); if fixable, SBC-XQ is a candidate again | `sudo bash tools/btmon-capture.sh 60` → `bta btmon-report` |
+| **L2b** L2CAP and AVDTP | Connection establishes, streaming works | Protocol state machines not documented; MTU / packet size / latency not measured | Separates the causes of stutter and latency | Bluetooth Core Specification + btmon capture |
+| **L2c** A2DP and codec | **Strong:** AAC and SBC decoded byte by byte, SBC-XQ measured and ruled out, quality compared; AAC cuts off around 17 kHz | AAC ↔ SBC decision pending the blind ABX test; forcing AAC to a higher bitrate not tried | Codec chosen by ear; possibly AAC's high-frequency cutoff lifted | `bta abx` (blind test, in the console) |
+| **L3–L6** Linux, PipeWire, bta, UI | **Detailed:** processes, graph, resampler, API, state transitions | Small gray areas ([FEATURES](docs/FEATURES.md)) | — | `docs/layers/` |
+
+**The ceiling you cannot pass.** The headphone supports only SBC and AAC; LDAC/aptX will never come from software. Transport tops out at AirPods level (AirPods use AAC too); beyond that it is driver physics. Realistic target: AirPods-class transport + a correction measured for this headphone — it can get close to expensive headphones by ear, it cannot change physics.
+
+**Open-source angle.** Most budget TWS earbuds use Bluetrum chips. With the measurement method and tools documented layer by layer, this stops being "one headphone's tuning" and becomes a method other owners of the same class of earbuds can use.
+
+**Plan:** split L1 and L2 into separate layers and fill each with the same template (options · states · variables · measurement method). Suggested order: L1a (measurement) → L1b (read-only) → L2a (radio capture).
+
+- [ ] **L1a** acoustics and driver
+- [ ] **L1b** chip, firmware, DSP, DAC, amplifier and ANC — the most unknowns are here
+- [ ] **L1c** TWS relay
+- [ ] **L2a** radio and LMP
+- [ ] **L2b** L2CAP and AVDTP
+- [ ] **L2c** A2DP and codec
+
 ## Screenshots
 
 ![Audio console: drag-on-graph EQ, live analyzer, presets](analysis/ui/console-v2-dark-1440.png)
@@ -93,32 +120,3 @@ wpctl settings --save bluetooth.autoswitch-to-headset-profile true
 tests/run.sh            # unit + browser (headless, no sound)
 tests/run.sh --live     # + live/headful (real PipeWire; measurements on a null sink, no tones mixed into the headphone)
 ```
-
-## Roadmap — layers not yet analysed
-
-The software side (upper part of L2 and L3–L6) has been mapped with its classes and states. The inside of the headphone
-(chip, DSP, DAC, ANC, TWS) and the lower layers of the radio/protocol stack have not. That is also where the question
-"are we using the hardware's full potential?" is mostly answered — for example, we do not know whether the headphone
-applies its own EQ or limiter internally.
-
-| layer | what we know | what is missing |
-|---|---|---|
-| Acoustics / driver | — | Not analysed as its own layer. |
-| Chip / microcontroller / DSP | Vendor identified (Bluetrum, from LMP) | Internal DSP chain, own volume limit, firmware version. Never written up as a separate layer — two lines inside L1. |
-| TWS (transfer between the two earbuds) | — | Never studied: does audio go to the primary earbud, how is it relayed to the other one, latency and loss. |
-| Bluetooth radio / protocol stack (radio layer, LMP, L2CAP, AVDTP) | AX210 adapter, BlueZ 5.87, profile and disconnect behaviour | No radio capture (btmon) taken yet — it needs sudo. Wi-Fi coexistence not measured. Protocol state machines not documented. |
-| A2DP / codec | Strong: AAC and SBC decoded byte by byte, SBC-XQ measured and ruled out, quality compared | The AAC ↔ SBC decision is pending the blind ABX test. |
-| Linux / PipeWire / bta / UI (L3–L6) | Detailed: processes, graph, resampler, API, state transitions | Small gray areas. |
-
-Plan: split L1 and L2 into separate layers and fill each one with the same template — options, states, variables and
-measurement method:
-
-- [ ] **L1a** acoustics and driver
-- [ ] **L1b** chip, firmware, DSP, DAC, amplifier and ANC — start here, the most unknowns are in this layer
-- [ ] **L1c** TWS relay
-- [ ] **L2a** radio and LMP
-- [ ] **L2b** L2CAP and AVDTP
-- [ ] **L2c** A2DP and codec
-
-Sources: chip-vendor SDK documents and manuals, the Bluetooth Core Specification, and measurements on the device. The
-radio capture needs one root command (`sudo bash tools/btmon-capture.sh 60`, then `bta btmon-report`).

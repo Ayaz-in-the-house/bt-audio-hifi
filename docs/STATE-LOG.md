@@ -43,10 +43,11 @@ yok (klavye uykusu); kayda geçirildi, müdahale edilmedi.
 | 10-25 10:30 | **açık kaynak yayını** | Ayaz-in-the-house/bt-audio-hifi: README'ye ikon + ekran görüntüleri (PR #1), README İngilizce + `README.tr.md` dil bağlantısıyla + yol haritası (PR #2). Yayın ağacı `git-zone ship` hattından, yalnız HEAD | `cd6f0e9` `b167ca9` `88f2079` |
 | 10-25 16:00 | **defter onarımı (E35)** | `STATE-LOG.md` ve `lessons/errors.md` 14af43c'de ezilmişti → geri yüklendi (E1–E35, 44 satır); U79 kapısı eklendi | bu commit |
 | 10-25 16:00 | **varsayılan: Hi-fi dengeli + uzay** | Kullanıcı 'ne yaptığımı bilmiyorum, dolgun + uzaylı varsayılan' istedi. Ölçülen önceki hâl: otomatik mod 'ikisi birden' açıktı, çalan sesi `konusma` sınıflayıp **Konuşma / podcast** tarzını yüklemişti (100 Hz yüksek geçiren → bas yok). Yeni: otomatik mod KAPALI (`auto.json` off), Harman bas (kulakiçi 2019, 105 Hz +9 dB raf) + crossfeed bs2b 700 Hz/4,5 dB + genişlik 1,1; preamp −8,98, ses +9 dB; profil `Hi-fi dengeli + uzay`, **açılışta kullan** (commit 15:59). Ölçüm (kulaklık monitörü 10 sn, müzik): tepe −11,0 dBFS, RMS −30,5, kırpılma 0 örnek | bu commit |
+| 10-25 16:20 | **analizör bağlantısı (E36/U81) + README 'nereye gidebilir'** | Yeniden başlatma sonrası panel spektrumu boştu (dokunuşlar bağlantısız) → doğrulamalı bağlama + abonede onarım. README (iki dil) tanıtımın hemen ardına katman katman beklenen kazanç + donanım tavanı bölümü | bu commit |
 
 ## Sıradaki (kullanıcı müsait olduğunda — 2026-10-25 itibarıyla iş DURDURULDU)
 
-Ayrıntılı tablo: [README.tr.md § Yol haritası](../README.tr.md#yol-haritası--henüz-incelenmemiş-katmanlar).
+Ayrıntılı tablo: [README.tr.md § Yol haritası](../README.tr.md#yol-haritası--ne-yapılırsa-nereye-ulaşılır).
 
 1. **L1/L2 katman bölünmesi** — L1a akustik · **L1b çip/firmware/DSP/DAC/ANC (ilk)** · L1c TWS · L2a radyo/LMP · L2b L2CAP/AVDTP · L2c A2DP/codec; her biri aynı şablonla (seçenekler · durumlar · değişkenler · ölçüm yöntemi).
 2. **Kör ABX** (`bta abx`) — AAC ↔ SBC kararı kullanıcıda.

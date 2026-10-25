@@ -6,7 +6,7 @@
 |---|---|
 | katman | [infrastructure](../layers/L5-bta-software.md#infrastructure) |
 | rol | Canlı analizör: pw-record dokunuşları, 1/6 okt spektrum, metre, SSE, hafif mod |
-| boyut | 450 satır |
+| boyut | 477 satır |
 | içe aktarır (iç) | [`procs`](procs.md) |
 | içe aktarır (dış) | `numpy`, `scipy` |
 | standart kitaplık | `__future__`, `json`, `os`, `shutil`, `subprocess`, `threading`, `time` |
@@ -87,7 +87,7 @@ Abone sayımlı yakalama yöneticisi. İlk abone → başlat; son abone gidince 
 
 - [`tests/live/test_live.py`](../../tests/live/test_live.py) — T-L01, T-L10, T-L12, T-L13, T-L14, T-L20
 - [`tests/live/test_live_auto.py`](../../tests/live/test_live_auto.py) — T-L39, T-L40, T-L41, T-L42, U62
-- [`tests/test_analyzer.py`](../../tests/test_analyzer.py) — T-L40, U44, U46
+- [`tests/test_analyzer.py`](../../tests/test_analyzer.py) — T-L40, U44, U46, U81
 - [`tests/test_autoctl.py`](../../tests/test_autoctl.py) — T-L42, U54, U56
 - [`tests/test_autoengine.py`](../../tests/test_autoengine.py) — U58, U59, U60, U73
 - [`tests/ui/test_console_page.py`](../../tests/ui/test_console_page.py) — T-U04
