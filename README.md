@@ -41,6 +41,50 @@ The software side (upper part of L2 and L3–L6) has been mapped with its classe
 - [ ] **L2b** L2CAP and AVDTP
 - [ ] **L2c** A2DP and codec
 
+## Who can do what — manufacturer ↔ user
+
+Part of what it takes to get the best sound from a headphone exists **only at the manufacturer** (factory measurements, processing inside the firmware); another part the **user can measure themselves**. That split matters: as long as the manufacturer does not publish, users guess; every user measurement closes a gap the manufacturer left open.
+
+### Data the manufacturer should publish
+
+| data | why it matters | standard / how |
+|---|---|---|
+| Frequency response (raw measurement file, with different ear-tip seals) | The only solid basis for a headphone-specific EQ correction; no measurement of this model exists today | IEC 60318-4 ear simulator (e.g. GRAS 43AG / B&K 5128), as CSV |
+| Processing inside the firmware: internal EQ, bass boost, limiter / dynamic range compression, per mode (ANC on / off / transparency) | Unknown, the user's EQ stacks on top of the manufacturer's; bass ends up "too much" or "muddy" | Response curve per mode + list of processing |
+| Codec details: AAC bitrate and VBR/CBR, maximum SBC bitpool, supported sample rates | Sets the ceiling of transport quality (this headphone's AAC cuts off around 17 kHz) | A2DP capability table |
+| Volume mapping, maximum output and distortion (THD) at 94 dB SPL | Shows when a limiter kicks in and the safe listening margin | Measurement table |
+| Firmware version, changelog, update path from Linux | Without knowing which behaviour belongs to which version, measurements cannot be compared | Release notes + update tool |
+| Control protocol documentation (ANC mode, internal EQ — SPP / GATT) | On platforms without an official app (Linux) settings cannot be changed | Open protocol document |
+| TWS relay topology (relayed via the primary earbud or sent to each), latency figures | Explains stutter, latency and reconnect behaviour | Architecture note + latency measurement |
+
+### Tests users can run themselves (with this repo)
+
+| test | what it tells you | how | data you can share |
+|---|---|---|---|
+| Profile and codec check | Is the headphone on the high-quality profile, which codec, which sample rate | `bta status` · `bta check` | Acceptance output (contains no personal data) |
+| Link health | Packet drops, bitrate drops | `bta link-test 60` | `analysis/link-health/` report |
+| Codec measurement | Bandwidth and noise of AAC / SBC / SBC-XQ | `bta bench` | Measurement report |
+| Blind listening (ABX) | Do your ears actually hear the AAC vs SBC difference | `bta abx` (also in the console) | Correct/incorrect count |
+| Ear-tip fit test | Does the tip seal the ear — the biggest factor for bass | Console → Analysis tab | Result |
+| Radio capture | Signal strength, retransmissions, Wi-Fi coexistence | `sudo bash tools/btmon-capture.sh 60` → `bta btmon-report` | Report (the capture contains device addresses — mask before sharing) |
+| Preference EQ | Bass/treble tuned to your own ears | `bta console` | Profile export |
+| Rough response measurement | Uncalibrated, **relative** comparison only (difference between two settings) | Measurement mic + your own rig | Measurement file (no claim of absolute accuracy) |
+
+### Recommendations to manufacturers — biggest quality gain for the smallest cost
+
+Cost and gain are estimates; not measured on this headphone.
+
+| recommendation | added cost | expected gain |
+|---|---|---|
+| Tune the default internal EQ to a known target (e.g. Harman in-ear) | Firmware only — **zero** parts cost | **Biggest gain:** balanced sound without the user doing anything |
+| Publish factory measurements | **Zero** — already measured on the production line | The community builds an accurate correction per headphone (databases like AutoEq) |
+| Allow AAC at a higher, constant bitrate (e.g. 256–320 kbps CBR) and a high SBC bitpool | Firmware setting only | High-frequency cutoff lifted, transport reaches AirPods level |
+| Ship several ear-tip sizes (foam if needed) in the box | A few cents | Better seal: bass and isolation consistent from ear to ear |
+| Document the control protocol | Writing a document | ANC/EQ adjustable from any platform; users without the app are not left out |
+| If a hidden limiter/compression is used, document it or make it switchable | Firmware only | Dynamic range preserved, the user's EQ behaves predictably |
+| Firmware updates that also work from Linux | Software work | Fixes and improvements reach every user |
+| LE Audio / LC3 where the chip supports it | Firmware (if the hardware supports it) | More efficient codec, lower latency |
+
 ## Screenshots
 
 ![Audio console: drag-on-graph EQ, live analyzer, presets](analysis/ui/console-v2-dark-1440.png)

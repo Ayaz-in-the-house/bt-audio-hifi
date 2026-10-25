@@ -41,6 +41,50 @@ Yazılım tarafı (L2'nin üst kısmı ile L3–L6) sınıflarıyla ve durumlar�
 - [ ] **L2b** L2CAP ve AVDTP
 - [ ] **L2c** A2DP ve codec
 
+## Kim ne yapabilir — üretici ↔ kullanıcı
+
+Bir kulaklığın sesini en iyi hâle getirmek için gereken bilginin bir kısmı **yalnız üreticide** vardır (fabrika ölçümü, firmware'deki işlem), bir kısmını ise **kullanıcı kendisi** ölçebilir. Aşağıdaki ayrım bu yüzden önemli: üretici paylaşmadıkça kullanıcı tahmin yürütür; kullanıcı ölçtükçe üreticinin söylemediği boşluk kapanır.
+
+### Üreticinin paylaşması gereken veriler
+
+| veri | neden önemli | standart / nasıl |
+|---|---|---|
+| Frekans yanıtı (ham ölçüm dosyası, farklı tıkaç oturmalarıyla) | Kulaklığa özel EQ düzeltmesinin tek sağlam temeli; bugün bu modelin hiç ölçümü yok | IEC 60318-4 kulak simülatörü (ör. GRAS 43AG / B&K 5128), CSV olarak |
+| Firmware'deki işlem zinciri: iç EQ, bas takviyesi, sınırlayıcı / dinamik aralık sıkıştırma, mod başına (ANC açık / kapalı / şeffaf) | Bilinmezse kullanıcının EQ'su üreticininkiyle üst üste biner; bas "fazla" ya da "boğuk" çıkar | Mod başına yanıt eğrisi + işlem listesi |
+| Codec ayrıntıları: AAC bit hızı ve VBR/CBR, SBC en yüksek bitpool, desteklenen örnekleme hızları | Aktarım kalitesinin tavanını belirler (bu kulaklıkta AAC ~17 kHz'de kesiyor) | A2DP yetenek tablosu |
+| Ses seviyesi eşlemesi, en yüksek çıkış ve 94 dB SPL'de bozulma (THD) | Sınırlayıcının ne zaman devreye girdiğini ve güvenli dinleme payını gösterir | Ölçüm tablosu |
+| Firmware sürümü, değişiklik günlüğü, Linux'tan güncelleme yolu | Hangi davranışın hangi sürüme ait olduğu bilinmezse ölçümler karşılaştırılamaz | Sürüm notları + güncelleme aracı |
+| Kontrol protokolü (ANC modu, iç EQ — SPP / GATT) belgesi | Resmî uygulaması olmayan platformlarda (Linux) ayarlar değiştirilemez | Açık protokol belgesi |
+| TWS aktarım yapısı (ana tekliğe aktarım mı, iki tekliğe ayrı mı), gecikme değerleri | Takılma, gecikme ve yeniden bağlanma davranışını açıklar | Mimari notu + gecikme ölçümü |
+
+### Kullanıcının kendisinin yapabileceği testler (bu repo ile)
+
+| test | ne söyler | nasıl | paylaşılabilecek veri |
+|---|---|---|---|
+| Profil ve codec kontrolü | Kulaklık yüksek kalite profilde mi, hangi codec, hangi örnekleme hızı | `bta status` · `bta check` | Kabul çıktısı (kişisel bilgi içermez) |
+| Bağlantı sağlığı | Paket düşmesi, bit hızı düşüşü | `bta link-test 60` | `analysis/link-health/` raporu |
+| Codec ölçümü | AAC / SBC / SBC-XQ'nun bant genişliği ve gürültüsü | `bta bench` | Ölçüm raporu |
+| Kör dinleme (ABX) | Kulağın AAC ile SBC arasındaki farkı gerçekten duyuyor mu | `bta abx` (konsolda da var) | Doğru/yanlış sayısı |
+| Kulak tıkacı oturma testi | Tıkaç kulağı tam kapatıyor mu — bas miktarını en çok bu belirler | Konsol → Analiz sekmesi | Sonuç |
+| Radyo kaydı | Sinyal gücü, yeniden gönderimler, Wi-Fi çakışması | `sudo bash tools/btmon-capture.sh 60` → `bta btmon-report` | Rapor (kayıtta cihaz adresi bulunur — paylaşmadan önce maskele) |
+| Tercih EQ'su | Kendi kulağına göre bas/tiz ayarı | `bta console` | Profil dışa aktarımı |
+| Kaba yanıt ölçümü | Kalibre olmayan, yalnız **göreli** karşılaştırma (iki ayar arasındaki fark) | Ölçüm mikrofonu + kendi düzeneğin | Ölçüm dosyası (mutlak doğruluk iddiası olmadan) |
+
+### Üreticiye öneriler — en düşük maliyetle en büyük kalite artışı
+
+Maliyet ve kazanç tahminidir; bu kulaklıkta ölçülmedi.
+
+| öneri | ek maliyet | beklenen kazanç |
+|---|---|---|
+| Varsayılan iç EQ'yu bilinen bir hedefe (ör. Harman kulakiçi) göre ayarlamak | Yalnız firmware — parça maliyeti **sıfır** | **En büyük kazanç:** kullanıcı hiçbir şey yapmadan dengeli ses |
+| Fabrika ölçümlerini yayımlamak | **Sıfır** — üretim hattında zaten ölçülüyor | Topluluk her kulaklık için doğru düzeltme üretir (AutoEq gibi veritabanları) |
+| AAC'yi daha yüksek ve sabit bit hızında kodlamaya izin vermek (ör. 256–320 kbps CBR), SBC'de yüksek bitpool | Yalnız firmware ayarı | Üst frekans kesimi kalkar, aktarım AirPods düzeyine çıkar |
+| Kutuya farklı boyda kulak tıkaçları (gerekirse köpük) koymak | Birkaç sent | Oturma iyileşir: bas ve yalıtım kulaktan kulağa tutarlı olur |
+| Kontrol protokolünü belgelemek | Belge yazmak | ANC/EQ her platformdan ayarlanır; uygulaması olmayan kullanıcılar dışarıda kalmaz |
+| Gizli sınırlayıcı/sıkıştırma kullanılıyorsa belgelemek ya da kapatılabilir yapmak | Yalnız firmware | Dinamik aralık korunur, kullanıcı EQ'su öngörülebilir çalışır |
+| Linux'tan da yapılabilen firmware güncellemesi | Yazılım işi | Hatalar ve iyileştirmeler her kullanıcıya ulaşır |
+| Çip destekliyorsa LE Audio / LC3 | Firmware (donanım destekliyorsa) | Daha verimli codec, daha düşük gecikme |
+
 ## Ekran görüntüleri
 
 ![Ses konsolu: grafikten sürüklemeli EQ, canlı analizör, hazır tarzlar](analysis/ui/console-v2-dark-1440.png)
