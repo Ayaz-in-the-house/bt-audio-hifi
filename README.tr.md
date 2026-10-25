@@ -79,7 +79,7 @@ Maliyet ve kazanç tahminidir; bu kulaklıkta ölçülmedi.
 | Varsayılan iç EQ'yu bilinen bir hedefe (ör. Harman kulakiçi) göre ayarlamak | Yalnız firmware — parça maliyeti **sıfır** | **En büyük kazanç:** kullanıcı hiçbir şey yapmadan dengeli ses |
 | Fabrika ölçümlerini yayımlamak | **Sıfır** — üretim hattında zaten ölçülüyor | Topluluk her kulaklık için doğru düzeltme üretir (AutoEq gibi veritabanları) |
 | AAC'yi daha yüksek ve sabit bit hızında kodlamaya izin vermek (ör. 256–320 kbps CBR), SBC'de yüksek bitpool | Yalnız firmware ayarı | Üst frekans kesimi kalkar, aktarım AirPods düzeyine çıkar |
-| Kutuya farklı boyda kulak tıkaçları (gerekirse köpük) koymak | Birkaç sent | Oturma iyileşir: bas ve yalıtım kulaktan kulağa tutarlı olur |
+| Kutudaki silikon tıkaçların yanına köpük tıkaç eklemek ve fabrikada takılı boyu belirtmek | Birkaç sent | Oturma iyileşir: bas ve yalıtım kulaktan kulağa tutarlı olur |
 | Kontrol protokolünü belgelemek | Belge yazmak | ANC/EQ her platformdan ayarlanır; uygulaması olmayan kullanıcılar dışarıda kalmaz |
 | Gizli sınırlayıcı/sıkıştırma kullanılıyorsa belgelemek ya da kapatılabilir yapmak | Yalnız firmware | Dinamik aralık korunur, kullanıcı EQ'su öngörülebilir çalışır |
 | Linux'tan da yapılabilen firmware güncellemesi | Yazılım işi | Hatalar ve iyileştirmeler her kullanıcıya ulaşır |
