@@ -95,6 +95,19 @@ Maliyet ve kazanç tahminidir; bu kulaklıkta ölçülmedi.
 
 <img src="analysis/ui/console-v2-mobile-390.png" width="260" alt="Telefonda konsol">
 
+## Test edilen donanım
+
+| | |
+|---|---|
+| Kulaklık | **Solix Nexus ANC** — ANC'li gerçek kablosuz (TWS) kulakiçi, Bluetooth 5.4, çip üreticisi **Bluetrum** (LMP'den) |
+| Sunulan codec'ler | SBC (bitpool ≤ 53) ve AAC (MPEG-2 LC, VBR) — aptX, LDAC, LC3 yok |
+| Adaptör | Intel AX210 (BlueZ 5.87) |
+| Sistem | Fedora 44 · PipeWire 1.6.8 · WirePlumber 0.5.14 |
+
+Başka Bluetooth kulaklıklarla da çalışır (EQ hangi Bluetooth kulaklık bağlıysa ona uygulanır). Başka bir modeli ölçtüysen sonuçlarla bir issue aç.
+
+**Arama terimleri:** Solix Nexus ANC Linux · Bluetrum TWS kulaklık Linux · Bluetooth kulaklık EQ PipeWire · AAC mı SBC mi Linux A2DP · PipeWire filter-chain parametrik EQ · Harman hedefi kulakiçi EQ · bs2b crossfeed PipeWire · kulaklık HFP mono 16 kHz'de kalıyor · WirePlumber autoswitch kulaklık profili.
+
 ## Hızlı başlangıç
 
 ```bash

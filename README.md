@@ -95,6 +95,19 @@ Cost and gain are estimates; not measured on this headphone.
 
 <img src="analysis/ui/console-v2-mobile-390.png" width="260" alt="Console on a phone">
 
+## Tested hardware
+
+| | |
+|---|---|
+| Headphone | **Solix Nexus ANC** — true wireless (TWS) earbuds with ANC, Bluetooth 5.4, chip vendor **Bluetrum** (from LMP) |
+| Codecs offered | SBC (bitpool ≤ 53) and AAC (MPEG-2 LC, VBR) — no aptX, LDAC or LC3 |
+| Adapter | Intel AX210 (BlueZ 5.87) |
+| System | Fedora 44 · PipeWire 1.6.8 · WirePlumber 0.5.14 |
+
+Other Bluetooth headphones work too (the EQ targets whichever Bluetooth headphone is connected). If you measured another model, open an issue with the results.
+
+**Search terms:** Solix Nexus ANC Linux · Bluetrum TWS earbuds Linux · Bluetooth headphone EQ PipeWire · AAC vs SBC Linux A2DP · PipeWire filter-chain parametric EQ · Harman target in-ear EQ · bs2b crossfeed PipeWire · headset stuck in HFP mono 16 kHz · WirePlumber autoswitch headset profile.
+
 ## Quick start
 
 ```bash
