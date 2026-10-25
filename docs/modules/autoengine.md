@@ -69,3 +69,4 @@ Otomasyon motoru: 1 Hz tick ile analizör anlık görüntüsünü okur, türü/t
 - [`tests/ui/test_abx_page.py`](../../tests/ui/test_abx_page.py) — T-U08
 - [`tests/ui/test_admin_page.py`](../../tests/ui/test_admin_page.py) — T-U06
 - [`tests/ui/test_auto_page.py`](../../tests/ui/test_auto_page.py) — T-U05
+- [`tests/ui/test_i18n_page.py`](../../tests/ui/test_i18n_page.py) — T-U04, T-U06, T-U08, T-U09

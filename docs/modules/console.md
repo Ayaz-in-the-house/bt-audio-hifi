@@ -6,7 +6,7 @@
 |---|---|
 | katman | [domain](../layers/L5-bta-software.md#domain) |
 | rol | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları |
-| boyut | 689 satır |
+| boyut | 778 satır |
 | içe aktarır (iç) | [`dsp`](dsp.md), [`paths`](paths.md) |
 | içe aktarır (dış) | `numpy` |
 | standart kitaplık | `__future__`, `copy`, `json`, `math`, `os`, `re` |
@@ -45,6 +45,11 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 | `VLC_SRC` | `"VLC equalizer_presets.h (LGPL-2.1+) '{n}' 10 bant → 1 kHz'e göre, …` |
 | `EE_SRC` | `"JackHack96/EasyEffects-Presets '{n}.json' (MIT) — 10 bell bant bir…` |
 | `PRESETS` | `{'notr': {'label': 'Nötr', 'group': 'Referans', 'kind': 'standart',…` |
+| `DESIGN_EN` | `'Design choice (no single authoritative source). Range boundaries: …` |
+| `VLC_SRC_EN` | `"VLC equalizer_presets.h (LGPL-2.1+) '{n}': 10 bands normalised to …` |
+| `EE_SRC_EN` | `"JackHack96/EasyEffects-Presets '{n}.json' (MIT): 10 bell bands, va…` |
+| `NO_OPEN_PRESET_EN` | `' (no published open preset exists for this genre)'` |
+| `PRESETS_EN` | `{'notr': ('Flat', 'No processing. Use it as the reference to compar…` |
 | `PREVIEW_F` | `[round(f, 1) for f in np.geomspace(20, 20000, 48)]` |
 | `LOUD_MAX_DB` | `15.0` |
 | `LIMIT_CEIL_DB` | `-1.0` |
@@ -63,7 +68,7 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 - `preamp_db(st: dict) -> float` — En kötü durum sınırı: |L çıkışı| ≤ |LL|+|RL| (tam ölçek, aynı fazlı L ve R). Tepe >0 dB ise o kadar kıs.
 - `pw_params(st: dict, bypass: bool=False) -> str` — Tek zincirli graf için PipeWire Props yükü (bq_raw katsayıları, preamp, uzay kazançları).
 - `render_graph(target_sink: str, st: dict | None=None, source: str='-') -> str` — Kalıcı config: mevcut durumun katsayıları GÖMÜLÜ (yeniden başlatmada aynı ses).
-- `preset_catalog() -> dict` — Arayüz için: meta + küçük önizleme eğrisi (EQ, preamp hariç). Hazır tarzlar koddadır → bir kez hesaplanır.
+- `preset_catalog() -> dict` — Arayüz için: meta (TR + `*_en` İngilizce, U84) + küçük önizleme eğrisi (EQ, preamp hariç). Hazır tarzlar koddadır → bir kez hesaplanır.
 - `apply_preset(st: dict, pid: str) -> dict` — EQ profilleri yalnız bantları, 'Uzay' profilleri yalnız uzay ayarını değiştirir (biri diğerini silmesin); 'film'/'konser' gibi ikisini birden tanımlayanlar ikisini; 'Nötr' her şeyi sıfırlar (açıklamasındaki vaat).
 - `pw_params_ab(st: dict, chain: str, bypass: bool=False) -> str` — Tek zincirin (A|B) tüm denetim değerleri — `pw_params` ile aynı katsayılar, düğüm adları zincir önekli.
 - `mix_gains(gain_a: float, gain_b: float) -> str` — Toplama düğümü kazançları (A = Gain 1, B = Gain 2). R42: PipeWire 1.6.8 `ramp` denetim portları aralıksız (min=max=0) → kullanılamaz; geçiş bu kazançların KÜÇÜK adımlarla değiştirilmesiyle yapılır (mixer blok başına sabit).
@@ -73,7 +78,7 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 - `save_loud_db(db: float, path: str | None=None) -> float` — Ayarı sınırlayıp atomik yazar (yarım dosya = bozuk ayar = 0 dB); yazılan değeri döndürür.
 - `loud_payload(db: float) -> str` — Canlı sınırlayıcı giriş kazancı (Props yükü): müzik kesilmeden ses yükseltme.
 - `render_graph_ab(target_sink: str, st: dict | None=None, source: str='-', node_suffix: str='bta_console', loud_db: float | None=None) -> str` — A/B zincirli smart filter-chain config metni (kopya → iki tam zincir → toplama → sınırlayıcı; hedef = BT sink).
-- `protection_warnings(state: dict, codec: str | None=None) -> list` — Uyarılar: [{code, level: warn|info, text}]. Girdi = SESE GİDEN durum (ADL katmanı dahil).
+- `protection_warnings(state: dict, codec: str | None=None) -> list` — Uyarılar: [{code, level: warn|info, text, text_en}] (U85: TR + İngilizce). Girdi = SESE GİDEN durum (ADL katmanı dahil).
 - `target_spa(target) -> str` — Smart filter hedefi SPA-JSON nesnesi. str → {node.name} (doğrulama sondaları), dict → kimlik eşleşmesi (U72).
 - `smart_target(conf_text: str) -> dict | None` — Kurulu graf config'inin smart filter hedefi (özellik sözlüğü) — yoksa None.
 - `target_stale(conf_text: str, current) -> bool` — U71/U72: kurulu hedef, bağlı kulaklığın kimlik hedefiyle aynı değilse bayattır (eski MAC biçimi, ad değişimi). Kulaklık bağlı değilse (current boş) bayat SAYILMAZ: son bilinen hedef korunur, boşuna yeniden kurulum yok.
@@ -88,6 +93,7 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 - [`tests/test_console.py`](../../tests/test_console.py) — U31, U35
 - [`tests/test_crossfade.py`](../../tests/test_crossfade.py) — U57, U68, U77
 - [`tests/test_first_run.py`](../../tests/test_first_run.py) — U80
+- [`tests/test_i18n.py`](../../tests/test_i18n.py) — U82, U83, U84, U85, U86
 - [`tests/test_identity.py`](../../tests/test_identity.py) — U72
 - [`tests/test_loud_limiter.py`](../../tests/test_loud_limiter.py) — U77, U78
 - [`tests/test_presets.py`](../../tests/test_presets.py) — U43
@@ -98,4 +104,5 @@ bs2b: docs/research/upstream/bs2b.c:131-214 (birinci derece filtreler → bq_raw
 - [`tests/ui/test_admin_page.py`](../../tests/ui/test_admin_page.py) — T-U06
 - [`tests/ui/test_auto_page.py`](../../tests/ui/test_auto_page.py) — T-U05
 - [`tests/ui/test_console_page.py`](../../tests/ui/test_console_page.py) — T-U04
+- [`tests/ui/test_i18n_page.py`](../../tests/ui/test_i18n_page.py) — T-U04, T-U06, T-U08, T-U09
 - [`tests/ui/test_protection_page.py`](../../tests/ui/test_protection_page.py) — T-U07, U65

@@ -91,3 +91,4 @@ Abone sayımlı yakalama yöneticisi. İlk abone → başlat; son abone gidince 
 - [`tests/test_autoctl.py`](../../tests/test_autoctl.py) — T-L42, U54, U56
 - [`tests/test_autoengine.py`](../../tests/test_autoengine.py) — U58, U59, U60, U73
 - [`tests/ui/test_console_page.py`](../../tests/ui/test_console_page.py) — T-U04
+- [`tests/ui/test_i18n_page.py`](../../tests/ui/test_i18n_page.py) — T-U04, T-U06, T-U08, T-U09

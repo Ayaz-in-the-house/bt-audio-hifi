@@ -10,7 +10,7 @@
 | [`autoctl`](autoctl.md) | APC (otomatik profil) + ADL (canlı uyarlama) karar mantığı | 137 |
 | [`bass`](bass.md) | Bas analizi: eşleştirme → kulakta yanıt → EQ tasarımı (F8) | 93 |
 | [`codecs`](codecs.md) | A2DP codec bayt çözücüleri (AAC/SBC) | 124 |
-| [`console`](console.md) | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları | 689 |
+| [`console`](console.md) | Konsol durumu, sanitize, stereo model, hazır tarzlar, A/B graf üretimi, koruma uyarıları | 778 |
 | [`dsp`](dsp.md) | RBJ biquad katsayıları + frekans yanıtı (numpy) | 72 |
 | [`eqconf`](eqconf.md) | EQ tasarımı → filter-chain config metni | 89 |
 | [`features`](features.md) | Müzik karakteri öznitelikleri (bölge fazlası, karakter etiketleri) | 50 |
@@ -27,7 +27,7 @@
 |---|---|---|
 | [`abxsession`](abxsession.md) | Konsoldaki kör ABX testi: klip (kendi müziğinden), 12 deneme, sonuç, tercih, uygula/iptal | 197 |
 | [`autoengine`](autoengine.md) | Otomasyon motoru: analizör → öznitelik/sınıflayıcı → APC/ADL → Session | 281 |
-| [`consoleserver`](consoleserver.md) | Session (tek durum sahibi) + yerel HTTP API + güvenlik kapıları | 762 |
+| [`consoleserver`](consoleserver.md) | Session (tek durum sahibi) + yerel HTTP API + güvenlik kapıları | 852 |
 | [`tunerserver`](tunerserver.md) | Eski bas ayarlayıcı sunucusu + PwApplier (pw-cli ile canlı yazım) | 162 |
 
 ## infrastructure

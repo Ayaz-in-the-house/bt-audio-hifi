@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#16181d">
-<title>Ses Konsolu</title>
+<title data-i18n="c.title">Ses Konsolu</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316181d'/%3E%3Cpath d='M4 20c5 0 6-10 12-10s7 10 12 10' fill='none' stroke='%23f0b43c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<script src="/i18n/i18n.js"></script>
 <style>
 /* Tasarım sözleşmesi: docs/DESIGN.md — tek vurgu (amber), OKLCH katmanları, 4 px boşluk, tek radius ölçeği. */
 :root {
@@ -90,7 +91,12 @@ a.btn { text-decoration: none; }
 .saved.pending { color: var(--warn); }
 .from { font-size: 12px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; flex: 0 1 auto; min-width: 0; }
 .plist li.auto .load { background: var(--acc-soft); }
-.plist li.auto .n::before { content: "ÖZEL"; font-size: 10px; font-weight: 700; margin-right: 6px; padding: 1px 5px; border-radius: 3px; background: var(--acc); color: var(--acc-ink); vertical-align: 1px; }
+.plist li.auto .n::before { content: var(--t-custom, "ÖZEL"); font-size: 10px; font-weight: 700; margin-right: 6px; padding: 1px 5px; border-radius: 3px; background: var(--acc); color: var(--acc-ink); vertical-align: 1px; }
+.i18n-wait body { visibility: hidden; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-c); overflow: hidden; }
+.lang button { height: 28px; min-width: 32px; padding: 0 6px; border: 0; background: transparent; color: var(--text-2); font-size: 12px; font-weight: 600; }
+.lang button + button { border-left: 1px solid var(--line); }
+.lang button[aria-pressed="true"] { background: var(--s3); color: var(--text); }
 .sep { width: 1px; height: 20px; background: var(--line); margin: 0 4px; }
 
 /* ── ana yerleşim ── */
@@ -302,7 +308,7 @@ kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1px 5p
 </style>
 </head>
 <body>
-<a class="skip" href="#graph-panel">Grafiğe geç</a>
+<a class="skip" href="#graph-panel" data-i18n="c.skip">Grafiğe geç</a>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-bell" viewBox="0 0 24 16"><path d="M2 13c6 0 7-10 10-10s4 10 10 10"/></symbol>
   <symbol id="i-lowshelf" viewBox="0 0 24 16"><path d="M2 4h5c3 0 5 8 8 8h7"/></symbol>
@@ -321,192 +327,193 @@ kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1px 5p
 
 <header class="top">
   <div class="topbar">
-    <div class="brand"><h1>Ses Konsolu</h1><span class="chip num" id="dev-chip" translate="no">—</span></div>
+    <div class="brand"><h1 data-i18n="c.title">Ses Konsolu</h1><span class="chip num" id="dev-chip" translate="no">—</span></div>
     <div class="active-pill" id="active-pill" aria-live="polite">
-      <span class="wc">ÖZEL</span><span class="k">Aktif</span><span class="n" id="active-name">—</span><span class="from" id="active-from"></span><span class="dirty">değişti</span><span class="saved" id="saved" aria-live="polite"></span>
+      <span class="wc" data-i18n="c.badge_custom">ÖZEL</span><span class="k" data-i18n="c.active">Aktif</span><span class="n" id="active-name">—</span><span class="from" id="active-from"></span><span class="dirty" data-i18n="c.modified">değişti</span><span class="saved" id="saved" aria-live="polite"></span>
     </div>
-    <span class="chip" id="auto-chip" hidden title="Otomatik mod açık — Otomatik sekmesinden değiştir"></span>
+    <span class="chip" id="auto-chip" hidden title="Otomatik mod açık — Otomatik sekmesinden değiştir" data-i18n-title="c.auto_chip_title"></span>
     <span class="grow"></span>
-    <button class="btn icon ghost" id="b-undo" aria-label="Geri al (Ctrl+Z)" title="Geri al (Ctrl+Z)"><svg class="ic"><use href="#i-undo"/></svg></button>
-    <button class="btn icon ghost" id="b-redo" aria-label="İleri al (Ctrl+Shift+Z)" title="İleri al (Ctrl+Shift+Z)"><svg class="ic"><use href="#i-redo"/></svg></button>
+    <button class="btn icon ghost" id="b-undo" aria-label="Geri al (Ctrl+Z)" title="Geri al (Ctrl+Z)" data-i18n-aria-label="c.undo" data-i18n-title="c.undo"><svg class="ic"><use href="#i-undo"/></svg></button>
+    <button class="btn icon ghost" id="b-redo" aria-label="İleri al (Ctrl+Shift+Z)" title="İleri al (Ctrl+Shift+Z)" data-i18n-aria-label="c.redo" data-i18n-title="c.redo"><svg class="ic"><use href="#i-redo"/></svg></button>
     <span class="sep" aria-hidden="true"></span>
-    <button class="btn hold" id="b-ab" aria-pressed="false" title="Basılı tut (B): EQ ve uzay kapalı, orijinal ses">EQ'suz dinle</button>
-    <button class="btn" id="b-commit" title="Bilgisayar ya da kulaklık yeniden açıldığında bu ses kullanılır">Açılışta kullan</button>
-    <button class="btn" id="b-save-over" hidden title="Çalışma kopyasını türediği ana profile yaz"><svg class="ic"><use href="#i-save"/></svg><span id="b-save-over-t">Ana profile uygula</span></button>
-    <button class="btn primary" id="b-save-new" title="Yeni profil olarak kaydet (Ctrl+Shift+S)">Profil olarak kaydet…</button>
-    <a class="btn ghost" id="b-admin" href="/admin" title="Profil sürümleri, çöp kutusu, toplu dışa aktarma, otomasyon ayarları">Yönetim</a>
-    <button class="btn icon ghost" id="b-theme" aria-label="Tema: otomatik" title="Tema"><svg class="ic"><use href="#i-theme"/></svg></button>
-    <button class="btn icon ghost" id="b-help" aria-label="Klavye kısayolları (?)" title="Klavye kısayolları (?)"><svg class="ic"><use href="#i-help"/></svg></button>
+    <button class="btn hold" id="b-ab" aria-pressed="false" title="Basılı tut (B): EQ ve uzay kapalı, orijinal ses" data-i18n-title="c.bypass_title" data-i18n="c.bypass">EQ'suz dinle</button>
+    <button class="btn" id="b-commit" title="Bilgisayar ya da kulaklık yeniden açıldığında bu ses kullanılır" data-i18n-title="c.commit_title" data-i18n="c.commit">Açılışta kullan</button>
+    <button class="btn" id="b-save-over" hidden title="Çalışma kopyasını türediği ana profile yaz" data-i18n-title="c.save_over_title"><svg class="ic"><use href="#i-save"/></svg><span id="b-save-over-t" data-i18n="c.save_over">Ana profile uygula</span></button>
+    <button class="btn primary" id="b-save-new" title="Yeni profil olarak kaydet (Ctrl+Shift+S)" data-i18n-title="c.save_new_title" data-i18n="c.save_as">Profil olarak kaydet…</button>
+    <a class="btn ghost" id="b-admin" href="/admin" title="Profil sürümleri, çöp kutusu, toplu dışa aktarma, otomasyon ayarları" data-i18n-title="c.admin_title" data-i18n="c.admin">Yönetim</a>
+    <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" lang="tr" title="Türkçe">TR</button><button type="button" data-lang="en" lang="en" title="English">EN</button></div>
+    <button class="btn icon ghost" id="b-theme" aria-label="Tema: otomatik" title="Tema" data-i18n-aria-label="c.theme_auto_label" data-i18n-title="c.theme"><svg class="ic"><use href="#i-theme"/></svg></button>
+    <button class="btn icon ghost" id="b-help" aria-label="Klavye kısayolları (?)" title="Klavye kısayolları (?)" data-i18n-aria-label="c.help" data-i18n-title="c.help"><svg class="ic"><use href="#i-help"/></svg></button>
   </div>
 </header>
 
 <main class="layout">
-  <section class="stage" aria-label="Eşitleyici">
+  <section class="stage" aria-label="Eşitleyici" data-i18n-aria-label="c.eq">
     <div class="panel graph-panel" id="graph-panel" tabindex="-1">
       <div class="gtool">
-        <span class="sig" id="sig" aria-live="polite"><i></i><span>Analiz başlatılıyor…</span></span>
+        <span class="sig" id="sig" aria-live="polite"><i></i><span data-i18n="c.sig_starting">Analiz başlatılıyor…</span></span>
         <span class="grow"></span>
         <div class="legend" aria-hidden="true">
-          <span><b style="background:var(--acc)"></b>EQ eğrisi (dB, sol)</span>
-          <span id="lg-post"><b style="background:var(--spec-post)"></b>müzik (dBFS, sağ)</span>
-          <span id="lg-pre"><b style="background:var(--text-3);opacity:.5"></b>EQ öncesi</span>
-          <span id="lg-ltas" hidden><b style="background:var(--ltas)"></b>parça ortalaması</span>
-          <span id="lg-auto" hidden><b style="background:var(--acc);opacity:.6"></b>otomatik düzeltme dahil</span>
-          <span id="lg-cross" hidden><b style="background:var(--cross)"></b>karşı kulağa geçen</span>
+          <span><b style="background:var(--acc)"></b><span data-i18n="c.lg_eq">EQ eğrisi (dB, sol)</span></span>
+          <span id="lg-post"><b style="background:var(--spec-post)"></b><span data-i18n="c.lg_post">müzik (dBFS, sağ)</span></span>
+          <span id="lg-pre"><b style="background:var(--text-3);opacity:.5"></b><span data-i18n="c.lg_pre">EQ öncesi</span></span>
+          <span id="lg-ltas" hidden><b style="background:var(--ltas)"></b><span data-i18n="c.lg_ltas">parça ortalaması</span></span>
+          <span id="lg-auto" hidden><b style="background:var(--acc);opacity:.6"></b><span data-i18n="c.lg_auto">otomatik düzeltme dahil</span></span>
+          <span id="lg-cross" hidden><b style="background:var(--cross)"></b><span data-i18n="c.lg_cross">karşı kulağa geçen</span></span>
         </div>
-        <span class="chip num" id="pre-chip" title="Kırpılmayı önlemek için otomatik kısma">preamp 0,0 dB</span>
-        <label class="chip num" id="loud-chip" title="Ses yükseltme: sınırlayıcı tepeleri −1 dBFS'te tutar, bas bozulmaz. Müzik kesilmeden uygulanır, kalıcıdır.">Ses +<span id="loud-v">0</span> dB
-          <input type="range" id="loud-r" min="0" max="15" step="1" aria-label="Ses yükseltme (dB)" style="width:110px;vertical-align:middle"></label>
+        <span class="chip num" id="pre-chip" title="Kırpılmayı önlemek için otomatik kısma" data-i18n-title="c.pre_title" data-i18n="c.pre_init">preamp 0,0 dB</span>
+        <label class="chip num" id="loud-chip" title="Ses yükseltme: sınırlayıcı tepeleri −1 dBFS'te tutar, bas bozulmaz. Müzik kesilmeden uygulanır, kalıcıdır." data-i18n-title="c.loud_title"><span data-i18n-html="c.loud">Ses +<span id="loud-v">0</span> dB</span>
+          <input type="range" id="loud-r" min="0" max="15" step="1" aria-label="Ses yükseltme (dB)" data-i18n-aria-label="c.loud_aria" style="width:110px;vertical-align:middle"></label>
       </div>
       <div class="warns" id="warns" aria-live="polite"></div>
       <div class="gwrap" id="gwrap">
         <div class="plot">
           <canvas id="spec" aria-hidden="true"></canvas>
-          <svg id="graph" viewBox="0 0 1000 400" role="group" aria-label="Frekans yanıtı: bant düğümlerini sürükle ya da seçip ok tuşlarıyla ayarla"></svg>
+          <svg id="graph" viewBox="0 0 1000 400" role="group" aria-label="Frekans yanıtı: bant düğümlerini sürükle ya da seçip ok tuşlarıyla ayarla" data-i18n-aria-label="c.graph_aria"></svg>
         </div>
-        <div class="meters" aria-label="Çıkış seviyesi">
+        <div class="meters" aria-label="Çıkış seviyesi" data-i18n-aria-label="c.meters_aria">
           <div class="mbars">
             <div class="mbar" id="m-L"><div class="rms"></div><div class="pk"></div><span class="lbl">L</span></div>
             <div class="mbar" id="m-R"><div class="rms"></div><div class="pk"></div><span class="lbl">R</span></div>
           </div>
-          <div class="mval" id="m-val"><span>tepe —</span><span>RMS —</span><span>TP —</span></div>
-          <button class="clipbtn" id="clip" title="Kırpılan örnek sayısı (tıkla: sıfırla)">kırpılma 0</button>
+          <div class="mval" id="m-val"><span data-i18n="c.peak_init">tepe —</span><span>RMS —</span><span>TP —</span></div>
+          <button class="clipbtn" id="clip" title="Kırpılan örnek sayısı (tıkla: sıfırla)" data-i18n-title="c.clip_title" data-i18n="c.clip0">kırpılma 0</button>
         </div>
       </div>
     </div>
 
     <div class="panel bands-panel">
-      <div class="strip" id="strip" role="listbox" aria-label="Bantlar"></div>
+      <div class="strip" id="strip" role="listbox" aria-label="Bantlar" data-i18n-aria-label="c.bands"></div>
       <div class="insp" id="insp">
-        <div class="row"><h3 id="insp-title">Bant 1</h3>
-          <label class="switch"><input type="checkbox" id="b-en"><span>Açık</span></label></div>
-        <div class="types" id="types" role="group" aria-label="Filtre tipi"></div>
+        <div class="row"><h3 id="insp-title" data-i18n="c.band1">Bant 1</h3>
+          <label class="switch"><input type="checkbox" id="b-en"><span data-i18n="c.on">Açık</span></label></div>
+        <div class="types" id="types" role="group" aria-label="Filtre tipi" data-i18n-aria-label="c.filter_type"></div>
         <div class="fields">
-          <div class="field"><label for="b-freq"><span>Frekans</span><span class="num" id="b-freq-l"></span></label>
-            <div class="ctl"><input type="range" id="b-freq-r" min="0" max="1000" aria-label="Frekans kaydırıcı"><input type="number" id="b-freq" step="1" inputmode="decimal" autocomplete="off"></div></div>
-          <div class="field"><label for="b-gain"><span>Güç (dB)</span><span class="num" id="b-gain-l"></span></label>
-            <div class="ctl"><input type="range" id="b-gain-r" step="0.1" aria-label="Güç kaydırıcı"><input type="number" id="b-gain" step="0.1" inputmode="decimal" autocomplete="off"></div></div>
-          <div class="field"><label for="b-q"><span>Genişlik (Q)</span><span class="num" id="b-q-l"></span></label>
-            <div class="ctl"><input type="range" id="b-q-r" min="0" max="1000" aria-label="Q kaydırıcı"><input type="number" id="b-q" step="0.01" inputmode="decimal" autocomplete="off"></div></div>
+          <div class="field"><label for="b-freq"><span data-i18n="c.freq">Frekans</span><span class="num" id="b-freq-l"></span></label>
+            <div class="ctl"><input type="range" id="b-freq-r" min="0" max="1000" aria-label="Frekans kaydırıcı" data-i18n-aria-label="c.freq_slider"><input type="number" id="b-freq" step="1" inputmode="decimal" autocomplete="off"></div></div>
+          <div class="field"><label for="b-gain"><span data-i18n="c.gain">Güç (dB)</span><span class="num" id="b-gain-l"></span></label>
+            <div class="ctl"><input type="range" id="b-gain-r" step="0.1" aria-label="Güç kaydırıcı" data-i18n-aria-label="c.gain_slider"><input type="number" id="b-gain" step="0.1" inputmode="decimal" autocomplete="off"></div></div>
+          <div class="field"><label for="b-q"><span data-i18n="c.q">Genişlik (Q)</span><span class="num" id="b-q-l"></span></label>
+            <div class="ctl"><input type="range" id="b-q-r" min="0" max="1000" aria-label="Q kaydırıcı" data-i18n-aria-label="c.q_slider"><input type="number" id="b-q" step="0.01" inputmode="decimal" autocomplete="off"></div></div>
         </div>
         <p class="hint" id="type-help" style="grid-column:1/-1"></p>
       </div>
     </div>
   </section>
 
-  <aside class="panel rail" aria-label="Profiller ve ayarlar">
-    <div class="tabs" role="tablist" aria-label="Ayar grupları">
-      <button role="tab" id="tab-prof" aria-controls="pn-prof" aria-selected="true">Profiller</button>
-      <button role="tab" id="tab-space" aria-controls="pn-space" aria-selected="false" tabindex="-1">Uzay</button>
-      <button role="tab" id="tab-an" aria-controls="pn-an" aria-selected="false" tabindex="-1">Analiz</button>
-      <button role="tab" id="tab-auto" aria-controls="pn-auto" aria-selected="false" tabindex="-1">Otomatik</button>
+  <aside class="panel rail" aria-label="Profiller ve ayarlar" data-i18n-aria-label="c.rail">
+    <div class="tabs" role="tablist" aria-label="Ayar grupları" data-i18n-aria-label="c.tabs">
+      <button role="tab" id="tab-prof" aria-controls="pn-prof" aria-selected="true" data-i18n="c.tab_prof">Profiller</button>
+      <button role="tab" id="tab-space" aria-controls="pn-space" aria-selected="false" tabindex="-1" data-i18n="c.tab_space">Uzay</button>
+      <button role="tab" id="tab-an" aria-controls="pn-an" aria-selected="false" tabindex="-1" data-i18n="c.tab_an">Analiz</button>
+      <button role="tab" id="tab-auto" aria-controls="pn-auto" aria-selected="false" tabindex="-1" data-i18n="c.tab_auto">Otomatik</button>
     </div>
 
     <div class="tabpanel" role="tabpanel" id="pn-prof" aria-labelledby="tab-prof">
       <div class="sec" id="mine-sec">
-        <h2>Profillerim</h2>
+        <h2 data-i18n="c.mine">Profillerim</h2>
         <ul class="plist" id="plist"></ul>
         <div class="row" style="margin-top:8px">
-          <button class="btn sm" id="b-import"><svg class="ic"><use href="#i-import"/></svg>İçe aktar…</button>
+          <button class="btn sm" id="b-import"><svg class="ic"><use href="#i-import"/></svg><span data-i18n="c.import">İçe aktar…</span></button>
           <input type="file" id="f-import" accept="application/json,.json" hidden>
-          <span class="hint" style="margin:0">ya da .json dosyasını buraya bırak</span>
+          <span class="hint" style="margin:0" data-i18n="c.drop">ya da .json dosyasını buraya bırak</span>
         </div>
       </div>
       <div class="sec">
-        <h2>Hazır tarzlar</h2>
-        <input type="search" id="p-search" placeholder="Ara: bas, vokal, rock…" aria-label="Hazır tarzlarda ara" autocomplete="off" spellcheck="false">
-        <div class="cats" id="cats" role="group" aria-label="Kategori"></div>
+        <h2 data-i18n="c.presets">Hazır tarzlar</h2>
+        <input type="search" id="p-search" placeholder="Ara: bas, vokal, rock…" aria-label="Hazır tarzlarda ara" data-i18n-placeholder="c.search_ph" data-i18n-aria-label="c.search_aria" autocomplete="off" spellcheck="false">
+        <div class="cats" id="cats" role="group" aria-label="Kategori" data-i18n-aria-label="c.category"></div>
         <div class="pgrid" id="pgrid"></div>
-        <p class="pdesc" id="pdesc" aria-live="polite">Bir tarz seç; sonra grafikten ince ayar yapıp <b>profil olarak kaydet</b>.</p>
+        <p class="pdesc" id="pdesc" aria-live="polite" data-i18n-html="c.pdesc0">Bir tarz seç; sonra grafikten ince ayar yapıp <b>profil olarak kaydet</b>.</p>
       </div>
     </div>
 
     <div class="tabpanel" role="tabpanel" id="pn-space" aria-labelledby="tab-space" hidden>
       <div class="sec">
-        <h2>Crossfeed (bs2b)</h2>
-        <label class="switch"><input type="checkbox" id="cf-en"><span>Açık</span></label>
-        <p class="hint">Hoparlörle dinliyormuş gibi: her kulak diğer kanalın basını biraz duyar → "ses kafamın içinde" hissi azalır, yorgunluk düşer.</p>
+        <h2 data-i18n="c.cf_h">Crossfeed (bs2b)</h2>
+        <label class="switch"><input type="checkbox" id="cf-en"><span data-i18n="c.on">Açık</span></label>
+        <p class="hint" data-i18n="c.cf_hint">Hoparlörle dinliyormuş gibi: her kulak diğer kanalın basını biraz duyar → "ses kafamın içinde" hissi azalır, yorgunluk düşer.</p>
         <div class="row" id="cf-presets" style="margin:8px 0"></div>
-        <div class="field"><label for="cf-fcut"><span>Kesim (Hz)</span></label><div class="ctl"><input type="range" id="cf-fcut-r" aria-label="Kesim kaydırıcı"><input type="number" id="cf-fcut" step="10" autocomplete="off"></div></div>
-        <div class="field" style="margin-top:8px"><label for="cf-feed"><span>Miktar (dB)</span></label><div class="ctl"><input type="range" id="cf-feed-r" step="0.5" aria-label="Miktar kaydırıcı"><input type="number" id="cf-feed" step="0.5" autocomplete="off"></div></div>
+        <div class="field"><label for="cf-fcut"><span data-i18n="c.fcut">Kesim (Hz)</span></label><div class="ctl"><input type="range" id="cf-fcut-r" aria-label="Kesim kaydırıcı" data-i18n-aria-label="c.fcut_slider"><input type="number" id="cf-fcut" step="10" autocomplete="off"></div></div>
+        <div class="field" style="margin-top:8px"><label for="cf-feed"><span data-i18n="c.feed">Miktar (dB)</span></label><div class="ctl"><input type="range" id="cf-feed-r" step="0.5" aria-label="Miktar kaydırıcı" data-i18n-aria-label="c.feed_slider"><input type="number" id="cf-feed" step="0.5" autocomplete="off"></div></div>
       </div>
       <div class="sec">
-        <h2>Sahne</h2>
-        <div class="field"><label for="w"><span>Stereo genişlik</span><span class="num" id="w-l"></span></label><div class="ctl"><input type="range" id="w-r" step="0.01" aria-label="Genişlik kaydırıcı"><input type="number" id="w" step="0.01" autocomplete="off"></div></div>
-        <p class="hint">0 = mono · 1 = orijinal · 1,6 = en geniş. Mono uyumlu: iki kulakta aynı olan (vokal) değişmez.</p>
-        <div class="field" style="margin-top:8px"><label for="bal"><span>Denge (sol ↔ sağ)</span><span class="num" id="bal-l"></span></label><div class="ctl"><input type="range" id="bal-r" step="0.01" aria-label="Denge kaydırıcı"><input type="number" id="bal" step="0.01" autocomplete="off"></div></div>
+        <h2 data-i18n="c.stage">Sahne</h2>
+        <div class="field"><label for="w"><span data-i18n="c.width">Stereo genişlik</span><span class="num" id="w-l"></span></label><div class="ctl"><input type="range" id="w-r" step="0.01" aria-label="Genişlik kaydırıcı" data-i18n-aria-label="c.width_slider"><input type="number" id="w" step="0.01" autocomplete="off"></div></div>
+        <p class="hint" data-i18n="c.width_hint">0 = mono · 1 = orijinal · 1,6 = en geniş. Mono uyumlu: iki kulakta aynı olan (vokal) değişmez.</p>
+        <div class="field" style="margin-top:8px"><label for="bal"><span data-i18n="c.balance">Denge (sol ↔ sağ)</span><span class="num" id="bal-l"></span></label><div class="ctl"><input type="range" id="bal-r" step="0.01" aria-label="Denge kaydırıcı" data-i18n-aria-label="c.balance_slider"><input type="number" id="bal" step="0.01" autocomplete="off"></div></div>
       </div>
       <div class="sec">
-        <h2>Uzay tarzları</h2>
+        <h2 data-i18n="c.space_presets">Uzay tarzları</h2>
         <div class="pgrid" id="space-presets"></div>
-        <p class="hint">Uzay tarzları yalnız crossfeed/genişliği değiştirir; EQ ayarın korunur. Gerçek 3B (HRTF) ek paket ister — belgelerde.</p>
+        <p class="hint" data-i18n="c.space_hint">Uzay tarzları yalnız crossfeed/genişliği değiştirir; EQ ayarın korunur. Gerçek 3B (HRTF) ek paket ister — belgelerde.</p>
       </div>
     </div>
 
     <div class="tabpanel" role="tabpanel" id="pn-an" aria-labelledby="tab-an" hidden>
       <div class="sec">
-        <h2>Canlı analiz</h2>
-        <label class="switch"><input type="checkbox" id="an-en" checked><span>Müziği canlı göster</span></label>
-        <p class="hint">Kulaklığa giden sesi EQ'dan önce ve sonra 1/6 oktav bantlarda ölçer (tam ölçek sinüs = 0 dBFS). Sekme gizliyken dinlemez; ses yokken kulaklığı uyanık tutmaz.</p>
-        <h2>Tepki hızı</h2>
-        <div class="seg" id="an-resp" role="group" aria-label="Tepki hızı"></div>
-        <h2>Göster</h2>
+        <h2 data-i18n="c.an_h">Canlı analiz</h2>
+        <label class="switch"><input type="checkbox" id="an-en" checked><span data-i18n="c.an_show">Müziği canlı göster</span></label>
+        <p class="hint" data-i18n="c.an_hint">Kulaklığa giden sesi EQ'dan önce ve sonra 1/6 oktav bantlarda ölçer (tam ölçek sinüs = 0 dBFS). Sekme gizliyken dinlemez; ses yokken kulaklığı uyanık tutmaz.</p>
+        <h2 data-i18n="c.response">Tepki hızı</h2>
+        <div class="seg" id="an-resp" role="group" aria-label="Tepki hızı" data-i18n-aria-label="c.response"></div>
+        <h2 data-i18n="c.show">Göster</h2>
         <div class="stack">
-          <label class="switch"><input type="checkbox" id="sh-post" checked><span>Müzik (EQ sonrası)</span></label>
-          <label class="switch"><input type="checkbox" id="sh-pre" checked><span>EQ öncesi (gölge)</span></label>
-          <label class="switch"><input type="checkbox" id="sh-hold" checked><span>Tepe tutma</span></label>
-          <label class="switch"><input type="checkbox" id="sh-ltas"><span>Parça ortalaması</span></label>
+          <label class="switch"><input type="checkbox" id="sh-post" checked><span data-i18n="c.sh_post">Müzik (EQ sonrası)</span></label>
+          <label class="switch"><input type="checkbox" id="sh-pre" checked><span data-i18n="c.sh_pre">EQ öncesi (gölge)</span></label>
+          <label class="switch"><input type="checkbox" id="sh-hold" checked><span data-i18n="c.sh_hold">Tepe tutma</span></label>
+          <label class="switch"><input type="checkbox" id="sh-ltas"><span data-i18n="c.sh_ltas">Parça ortalaması</span></label>
         </div>
         <div class="row" style="margin-top:12px">
-          <button class="btn sm" id="an-reset">Parça ortalamasını sıfırla</button>
+          <button class="btn sm" id="an-reset" data-i18n="c.an_reset">Parça ortalamasını sıfırla</button>
         </div>
-        <p class="hint">Parça ortalaması, müzik çalarken biriken uzun süreli spektrumdur: şarkının bas içeriğini ve EQ'nun onu nasıl değiştirdiğini gösterir.</p>
+        <p class="hint" data-i18n="c.ltas_hint">Parça ortalaması, müzik çalarken biriken uzun süreli spektrumdur: şarkının bas içeriğini ve EQ'nun onu nasıl değiştirdiğini gösterir.</p>
       </div>
       <div class="sec" id="abx-sec">
-        <h2>Kör dinleme testi (AAC ↔ SBC)</h2>
-        <p class="hint">Bluetooth sesi iki yöntemle sıkıştırabiliyor. Hangisinin senin kulağına daha iyi geldiğini bilmeden (kör) dinleyerek bulursun. 12 deneme, ~10 dakika. Bas değil <b>tizlere</b> odaklan: ziller, "s" sesleri, alkış.</p>
-        <div class="row" style="margin-top:8px"><button class="btn sm" id="abx-open">Testi başlat…</button><span class="hint" id="abx-last" style="margin:0"></span></div>
+        <h2 data-i18n="c.abx_h">Kör dinleme testi (AAC ↔ SBC)</h2>
+        <p class="hint" data-i18n-html="c.abx_hint">Bluetooth sesi iki yöntemle sıkıştırabiliyor. Hangisinin senin kulağına daha iyi geldiğini bilmeden (kör) dinleyerek bulursun. 12 deneme, ~10 dakika. Bas değil <b>tizlere</b> odaklan: ziller, "s" sesleri, alkış.</p>
+        <div class="row" style="margin-top:8px"><button class="btn sm" id="abx-open" data-i18n="c.abx_open">Testi başlat…</button><span class="hint" id="abx-last" style="margin:0"></span></div>
       </div>
       <div class="sec" id="seal-sec">
-        <h2>Kulak tıkacı oturma testi</h2>
-        <p class="hint">Kulak içi kulaklıkta bası en çok belirleyen şey tıkacın kulağı ne kadar iyi kapattığıdır. Müziği durdur, sonra bas tonunu çal: EQ geçici kapanır, kulaklığın kendi sesini duyarsın. Tıkaç boyunu değiştirip tekrarla — bas tonunun <b>en dolgun ve en güçlü</b> duyulduğu boy en iyi oturandır. Uygulama kulağındaki sesi ölçemez (mikrofon yok); karar senin kulağının.</p>
+        <h2 data-i18n="c.seal_h">Kulak tıkacı oturma testi</h2>
+        <p class="hint" data-i18n-html="c.seal_hint">Kulak içi kulaklıkta bası en çok belirleyen şey tıkacın kulağı ne kadar iyi kapattığıdır. Müziği durdur, sonra bas tonunu çal: EQ geçici kapanır, kulaklığın kendi sesini duyarsın. Tıkaç boyunu değiştirip tekrarla — bas tonunun <b>en dolgun ve en güçlü</b> duyulduğu boy en iyi oturandır. Uygulama kulağındaki sesi ölçemez (mikrofon yok); karar senin kulağının.</p>
         <div class="row" style="margin-top:8px">
-          <button class="btn sm" data-tone="bass">Bas tonu (50 Hz)</button>
-          <button class="btn sm" data-tone="ref">Karşılaştırma (1 kHz)</button>
-          <button class="btn sm" id="tone-stop" hidden>Durdur</button>
+          <button class="btn sm" data-tone="bass" data-i18n="c.tone_bass_btn">Bas tonu (50 Hz)</button>
+          <button class="btn sm" data-tone="ref" data-i18n="c.tone_ref_btn">Karşılaştırma (1 kHz)</button>
+          <button class="btn sm" id="tone-stop" hidden data-i18n="c.stop">Durdur</button>
         </div>
         <p class="hint" id="tone-st"></p>
       </div>
     </div>
     <div class="tabpanel" role="tabpanel" id="pn-auto" aria-labelledby="tab-auto" hidden>
       <div class="sec">
-        <h2>Otomatik mod</h2>
-        <div class="seg" id="auto-mode" role="group" aria-label="Otomatik mod"></div>
+        <h2 data-i18n="c.auto_mode">Otomatik mod</h2>
+        <div class="seg" id="auto-mode" role="group" aria-label="Otomatik mod" data-i18n-aria-label="c.auto_mode"></div>
         <p class="hint" id="auto-help"></p>
       </div>
       <div class="sec" id="auto-live">
-        <h2>Şu an çalan</h2>
+        <h2 data-i18n="c.now_playing">Şu an çalan</h2>
         <div class="auto-now" aria-live="polite">
           <div><span class="big" id="auto-genre">—</span> <span class="sub" id="auto-state"></span></div>
           <div id="auto-scores"></div>
-          <div><div class="sub">Karakter</div><div class="tags" id="auto-char"></div></div>
-          <div><div class="sub">Duyulan enstrüman / ses</div><div class="tags" id="auto-inst"></div></div>
+          <div><div class="sub" data-i18n="c.character">Karakter</div><div class="tags" id="auto-char"></div></div>
+          <div><div class="sub" data-i18n="c.instruments">Duyulan enstrüman / ses</div><div class="tags" id="auto-inst"></div></div>
         </div>
       </div>
       <div class="sec" id="auto-adl">
-        <h2>Canlı uyarlama (şu an eklenen)</h2>
+        <h2 data-i18n="c.adl_h">Canlı uyarlama (şu an eklenen)</h2>
         <div class="offs" id="auto-offs"></div>
         <p class="warnbox" id="auto-slots" hidden></p>
-        <h2>Bas tercihin</h2>
-        <div class="row"><button class="btn sm" data-nudge="-2">− Daha az bas</button><button class="btn sm" data-nudge="2">+ Daha çok bas</button>
+        <h2 data-i18n="c.bias_h">Bas tercihin</h2>
+        <div class="row"><button class="btn sm" data-nudge="-2" data-i18n="c.less_bass">− Daha az bas</button><button class="btn sm" data-nudge="2" data-i18n="c.more_bass">+ Daha çok bas</button>
           <span class="sub num" id="auto-bias"></span></div>
-        <p class="hint">Uyarlama senin dinlediğin müziğin ortalamasını öğrenir (<span id="auto-learn">0</span> sn dinlendi); ince, bassız kayıtları o ortalamaya yaklaştırır, zaten bası dolu parçaya bas eklemez. Konuşmada hiçbir şey eklemez. Sınır: bas −3…+4 dB, diğerleri ±3 dB, en fazla 1 dB/sn.</p>
+        <p class="hint" data-i18n-html="c.adl_hint">Uyarlama senin dinlediğin müziğin ortalamasını öğrenir (<span id="auto-learn">0</span> sn dinlendi); ince, bassız kayıtları o ortalamaya yaklaştırır, zaten bası dolu parçaya bas eklemez. Konuşmada hiçbir şey eklemez. Sınır: bas −3…+4 dB, diğerleri ±3 dB, en fazla 1 dB/sn.</p>
       </div>
       <div class="sec" id="auto-apc">
-        <h2>Tür → profil eşlemesi</h2>
+        <h2 data-i18n="c.map_h">Tür → profil eşlemesi</h2>
         <table class="maptbl"><tbody id="auto-map"></tbody></table>
-        <p class="hint">Kendi profilini bir türe bağlamak için: Profillerim → ⋯ → <b>Tür etiketleri…</b>. Etiketli profilin, hazır tarzın önüne geçer. Elle dokunduğunda otomatik değiştirme 10 sn bekler; geçiş en erken 30 sn'de bir olur.</p>
-        <h2>Son geçişler</h2>
+        <p class="hint" data-i18n-html="c.map_hint">Kendi profilini bir türe bağlamak için: Profillerim → ⋯ → <b>Tür etiketleri…</b>. Etiketli profilin, hazır tarzın önüne geçer. Elle dokunduğunda otomatik değiştirme 10 sn bekler; geçiş en erken 30 sn'de bir olur.</p>
+        <h2 data-i18n="c.log_h">Son geçişler</h2>
         <ul class="alog" id="auto-log"></ul>
       </div>
       <p class="hint" id="auto-cls"></p>
@@ -516,21 +523,21 @@ kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1px 5p
 
 <dialog id="abx-dlg" aria-labelledby="abx-title">
   <form method="dialog" id="abx-form" onsubmit="return false">
-    <h2 id="abx-title">Kör dinleme testi</h2>
+    <h2 id="abx-title" data-i18n="c.abx_title">Kör dinleme testi</h2>
     <div class="abx-step" id="abx-s1">
-      <p class="abx-note"><b>1. Test klibi.</b> En iyisi kendi müziğin: tarayıcıda <b>ziller, vokal ve alkış içeren</b> sevdiğin bir parçayı çal, sonra aşağıdaki düğmeye bas — çalan müziğin 12 saniyesi (bilgisayarından çıkmadan, sıkıştırılmadan önceki hâliyle) alınır.</p>
-      <div class="row"><button type="button" class="btn primary" id="abx-rec">Çalan müzikten 12 sn al</button>
-        <button type="button" class="btn" id="abx-def" hidden>Hazır klibi kullan (klasik müzik)</button></div>
+      <p class="abx-note" data-i18n-html="c.abx_s1"><b>1. Test klibi.</b> En iyisi kendi müziğin: tarayıcıda <b>ziller, vokal ve alkış içeren</b> sevdiğin bir parçayı çal, sonra aşağıdaki düğmeye bas — çalan müziğin 12 saniyesi (bilgisayarından çıkmadan, sıkıştırılmadan önceki hâliyle) alınır.</p>
+      <div class="row"><button type="button" class="btn primary" id="abx-rec" data-i18n="c.abx_rec">Çalan müzikten 12 sn al</button>
+        <button type="button" class="btn" id="abx-def" hidden data-i18n="c.abx_def">Hazır klibi kullan (klasik müzik)</button></div>
       <p class="abx-note" id="abx-clipst" aria-live="polite"></p>
       <p class="abx-warn" id="abx-other" hidden></p>
     </div>
     <div class="abx-step" id="abx-s2" hidden>
-      <p class="abx-note"><b>Deneme <span id="abx-k">1</span>/<span id="abx-n">12</span>.</b> A ve B'yi dinle, sonra X'i dinle. X, A mı B mi? Emin olamıyorsan istediğin kadar tekrar dinle. Tahmin etmekten çekinme — sonuç istatistikle değerlendirilir.</p>
+      <p class="abx-note" data-i18n-html="c.abx_s2"><b>Deneme <span id="abx-k">1</span>/<span id="abx-n">12</span>.</b> A ve B'yi dinle, sonra X'i dinle. X, A mı B mi? Emin olamıyorsan istediğin kadar tekrar dinle. Tahmin etmekten çekinme — sonuç istatistikle değerlendirilir.</p>
       <div class="abx-dots" id="abx-dots" aria-hidden="true"></div>
       <div class="abx-ab">
         <button type="button" class="btn" data-play="A">▶ A<small id="abx-la">AAC</small></button>
         <button type="button" class="btn" data-play="B">▶ B<small id="abx-lb">SBC</small></button>
-        <button type="button" class="btn" data-play="X">▶ X<small>bilinmiyor</small></button>
+        <button type="button" class="btn" data-play="X">▶ X<small data-i18n="c.abx_unknown">bilinmiyor</small></button>
       </div>
       <p class="abx-note" id="abx-play" aria-live="polite"></p>
       <div class="abx-ans"><button type="button" class="btn" data-ans="A">X = A</button><button type="button" class="btn" data-ans="B">X = B</button></div>
@@ -538,60 +545,60 @@ kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1px 5p
     <div class="abx-step" id="abx-s3" hidden>
       <div class="abx-big" id="abx-score"></div>
       <p class="abx-note" id="abx-verdict"></p>
-      <div class="row" id="abx-pref" hidden><button type="button" class="btn" data-pref="aac">AAC daha iyi</button><button type="button" class="btn" data-pref="sbc">SBC daha iyi</button><button type="button" class="btn" data-pref="eşit">Aynı</button></div>
+      <div class="row" id="abx-pref" hidden><button type="button" class="btn" data-pref="aac" data-i18n="c.abx_aac">AAC daha iyi</button><button type="button" class="btn" data-pref="sbc" data-i18n="c.abx_sbc">SBC daha iyi</button><button type="button" class="btn" data-pref="eşit" data-i18n="c.abx_same">Aynı</button></div>
       <p class="abx-note" id="abx-prefst"></p>
     </div>
     <div class="dlg-actions">
-      <button type="button" class="btn" id="abx-cancel">Vazgeç</button>
-      <button type="button" class="btn primary" id="abx-go" disabled>Teste başla</button>
+      <button type="button" class="btn" id="abx-cancel" data-i18n="c.cancel">Vazgeç</button>
+      <button type="button" class="btn primary" id="abx-go" disabled data-i18n="c.abx_start">Teste başla</button>
     </div>
   </form>
 </dialog>
 
 <dialog id="genre-dlg" aria-labelledby="genre-title">
   <form method="dialog" id="genre-form">
-    <h2 id="genre-title">Tür etiketleri</h2>
-    <p class="hint">Otomatik profil modu bu türü duyduğunda bu profili yükler.</p>
+    <h2 id="genre-title" data-i18n="c.genre_tags">Tür etiketleri</h2>
+    <p class="hint" data-i18n="c.genre_hint">Otomatik profil modu bu türü duyduğunda bu profili yükler.</p>
     <div class="gchk" id="genre-list"></div>
     <div class="dlg-actions">
-      <button type="button" class="btn" id="genre-cancel">Vazgeç</button>
-      <button type="submit" class="btn primary">Kaydet</button>
+      <button type="button" class="btn" id="genre-cancel" data-i18n="c.cancel">Vazgeç</button>
+      <button type="submit" class="btn primary" data-i18n="c.save">Kaydet</button>
     </div>
   </form>
 </dialog>
 
 <dialog id="save-dlg" aria-labelledby="save-title">
   <form method="dialog" id="save-form">
-    <h2 id="save-title">Profil olarak kaydet</h2>
-    <div class="field"><label for="save-name"><span>Profil adı</span></label>
-      <input type="text" id="save-name" name="profile-name" maxlength="80" required autocomplete="off" spellcheck="false" placeholder="örn. Akşam — zengin bas…"></div>
-    <div class="field"><label for="save-notes"><span>Not (isteğe bağlı)</span></label>
-      <textarea id="save-notes" name="profile-notes" rows="2" maxlength="500" placeholder="örn. kulak tıkacı: orta boy…"></textarea></div>
+    <h2 id="save-title" data-i18n="c.save_title">Profil olarak kaydet</h2>
+    <div class="field"><label for="save-name"><span data-i18n="c.prof_name">Profil adı</span></label>
+      <input type="text" id="save-name" name="profile-name" maxlength="80" required autocomplete="off" spellcheck="false" placeholder="örn. Akşam — zengin bas…" data-i18n-placeholder="c.prof_name_ph"></div>
+    <div class="field"><label for="save-notes"><span data-i18n="c.notes">Not (isteğe bağlı)</span></label>
+      <textarea id="save-notes" name="profile-notes" rows="2" maxlength="500" placeholder="örn. kulak tıkacı: orta boy…" data-i18n-placeholder="c.notes_ph"></textarea></div>
     <div class="conflict" id="save-conflict" role="alert"></div>
     <div class="dlg-actions">
-      <button type="button" class="btn" id="save-cancel">Vazgeç</button>
-      <button type="button" class="btn" id="save-overwrite" hidden>Üzerine yaz</button>
-      <button type="submit" class="btn primary" id="save-ok">Kaydet</button>
+      <button type="button" class="btn" id="save-cancel" data-i18n="c.cancel">Vazgeç</button>
+      <button type="button" class="btn" id="save-overwrite" hidden data-i18n="c.overwrite">Üzerine yaz</button>
+      <button type="submit" class="btn primary" id="save-ok" data-i18n="c.save">Kaydet</button>
     </div>
   </form>
 </dialog>
 
 <dialog id="help-dlg" aria-labelledby="help-title">
   <form method="dialog">
-    <h2 id="help-title">Klavye kısayolları</h2>
+    <h2 id="help-title" data-i18n="c.keys_h">Klavye kısayolları</h2>
     <div class="keys">
-      <kbd>1</kbd><span>… <kbd>9</kbd>, <kbd>0</kbd>: bant seç</span>
-      <kbd>← →</kbd><span>frekans (Shift: ince)</span>
-      <kbd>↑ ↓</kbd><span>güç 0,5 dB (Shift: 0,1 dB)</span>
-      <kbd>[ ]</kbd><span>genişlik (Q)</span>
-      <kbd>E</kbd><span>bandı aç / kapat · <kbd>Delete</kbd> kapat</span>
-      <kbd>B</kbd><span>basılı tut: EQ'suz dinle</span>
-      <kbd>Ctrl S</kbd><span>kaydet (aktif profil değiştiyse üzerine, yoksa yeni)</span>
-      <kbd>Ctrl ⇧ S</kbd><span>yeni profil olarak kaydet</span>
-      <kbd>Ctrl Z</kbd><span>geri al · <kbd>Ctrl ⇧ Z</kbd> ileri al</span>
-      <kbd>?</kbd><span>bu liste</span>
+      <kbd>1</kbd><span data-i18n-html="c.k_bands">… <kbd>9</kbd>, <kbd>0</kbd>: bant seç</span>
+      <kbd>← →</kbd><span data-i18n="c.k_freq">frekans (Shift: ince)</span>
+      <kbd>↑ ↓</kbd><span data-i18n="c.k_gain">güç 0,5 dB (Shift: 0,1 dB)</span>
+      <kbd>[ ]</kbd><span data-i18n="c.k_q">genişlik (Q)</span>
+      <kbd>E</kbd><span data-i18n-html="c.k_toggle">bandı aç / kapat · <kbd>Delete</kbd> kapat</span>
+      <kbd>B</kbd><span data-i18n="c.k_bypass">basılı tut: EQ'suz dinle</span>
+      <kbd>Ctrl S</kbd><span data-i18n="c.k_save">kaydet (aktif profil değiştiyse üzerine, yoksa yeni)</span>
+      <kbd>Ctrl ⇧ S</kbd><span data-i18n="c.k_save_new">yeni profil olarak kaydet</span>
+      <kbd>Ctrl Z</kbd><span data-i18n-html="c.k_undo">geri al · <kbd>Ctrl ⇧ Z</kbd> ileri al</span>
+      <kbd>?</kbd><span data-i18n="c.k_list">bu liste</span>
     </div>
-    <div class="dlg-actions"><button class="btn primary" value="close">Kapat</button></div>
+    <div class="dlg-actions"><button class="btn primary" value="close" data-i18n="c.close">Kapat</button></div>
   </form>
 </dialog>
 
@@ -600,13 +607,20 @@ kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1px 5p
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const NF = (d = 1) => new Intl.NumberFormat("tr-TR", {minimumFractionDigits: d, maximumFractionDigits: d});
+// ── dil (tools/i18n/i18n.js; metinler tools/i18n/{en,tr}.json) ──
+const tx = (k, v) => I18N.t(k, v);
+const EN = I18N.lang === "en";
+const tv = (prefix, v) => I18N.has(prefix + v) ? tx(prefix + v) : v;          // sözlükte yoksa değerin kendisi
+const loc = (o, f) => (o && EN && o[f + "_en"]) || (o && o[f]);                // sunucu alanı: EN'de *_en (U84/U85)
+const autoName = n => EN && typeof n === "string" ? n.replace(/^Özel (\d+)$/, "Custom $1") : n;   // çalışma kopyası adı (görüntü)
+const presetName = (id, name) => EN && V && V.presets[id] ? V.presets[id].label_en : name;
+const dispName = a => a ? (a.kind === "preset" ? presetName(a.id, a.name) : autoName(a.name)) : "";
+const NF = (d = 1) => new Intl.NumberFormat(I18N.locale, {minimumFractionDigits: d, maximumFractionDigits: d});
 const nf0 = NF(0), nf1 = NF(1), nf2 = NF(2);
+const TRIM0 = new RegExp("[" + nf1.format(1.5)[1] + "]?0+$");
 const TYPES = ["bell", "lowshelf", "highshelf", "lowpass", "highpass", "notch"];
-const TYPE_TR = {bell: "Tepe", lowshelf: "Bas rafı", highshelf: "Tiz rafı", lowpass: "Alçak geçiren", highpass: "Yüksek geçiren", notch: "Çentik"};
-const TYPE_HELP = {bell: "Bir bölgeyi yükseltir ya da alçaltır.", lowshelf: "Frekansın altındaki her şeyi yükseltir/alçaltır (bas).", highshelf: "Frekansın üstündeki her şeyi yükseltir/alçaltır (tiz).", lowpass: "Frekansın üstünü keser.", highpass: "Frekansın altını keser (gürleme temizliği).", notch: "Dar bir frekansı yok eder (rezonans, uğultu)."};
+const typeName = k => tx("type." + k);
 const GAINLESS = new Set(["lowpass", "highpass", "notch"]);
-const KIND_TR = {hedef: "Araştırma verisi", kaynak: "Kaynaktan", standart: "Standart", "tasarım": "Tasarım"};
 const W = 1000, FMIN = 20, FMAX = 20000, DMIN = -18, DMAX = 13, AMIN = -90, AMAX = 0;
 const xf = f => L + Math.log10(f / FMIN) / Math.log10(FMAX / FMIN) * (W - L - R);
 const fx = x => FMIN * Math.pow(FMAX / FMIN, (x - L) / (W - L - R));
@@ -617,12 +631,12 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 let L = 44, R = 44, T = 10, B = 26;   // kenar boşlukları SVG biriminde; K ile ölçeklenir (mobilde etiketler kesilmesin)
 let K = 1;     // SVG birimi / CSS px (mobilde yazı ve düğümler okunur boyutta kalsın)
 let H = 400;   // viewBox yüksekliği = gerçek kutu oranı (mobilde yazılar esnemesin; T-U04 390 px taşması)
-let V = null, sel = 0, timer = null, cat = "Tümü", focusNode = false;
+let V = null, sel = 0, timer = null, cat = "Tümü", focusNode = false;   // "Tümü" = makine değeri (kayıtlı seçim)
 const S = () => V.state;
 const store = { get(k, d) { try { const v = localStorage.getItem("bta." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
                 set(k, v) { try { localStorage.setItem("bta." + k, JSON.stringify(v)); } catch {} } };
 
-function fmtF(f) { return f >= 1000 ? NF(f >= 10000 ? 1 : 2).format(f / 1000).replace(/,?0+$/, "") + " kHz" : nf0.format(f) + " Hz"; }
+function fmtF(f) { return f >= 1000 ? NF(f >= 10000 ? 1 : 2).format(f / 1000).replace(TRIM0, "") + " kHz" : nf0.format(f) + " Hz"; }
 function fmtG(g) { return (g > 0 ? "+" : g < 0 ? "−" : "") + nf1.format(Math.abs(g)) + " dB"; }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c])); }
 function toast(msg, {err = false, action = null, ms = 4000} = {}) {
@@ -637,7 +651,7 @@ document.addEventListener("input", e => { if (e.target.id !== "loud-r") return; 
   clearTimeout(loudT); loudT = setTimeout(async () => { try { await api("/api/loud", {db: +e.target.value}); } catch (x) { toast(x.message, {err: true}); } }, 120); });
 async function api(p, b) {
   const r = await fetch(p, b === undefined ? {} : {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(b)});
-  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(j.error || ("HTTP " + r.status)); e.status = r.status; e.body = j; throw e; } return j;
+  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(loc(j, "error") || ("HTTP " + r.status)); e.status = r.status; e.body = j; throw e; } return j;
 }
 
 // ── RBJ (btaudio/dsp.py ile birebir; T-U04 JS=Python ≤0,01 dB) ──
@@ -673,7 +687,7 @@ function drawGraph() {
   $("lg-auto").hidden = !V.curve_auto;
   if (S().crossfeed.enabled) g.push(`<polyline class="cross" points="${cv.f.map((f, i) => xf(f).toFixed(1) + "," + yd(clamp(cv.cross[i], DMIN - 5, DMAX + 5)).toFixed(1)).join(" ")}"/>`);
   S().bands.forEach((b, i) => {
-    const lbl = `Bant ${i + 1}: ${b.enabled ? TYPE_TR[b.type] + ", " + fmtF(b.freq) + (GAINLESS.has(b.type) ? "" : ", " + fmtG(b.gain)) + ", Q " + nf2.format(b.q) : "kapalı"}`;
+    const lbl = `${tx("c.band", {n: i + 1})}: ${b.enabled ? typeName(b.type) + ", " + fmtF(b.freq) + (GAINLESS.has(b.type) ? "" : ", " + fmtG(b.gain)) + ", Q " + nf2.format(b.q) : tx("c.off")}`;
     g.push(`<g class="node${i === sel ? " sel" : ""}${b.enabled ? "" : " off"}" data-i="${i}" role="button" tabindex="${i === sel ? 0 : -1}" aria-label="${esc(lbl)}" aria-pressed="${i === sel}" transform="translate(${xf(b.freq).toFixed(1)},${yd(nodeY(b)).toFixed(1)})"><circle class="hit" r="${(18 * K).toFixed(1)}"/><circle class="ring" r="${(15 * K).toFixed(1)}"/><circle class="dot" r="${(11 * K).toFixed(1)}"/><text text-anchor="middle" dy="${(4 * K).toFixed(1)}">${(i + 1) % 10}</text></g>`); });
   $("graph").innerHTML = g.join("");
   $("lg-cross").hidden = !S().crossfeed.enabled;
@@ -682,16 +696,16 @@ function drawGraph() {
 
 // ── şerit + denetçi ──
 function renderStrip() {
-  $("strip").innerHTML = S().bands.map((b, i) => `<button class="cell${i === sel ? " sel" : ""}${b.enabled ? "" : " off"}" role="option" aria-selected="${i === sel}" data-i="${i}" title="${b.enabled ? TYPE_TR[b.type] : "kapalı"}" aria-label="Bant ${i + 1}: ${b.enabled ? TYPE_TR[b.type] + " " + fmtF(b.freq) : "kapalı"}">
-    <span class="h"><span class="num">${(i + 1) % 10}</span>${b.enabled ? `<svg class="ic" viewBox="0 0 24 16" aria-hidden="true"><use href="#i-${b.type}"/></svg>` : `<span class="v">kapalı</span>`}</span>
+  $("strip").innerHTML = S().bands.map((b, i) => `<button class="cell${i === sel ? " sel" : ""}${b.enabled ? "" : " off"}" role="option" aria-selected="${i === sel}" data-i="${i}" title="${b.enabled ? typeName(b.type) : tx("c.off")}" aria-label="${tx("c.band", {n: i + 1})}: ${b.enabled ? typeName(b.type) + " " + fmtF(b.freq) : tx("c.off")}">
+    <span class="h"><span class="num">${(i + 1) % 10}</span>${b.enabled ? `<svg class="ic" viewBox="0 0 24 16" aria-hidden="true"><use href="#i-${b.type}"/></svg>` : `<span class="v">${tx("c.off")}</span>`}</span>
     <span class="v">${b.enabled ? fmtF(b.freq) : "—"}</span><span class="v">${b.enabled && !GAINLESS.has(b.type) ? fmtG(b.gain) : b.enabled ? "Q " + nf2.format(b.q) : ""}</span></button>`).join("");
 }
 const LOGR = (v, a, b) => Math.round(Math.log(v / a) / Math.log(b / a) * 1000), EXPR = (r, a, b) => a * Math.pow(b / a, r / 1000);
 function renderInspector() {
   const b = S().bands[sel], lim = V.limits;
-  $("insp-title").textContent = `Bant ${sel + 1}`; $("b-en").checked = b.enabled;
-  $("types").innerHTML = TYPES.map(t => `<button type="button" data-t="${t}" aria-pressed="${b.type === t}"><svg class="ic" viewBox="0 0 24 16" aria-hidden="true"><use href="#i-${t}"/></svg>${TYPE_TR[t]}</button>`).join("");
-  $("type-help").textContent = TYPE_HELP[b.type] + (b.enabled ? "" : " Bant kapalı — açmak için anahtarı çevir ya da E tuşuna bas.");
+  $("insp-title").textContent = tx("c.band", {n: sel + 1}); $("b-en").checked = b.enabled;
+  $("types").innerHTML = TYPES.map(t => `<button type="button" data-t="${t}" aria-pressed="${b.type === t}"><svg class="ic" viewBox="0 0 24 16" aria-hidden="true"><use href="#i-${t}"/></svg>${typeName(t)}</button>`).join("");
+  $("type-help").textContent = tx("typehelp." + b.type) + (b.enabled ? "" : tx("c.band_off_hint"));
   $("b-freq").value = Math.round(b.freq); $("b-freq-r").value = LOGR(b.freq, lim.f[0], lim.f[1]); $("b-freq-l").textContent = fmtF(b.freq);
   $("b-gain").value = b.gain; $("b-gain-r").min = lim.g[0]; $("b-gain-r").max = lim.g[1]; $("b-gain-r").value = b.gain; $("b-gain-l").textContent = GAINLESS.has(b.type) ? "—" : fmtG(b.gain);
   $("b-gain").disabled = $("b-gain-r").disabled = GAINLESS.has(b.type);
@@ -701,73 +715,72 @@ function renderInspector() {
 // ── üst çubuk ──
 function renderTop() {
   const a = V.active, pill = $("active-pill"), auto = !!(a && a.auto);
-  $("active-name").textContent = a ? (a.kind === "preset" ? "Tarz: " : "") + a.name : "Kaydedilmemiş ayar";
-  const from = auto && a.derived_from ? `← ${a.derived_from.kind === "preset" ? "tarz " : ""}${a.derived_from.name}` : "";
-  $("active-from").textContent = from; $("active-from").title = from ? "Bu çalışma kopyası buradan türedi; kaynak değişmedi" : "";
+  $("active-name").textContent = a ? (a.kind === "preset" ? tx("c.preset_prefix") : "") + dispName(a) : tx("c.unsaved");
+  const from = auto && a.derived_from ? `← ${a.derived_from.kind === "preset" ? tx("c.from_preset") : ""}${dispName(a.derived_from)}` : "";
+  $("active-from").textContent = from; $("active-from").title = from ? tx("c.from_title") : "";
   pill.classList.toggle("is-auto", auto); pill.classList.toggle("is-dirty", !!V.dirty);
-  pill.title = auto ? "Çalışma kopyası: her değişiklik otomatik kaydedilir, geri/ileri alınabilir"
-    : a ? "Ana profil / tarz — dokunduğunda yeni bir 'Özel' çalışma kopyası açılır, bu hiç değişmez"
-    : "Dokunduğunda otomatik bir 'Özel' çalışma kopyası açılır";
+  pill.title = auto ? tx("c.pill_auto") : a ? tx("c.pill_locked") : tx("c.pill_none");
   renderSaved(V.saved);
   const parent = auto && a.derived_from && a.derived_from.kind === "profile";
-  $("b-save-over").hidden = !parent; if (parent) $("b-save-over-t").textContent = `“${a.derived_from.name}” profiline uygula`;
-  $("b-save-new").textContent = auto ? "Adlandır…" : "Profil olarak kaydet…";
-  $("b-save-new").title = auto ? "Bu çalışma kopyasına bir ad ver (ana profil olur)" : "Yeni profil olarak kaydet (Ctrl+Shift+S)";
-  $("b-commit").textContent = V.is_default ? "Açılışta: bu ses ✓" : "Açılışta kullan"; $("b-commit").disabled = !!V.is_default;
+  $("b-save-over").hidden = !parent; if (parent) $("b-save-over-t").textContent = tx("c.apply_to", {name: a.derived_from.name});
+  $("b-save-new").textContent = auto ? tx("c.name_it") : tx("c.save_as");
+  $("b-save-new").title = auto ? tx("c.name_it_title") : tx("c.save_new_title");
+  $("b-commit").textContent = V.is_default ? tx("c.commit_done") : tx("c.commit"); $("b-commit").disabled = !!V.is_default;
   const h = V.history || {}; $("b-undo").disabled = !h.can_undo; $("b-redo").disabled = !h.can_redo;
-  $("pre-chip").textContent = "preamp " + (V.preamp_db < 0 ? "−" : "") + nf1.format(Math.abs(V.preamp_db)) + " dB";
+  $("pre-chip").textContent = tx("c.preamp", {v: (V.preamp_db < 0 ? "−" : "") + nf1.format(Math.abs(V.preamp_db))});
   if (V.loud && document.activeElement !== $("loud-r")) { $("loud-r").max = V.loud.max; $("loud-r").value = V.loud.db; $("loud-v").textContent = nf1.format(V.loud.db); }
   $("gwrap").classList.toggle("bypass", !!V.bypass);
-  const d = V.device || {}; $("dev-chip").textContent = [d.name || "kulaklık", d.codec ? d.codec.toUpperCase() : null, d.rate ? nf1.format(d.rate / 1000) + " kHz" : null].filter(Boolean).join(" · ");
+  const d = V.device || {}; $("dev-chip").textContent = [d.name || tx("c.headphones"), d.codec ? d.codec.toUpperCase() : null, d.rate ? nf1.format(d.rate / 1000) + " kHz" : null].filter(Boolean).join(" · ");
 }
 let savedTimer = 0;
 function renderSaved(sv) {
   const el = $("saved"), auto = V.active && V.active.auto; if (!auto || !sv) { el.textContent = ""; return; }
-  if (sv.errors && sv.errors.length) { el.className = "saved pending"; el.textContent = "kayıt hatası!"; el.title = sv.errors.join("\n"); return; }
-  if (sv.pending) { el.className = "saved pending"; el.textContent = "kaydediliyor…"; clearTimeout(savedTimer);
+  if (sv.errors && sv.errors.length) { el.className = "saved pending"; el.textContent = tx("c.save_error"); el.title = sv.errors.join("\n"); return; }
+  if (sv.pending) { el.className = "saved pending"; el.textContent = tx("c.saving"); clearTimeout(savedTimer);
     savedTimer = setTimeout(async () => { try { V.saved = await api("/api/saved"); renderSaved(V.saved); } catch {} }, 450); }
-  else { el.className = "saved"; el.textContent = "kaydedildi ✓"; el.title = sv.last_write ? new Date(sv.last_write * 1000).toLocaleTimeString("tr-TR") : ""; }
+  else { el.className = "saved"; el.textContent = tx("c.saved"); el.title = sv.last_write ? new Date(sv.last_write * 1000).toLocaleTimeString(I18N.locale) : ""; }
 }
 
 // ── hazır tarzlar ──
-const lc = s => (s || "").toLocaleLowerCase("tr");
+const lc = s => (s || "").toLocaleLowerCase(I18N.lang);
+const catName = c => c === "Tümü" ? tx("c.cat_all") : tv("group.", c);
 function miniPath(prev) { const n = prev.length; return prev.map((v, i) => `${i ? "L" : "M"}${(i / (n - 1) * 100).toFixed(1)} ${(14 - clamp(v, -12, 12) * 1.1).toFixed(1)}`).join(" "); }
 function presetCard(id, p) {
   const cur = V.active && V.active.kind === "preset" && V.active.id === id;
   return `<button class="pcard" data-p="${id}" aria-current="${!!cur}" aria-describedby="pdesc">
-    <span class="t">${esc(p.label)}</span>
+    <span class="t">${esc(loc(p, "label"))}</span>
     <svg class="mini" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><line x1="0" x2="100" y1="14" y2="14"/><path d="${miniPath(p.preview)}"/></svg>
-    <span class="m"><span class="badge ${p.kind === "tasarım" ? "" : p.kind}">${KIND_TR[p.kind] || p.kind}</span>${p.spatial ? '<span class="badge">uzay</span>' : ""}</span></button>`;
+    <span class="m"><span class="badge ${p.kind === "tasarım" ? "" : p.kind}">${tv("kind.", p.kind)}</span>${p.spatial ? `<span class="badge">${tx("c.badge_spatial")}</span>` : ""}</span></button>`;
 }
 function renderPresets() {
   const cats = ["Tümü", ...V.categories.filter(c => c !== "Uzay")];
-  $("cats").innerHTML = cats.map(c => `<button type="button" data-c="${c}" aria-pressed="${c === cat}">${c}</button>`).join("");
+  $("cats").innerHTML = cats.map(c => `<button type="button" data-c="${c}" aria-pressed="${c === cat}">${catName(c)}</button>`).join("");
   const q = lc($("p-search").value.trim());
   const list = Object.entries(V.presets).filter(([id, p]) => p.group !== "Uzay" && (cat === "Tümü" || p.group === cat) &&
-    (!q || lc(p.label + " " + p.desc + " " + p.tags.join(" ") + " " + p.group).includes(q)));
-  $("pgrid").innerHTML = list.length ? list.map(([id, p]) => presetCard(id, p)).join("") : `<div class="empty" style="grid-column:1/-1">“${esc($("p-search").value)}” için tarz yok — başka bir kelime dene.</div>`;
+    (!q || lc(loc(p, "label") + " " + loc(p, "desc") + " " + p.tags.join(" ") + " " + (EN ? catName(p.group) : p.group)).includes(q)));
+  $("pgrid").innerHTML = list.length ? list.map(([id, p]) => presetCard(id, p)).join("") : `<div class="empty" style="grid-column:1/-1">${tx("c.no_presets", {q: esc($("p-search").value)})}</div>`;
   $("space-presets").innerHTML = Object.entries(V.presets).filter(([, p]) => p.group === "Uzay").map(([id, p]) => presetCard(id, p)).join("");
 }
-function describe(id) { const p = V.presets[id]; $("pdesc").innerHTML = `<b>${esc(p.label)}</b> — ${esc(p.desc)}<small>Kaynak: ${esc(p.source)}</small>`; }
+function describe(id) { const p = V.presets[id]; $("pdesc").innerHTML = `<b>${esc(loc(p, "label"))}</b> — ${esc(loc(p, "desc"))}<small>${tx("c.source")} ${esc(loc(p, "source"))}</small>`; }
 
 // ── profillerim ──
-const RTF = new Intl.RelativeTimeFormat("tr", {numeric: "auto"});
+const RTF = new Intl.RelativeTimeFormat(I18N.lang, {numeric: "auto"});
 function ago(iso) { if (!iso) return ""; const t = Date.parse(iso.replace(/([+-]\d\d)(\d\d)$/, "$1:$2")); if (isNaN(t)) return ""; const s = (t - Date.now()) / 1000;
-  for (const [u, n] of [["year", 31536000], ["month", 2592000], ["day", 86400], ["hour", 3600], ["minute", 60]]) if (Math.abs(s) >= n) return RTF.format(Math.round(s / n), u); return "az önce"; }
+  for (const [u, n] of [["year", 31536000], ["month", 2592000], ["day", 86400], ["hour", 3600], ["minute", 60]]) if (Math.abs(s) >= n) return RTF.format(Math.round(s / n), u); return tx("c.just_now"); }
 function renderProfiles() {
   const act = V.active && V.active.kind === "profile" ? V.active.id : null;
-  const ordered = [...V.profiles].sort((x, y) => (y.auto - x.auto) || x.name.localeCompare(y.name, "tr"));
+  const ordered = [...V.profiles].sort((x, y) => (y.auto - x.auto) || x.name.localeCompare(y.name, I18N.lang));
   $("plist").innerHTML = ordered.length ? ordered.map(p => `<li class="${p.auto ? "auto" : ""}" aria-current="${p.id === act}">
-      <button class="load" data-a="load" data-id="${esc(p.id)}" title="Yükle"><span class="n">${esc(p.name)}</span><span class="d">${p.bands_on} bant · ${esc(ago(p.updated))}${p.notes ? " · " + esc(p.notes) : ""}</span></button>
-      <details class="menu"><summary class="btn icon ghost" aria-label="${esc(p.name)} için işlemler"><svg class="ic"><use href="#i-more"/></svg></summary>
+      <button class="load" data-a="load" data-id="${esc(p.id)}" title="${tx("c.load")}"><span class="n">${esc(autoName(p.name))}</span><span class="d">${tx(p.bands_on === 1 ? "c.n_band_one" : "c.n_bands", {n: p.bands_on})} · ${esc(ago(p.updated))}${p.notes ? " · " + esc(p.notes) : ""}</span></button>
+      <details class="menu"><summary class="btn icon ghost" aria-label="${tx("c.actions_for", {name: esc(autoName(p.name))})}"><svg class="ic"><use href="#i-more"/></svg></summary>
         <div class="items" role="menu">
-          <button role="menuitem" data-a="rename" data-id="${esc(p.id)}">${p.auto ? "Adlandır (ana profil yap)…" : "Yeniden adlandır…"}</button>
-          <button role="menuitem" data-a="genres" data-id="${esc(p.id)}">Tür etiketleri…${p.genres && p.genres.length ? " (" + p.genres.length + ")" : ""}</button>
-          <button role="menuitem" data-a="duplicate" data-id="${esc(p.id)}">Çoğalt</button>
-          <button role="menuitem" data-a="export" data-id="${esc(p.id)}">Dışa aktar (.json)</button>
-          <button role="menuitem" class="danger" data-a="delete" data-id="${esc(p.id)}">Sil</button>
+          <button role="menuitem" data-a="rename" data-id="${esc(p.id)}">${p.auto ? tx("c.m_name") : tx("c.m_rename")}</button>
+          <button role="menuitem" data-a="genres" data-id="${esc(p.id)}">${tx("c.m_genres")}${p.genres && p.genres.length ? " (" + p.genres.length + ")" : ""}</button>
+          <button role="menuitem" data-a="duplicate" data-id="${esc(p.id)}">${tx("c.m_dup")}</button>
+          <button role="menuitem" data-a="export" data-id="${esc(p.id)}">${tx("c.m_export")}</button>
+          <button role="menuitem" class="danger" data-a="delete" data-id="${esc(p.id)}">${tx("c.m_delete")}</button>
         </div></details></li>`).join("")
-    : `<li class="empty">Henüz profilin yok. Bir tarz seç ya da grafikten ayarla, sonra <b>Profil olarak kaydet</b>.</li>`;
+    : `<li class="empty">${tx("c.no_profiles")}</li>`;
 }
 
 // ── uzay ──
@@ -775,19 +788,19 @@ function renderSpace() {
   const s = S(), lim = V.limits; $("cf-en").checked = s.crossfeed.enabled;
   for (const [id, v, a, b, st] of [["cf-fcut", s.crossfeed.fcut, lim.fcut[0], lim.fcut[1], 10], ["cf-feed", s.crossfeed.feed, lim.feed[0], lim.feed[1], 0.5], ["w", s.width, lim.w[0], lim.w[1], 0.01], ["bal", s.balance, -1, 1, 0.01]]) {
     $(id).value = v; const r = $(id + "-r"); r.min = a; r.max = b; r.step = st; r.value = v; }
-  $("w-l").textContent = nf2.format(s.width); $("bal-l").textContent = s.balance === 0 ? "orta" : (s.balance < 0 ? "sol " : "sağ ") + nf2.format(Math.abs(s.balance));
-  $("cf-presets").innerHTML = Object.entries(V.bs2b).map(([k, p]) => `<button type="button" class="btn sm" data-p="${k}" aria-pressed="${s.crossfeed.enabled && p.fcut === s.crossfeed.fcut && p.feed === s.crossfeed.feed}">${esc(p.label)}</button>`).join("");
+  $("w-l").textContent = nf2.format(s.width); $("bal-l").textContent = s.balance === 0 ? tx("c.center") : (s.balance < 0 ? tx("c.left") : tx("c.right")) + nf2.format(Math.abs(s.balance));
+  $("cf-presets").innerHTML = Object.entries(V.bs2b).map(([k, p]) => `<button type="button" class="btn sm" data-p="${k}" aria-pressed="${s.crossfeed.enabled && p.fcut === s.crossfeed.fcut && p.feed === s.crossfeed.feed}">${esc(loc(p, "label"))}</button>`).join("");
 }
 function renderAll() { drawGraph(); renderStrip(); renderInspector(); renderTop(); renderSpace(); renderPresets(); renderProfiles(); renderAuto(); renderWarns(); renderTone(); }
 
 // ── koruma uyarıları + oturma testi (D7) ──
 function renderWarns() { const w = (V && V.warnings) || [];
-  $("warns").innerHTML = w.map(x => `<div class="w ${x.level}" data-code="${esc(x.code)}"><b>${x.level === "warn" ? "DİKKAT" : "BİLGİ"}</b><span>${esc(x.text)}</span></div>`).join(""); }
+  $("warns").innerHTML = w.map(x => `<div class="w ${x.level}" data-code="${esc(x.code)}"><b>${x.level === "warn" ? tx("c.warn") : tx("c.info")}</b><span>${esc(loc(x, "text"))}</span></div>`).join(""); }
 let toneTimer = 0;
-function renderTone() { const t = V && V.tone; const can = !!(V && V.can_tone);
+function renderTone() { const tn = V && V.tone; const can = !!(V && V.can_tone);
   for (const b of document.querySelectorAll("[data-tone]")) b.disabled = !can;
-  $("tone-stop").hidden = !t;
-  $("tone-st").innerHTML = !can ? "Kulaklık bağlı değil — ton çalınamıyor." : t ? `<span class="tone-on">${t.kind === "bass" ? "Bas tonu" : "Karşılaştırma tonu"} çalıyor (${nf0.format(t.freq)} Hz, ${nf0.format(t.seconds)} sn) — EQ geçici kapalı</span>` : ""; }
+  $("tone-stop").hidden = !tn;
+  $("tone-st").innerHTML = !can ? tx("c.tone_no_hp") : tn ? `<span class="tone-on">${tx("c.tone_playing", {tone: tn.kind === "bass" ? tx("c.tone_bass") : tx("c.tone_ref"), f: nf0.format(tn.freq), s: nf0.format(tn.seconds)})}</span>` : ""; }
 $("seal-sec").addEventListener("click", async ev => { const b = ev.target.closest("[data-tone]"); if (!b) return;
   try { const v = await api("/api/tone", {kind: b.dataset.tone, seconds: 4}); apply(v, {keepSel: true});
     clearTimeout(toneTimer); toneTimer = setTimeout(async () => { try { apply(await api("/api/state"), {keepSel: true}); } catch {} }, v.tone.seconds * 1000 + 400);
@@ -795,51 +808,47 @@ $("seal-sec").addEventListener("click", async ev => { const b = ev.target.closes
 $("tone-stop").onclick = async () => { try { apply(await api("/api/tone/stop", {}), {keepSel: true}); } catch (e) { toast(e.message, {err: true}); } };
 
 // ── otomatik (D3–D5) ──
-const AUTO_HELP = {off: "Kapalı: ses yalnız senin seçtiğin ayarla çalar. Analiz dinlemez.",
-  apc: "Otomatik profil: çalan sesin türünü (elektronik, rock, konuşma…) yerel olarak tanır ve o türe bağlı profili ya da tarzı yumuşak geçişle yükler.",
-  adl: "Canlı uyarlama: seçtiğin profil kalır; üstüne, parçanın bas/tiz dengesine göre küçük ve yavaş bir düzeltme eklenir (profiline yazılmaz).",
-  both: "İkisi birden: türe göre profil seçer ve üstüne canlı uyarlama yapar."};
-const INST_TR = {"Bass guitar": "bas gitar", "Electric guitar": "elektro gitar", "Acoustic guitar": "akustik gitar", "Drum kit": "davul seti", "Drum": "davul",
-  "Synthesizer": "synth", "Piano": "piyano", "Violin, fiddle": "keman", "Orchestra": "orkestra", "Singing": "şarkı söyleme", "Rapping": "rap",
-  "Brass instrument": "üflemeli", "Saxophone": "saksafon", "Bass drum": "bas davul", "Electronic organ": "org", "Choir": "koro"};
-const BAND_TR = {"bas": "Bas", "alt_orta": "Alt-orta", "varlık": "Varlık", "hava": "Hava"};
+const ADL_BANDS = ["bas", "alt_orta", "varlık", "hava"];                       // API anahtarları
 const sgn = v => (v > 0 ? "+" : v < 0 ? "−" : "±") + nf1.format(Math.abs(v));
-function targetLabel(t) { const [k, id] = t.split(":"); if (k === "preset") return "tarz: " + ((V.presets[id] || {}).label || id);
-  const p = V.profiles.find(x => x.id === id); return "profil: " + (p ? p.name : id); }
+const pct = n => tx("c.pct", {n});
+const modeLabel = m => EN ? tv("auto.mode.", m.id) : m.label;
+const genreLabel = (id, label) => EN ? (id ? tv("genre.", id) : null) : label;
+function targetLabel(t) { const [k, id] = t.split(":"); if (k === "preset") return tx("c.t_preset", {name: V.presets[id] ? loc(V.presets[id], "label") : id});
+  const p = V.profiles.find(x => x.id === id); return tx("c.t_profile", {name: p ? autoName(p.name) : id}); }
 function renderAuto() {
   const a = V && V.auto; const chip = $("auto-chip");
   if (!a) { $("tab-auto").hidden = true; chip.hidden = true; return; }
   const cur = a.modes.find(m => m.id === a.mode);
-  chip.hidden = a.mode === "off"; chip.textContent = "Oto: " + (cur ? cur.label : a.mode) + (a.genre_label && a.state === "dinliyor" ? " · " + a.genre_label : "");
-  $("auto-mode").innerHTML = a.modes.map(m => `<button type="button" data-m="${m.id}" aria-pressed="${m.id === a.mode}">${esc(m.label)}</button>`).join("");
-  $("auto-help").textContent = AUTO_HELP[a.mode] || "";
+  chip.hidden = a.mode === "off"; chip.textContent = tx("c.auto_chip", {mode: cur ? modeLabel(cur) : a.mode}) + (a.genre_label && a.state === "dinliyor" ? " · " + genreLabel(a.genre, a.genre_label) : "");
+  $("auto-mode").innerHTML = a.modes.map(m => `<button type="button" data-m="${m.id}" aria-pressed="${m.id === a.mode}">${esc(modeLabel(m))}</button>`).join("");
+  $("auto-help").textContent = I18N.has("autohelp." + a.mode) ? tx("autohelp." + a.mode) : "";
   const on = a.mode !== "off"; $("auto-live").hidden = !on; $("auto-adl").hidden = !(a.mode === "adl" || a.mode === "both"); $("auto-apc").hidden = !(a.mode === "apc" || a.mode === "both");
-  const st = a.held ? `askıda — ${a.held} sürüyor` : a.state === "sessizlik" ? "sessiz — ses gelince tanır" : a.paused_s > 0 ? `elle dokundun — ${nf0.format(Math.ceil(a.paused_s))} sn bekliyor` : "";
-  $("auto-genre").textContent = a.state === "dinliyor" ? (a.genre_label || "emin değil") : "—"; $("auto-state").textContent = st;
-  $("auto-scores").innerHTML = (a.state === "dinliyor" ? a.scores : []).map(s => `<div class="gbar"><span>${esc(s.label)}</span><i><b style="--p:${Math.round(s.p * 100)}%"></b></i><span class="num">%${nf0.format(s.p * 100)}</span></div>`).join("");
-  $("auto-char").innerHTML = a.character.length ? a.character.map(t => `<span class="tag">${esc(t)}</span>`).join("") : '<span class="sub">—</span>';
-  $("auto-inst").innerHTML = a.instruments.filter(x => x[1] >= 0.05).map(([n, p]) => `<span class="tag">${esc(INST_TR[n] || n)} %${nf0.format(p * 100)}</span>`).join("") || '<span class="sub">—</span>';
+  const st = a.held ? tx("c.held", {why: EN ? tv("held.", a.held) : a.held}) : a.state === "sessizlik" ? tx("c.silent") : a.paused_s > 0 ? tx("c.paused", {n: nf0.format(Math.ceil(a.paused_s))}) : "";
+  $("auto-genre").textContent = a.state === "dinliyor" ? (genreLabel(a.genre, a.genre_label) || tx("c.unsure")) : "—"; $("auto-state").textContent = st;
+  $("auto-scores").innerHTML = (a.state === "dinliyor" ? a.scores : []).map(s => `<div class="gbar"><span>${esc(genreLabel(s.id, s.label))}</span><i><b style="--p:${Math.round(s.p * 100)}%"></b></i><span class="num">${pct(nf0.format(s.p * 100))}</span></div>`).join("");
+  $("auto-char").innerHTML = a.character.length ? a.character.map(c => `<span class="tag">${esc(EN ? tv("char.", c) : c)}</span>`).join("") : '<span class="sub">—</span>';
+  $("auto-inst").innerHTML = a.instruments.filter(x => x[1] >= 0.05).map(([n, p]) => `<span class="tag">${esc(tv("inst.", n))} ${pct(nf0.format(p * 100))}</span>`).join("") || '<span class="sub">—</span>';
   const off = a.offsets || {};
-  $("auto-offs").innerHTML = Object.keys(BAND_TR).map(k => { const v = off[k] || 0, h = Math.min(50, Math.abs(v) / 4 * 50);
-    return `<div class="off"><div class="col"><b style="${v >= 0 ? `bottom:50%;height:${h}%` : `top:50%;height:${h}%`}"></b></div>${BAND_TR[k]}<br><span class="num">${sgn(v)} dB</span></div>`; }).join("");
+  $("auto-offs").innerHTML = ADL_BANDS.map(k => { const v = off[k] || 0, h = Math.min(50, Math.abs(v) / 4 * 50);
+    return `<div class="off"><div class="col"><b style="${v >= 0 ? `bottom:50%;height:${h}%` : `top:50%;height:${h}%`}"></b></div>${tx("band." + k)}<br><span class="num">${sgn(v)} dB</span></div>`; }).join("");
   $("auto-slots").hidden = a.free_slots >= a.slots_needed;
-  $("auto-slots").textContent = `Canlı uyarlama için ${a.slots_needed} boş bant gerekir, ${a.free_slots} boş var — bazı düzeltmeler uygulanamaz. Kullanmadığın bir bandı kapat.`;
-  $("auto-bias").textContent = "öğrenilen: bas " + sgn(a.bias.bas) + " dB"; $("auto-learn").textContent = nf0.format(a.learned_s);
-  $("auto-map").innerHTML = Object.entries(a.mapping).map(([g, t]) => `<tr><td>${esc({elektronik: "Elektronik", hiphop: "Hip-hop / R&B", rock: "Rock / Metal", pop: "Pop", klasik: "Klasik", caz_akustik: "Caz / Akustik", "konuşma": "Konuşma"}[g] || g)}</td><td>${esc(targetLabel(t))}</td></tr>`).join("");
-  $("auto-log").innerHTML = a.log.length ? a.log.slice().reverse().map(l => `<li>${esc(targetLabel(l.to))} ← ${esc(l.genre || "düşük güven")} (%${nf0.format((l.score || 0) * 100)})</li>`).join("") : "<li>henüz geçiş yok</li>";
-  const c = a.classifier; $("auto-cls").textContent = c.available ? `Tür tanıma yerel (YAMNet, internet yok) · ${c.ms != null ? nf1.format(c.ms) + " ms / 2 sn ses" : "bekliyor"}` : "Tür tanıma kapalı: " + (c.reason || "") + " — yalnız bas/tiz dengesi kullanılır.";
+  $("auto-slots").textContent = tx("c.slots", {need: a.slots_needed, free: a.free_slots});
+  $("auto-bias").textContent = tx("c.learned_bias", {v: sgn(a.bias.bas)}); $("auto-learn").textContent = nf0.format(a.learned_s);
+  $("auto-map").innerHTML = Object.entries(a.mapping).map(([g, t]) => `<tr><td>${esc(tv("genre.", g))}</td><td>${esc(targetLabel(t))}</td></tr>`).join("");
+  $("auto-log").innerHTML = a.log.length ? a.log.slice().reverse().map(l => `<li>${esc(targetLabel(l.to))} ← ${esc(l.genre ? (EN ? tv("genre.", l.genre) : l.genre) : tx("c.low_conf"))} (${pct(nf0.format((l.score || 0) * 100))})</li>`).join("") : `<li>${tx("c.no_switches")}</li>`;
+  const c = a.classifier; $("auto-cls").textContent = c.available ? tx("c.cls_on", {state: c.ms != null ? tx("c.cls_ms", {ms: nf1.format(c.ms)}) : tx("c.waiting")}) : tx("c.cls_off", {reason: loc(c, "reason") || ""});
 }
 $("auto-mode").addEventListener("click", async ev => { const b = ev.target.closest("button"); if (!b) return;
   try { apply(await api("/api/auto", {mode: b.dataset.m}), {keepSel: true}); pollAuto(); } catch (e) { toast(e.message, {err: true}); } });
 $("pn-auto").addEventListener("click", async ev => { const b = ev.target.closest("[data-nudge]"); if (!b) return;
-  try { apply(await api("/api/auto", {nudge: {band: "bas", delta: +b.dataset.nudge}}), {keepSel: true}); toast(+b.dataset.nudge > 0 ? "Not edildi: biraz daha bas" : "Not edildi: biraz daha az bas"); } catch (e) { toast(e.message, {err: true}); } });
+  try { apply(await api("/api/auto", {nudge: {band: "bas", delta: +b.dataset.nudge}}), {keepSel: true}); toast(+b.dataset.nudge > 0 ? tx("c.noted_more") : tx("c.noted_less")); } catch (e) { toast(e.message, {err: true}); } });
 let autoTimer = 0;
 async function pollAuto() { clearTimeout(autoTimer);
   if (!(V && V.auto) || document.visibilityState !== "visible") return;
   const tabOpen = !$("pn-auto").hidden;
   if (V.auto.mode === "off" && !tabOpen) return;
   try { const r = await api("/api/auto"); const changed = JSON.stringify(r.active) !== JSON.stringify(V.active);
-    if (changed) { apply(await api("/api/state"), {keepSel: true}); if (r.active && r.active.by === "auto") toast("Otomatik: " + r.active.name + " yüklendi"); }
+    if (changed) { apply(await api("/api/state"), {keepSel: true}); if (r.active && r.active.by === "auto") toast(tx("c.auto_loaded", {name: dispName(r.active)})); }
     else { const redraw = JSON.stringify(r.curve_auto) !== JSON.stringify(V.curve_auto); V.auto = r.auto; V.auto_offsets = r.auto_offsets; V.curve_auto = r.curve_auto; renderAuto(); if (redraw) drawGraph(); }
   } catch {}
   autoTimer = setTimeout(pollAuto, 1000); }
@@ -853,31 +862,31 @@ async function abxPoll() { clearTimeout(abxTimer); if (!$("abx-dlg").open) retur
 function renderAbx() { const a = AB; if (!a) return;
   const ph = a.phase; $("abx-s1").hidden = ph !== "idle"; $("abx-s2").hidden = ph !== "trial"; $("abx-s3").hidden = ph !== "result";
   $("abx-def").hidden = !a.default_clip; $("abx-rec").disabled = !a.can_record;
-  $("abx-clipst").textContent = a.clip_ready ? "Klip hazır ✓ — şimdi müziği DURDUR, sonra 'Teste başla'." : a.can_record ? "" : "Kulaklık bağlı değil — kayıt yapılamıyor.";
+  $("abx-clipst").textContent = a.clip_ready ? tx("c.abx_ready") : a.can_record ? "" : tx("c.abx_no_hp");
   const oth = (a.other_audio || []).filter(Boolean); $("abx-other").hidden = !(ph !== "idle" || a.clip_ready) || !oth.length;
-  $("abx-other").textContent = `Başka ses çalıyor (${[...new Set(oth)].join(", ")}) — testten önce durdur, yoksa karışır.`;
+  $("abx-other").textContent = tx("c.abx_other", {apps: [...new Set(oth)].join(", ")});
   const go = $("abx-go");
-  if (ph === "idle") { go.hidden = false; go.textContent = "Teste başla"; go.disabled = !a.clip_ready; $("abx-cancel").textContent = "Vazgeç"; }
-  else if (ph === "trial") { go.hidden = true; $("abx-cancel").textContent = "Testi iptal et"; }
-  else { go.hidden = false; $("abx-cancel").textContent = "Kapat (orijinal codec)"; }
+  if (ph === "idle") { go.hidden = false; go.textContent = tx("c.abx_start"); go.disabled = !a.clip_ready; $("abx-cancel").textContent = tx("c.cancel"); }
+  else if (ph === "trial") { go.hidden = true; $("abx-cancel").textContent = tx("c.abx_abort"); }
+  else { go.hidden = false; $("abx-cancel").textContent = tx("c.abx_close"); }
   if (ph === "trial") { $("abx-k").textContent = a.trial; $("abx-n").textContent = a.n; const [ca, cb] = a.codecs; $("abx-la").textContent = CODEC_TR[ca] || ca; $("abx-lb").textContent = CODEC_TR[cb] || cb;
     $("abx-dots").innerHTML = Array.from({length: a.n}, (_, i) => `<i class="${i + 1 < a.trial ? "on" : i + 1 === a.trial ? "cur" : ""}"></i>`).join("");
     for (const b of document.querySelectorAll("[data-play]")) { b.disabled = a.busy; b.classList.toggle("done", a.played.includes(b.dataset.play)); b.classList.toggle("now", a.now_playing === b.dataset.play); }
     for (const b of document.querySelectorAll("[data-ans]")) b.disabled = a.busy || !a.x_played;
-    $("abx-play").textContent = a.error ? "Hata: " + a.error : a.busy ? `${a.now_playing} çalıyor… (codec değişirken 1–2 sn sessizlik normal)` : a.x_played ? "Cevabını seç." : "X'i dinlemeden cevap verilemez."; }
-  if (ph === "result") { const r = a.result; $("abx-score").textContent = `${r.correct}/${r.n} doğru`;
+    $("abx-play").textContent = a.error ? tx("c.error", {msg: loc(a, "error")}) : a.busy ? tx("c.abx_busy", {w: a.now_playing}) : a.x_played ? tx("c.abx_answer") : tx("c.abx_need_x"); }
+  if (ph === "result") { const r = a.result; $("abx-score").textContent = tx("c.abx_score", {c: r.correct, n: r.n});
     $("abx-verdict").textContent = r.distinguishable
-      ? `Fark gerçekten duyuluyor (şansla bu kadar tutturma ihtimali %${nf1.format(r.p_value * 100)}). Hangisi daha iyi geldi?`
-      : `Fark kanıtlanmadı (şansla bu kadar tutturma ihtimali %${nf0.format(r.p_value * 100)}). Kulağın ikisini ayırt etmiyor → şu anki codec (${CODEC_TR[a.original] || a.original}) kalır. İstersen testi tekrarlayabilirsin.`;
+      ? tx("c.abx_yes", {p: nf1.format(r.p_value * 100)})
+      : tx("c.abx_no", {p: nf0.format(r.p_value * 100), codec: CODEC_TR[a.original] || a.original});
     $("abx-pref").hidden = !r.distinguishable;
     for (const b of document.querySelectorAll("[data-pref]")) b.setAttribute("aria-pressed", String(a.preference === b.dataset.pref || (b.dataset.pref === "eşit" && a.preference === null && r.distinguishable && abxPrefChosen)));
-    const pc = r.distinguishable && a.preference; go.textContent = pc ? `${CODEC_TR[a.preference]} kalıcı olsun` : "Bitir"; go.disabled = r.distinguishable && !abxPrefChosen;
-    $("abx-prefst").textContent = pc ? `Seçim: ${CODEC_TR[a.preference]}. "Kalıcı olsun" ile kulaklık bundan sonra hep bununla çalışır.` : ""; }
+    const pc = r.distinguishable && a.preference; go.textContent = pc ? tx("c.abx_keep", {codec: CODEC_TR[a.preference]}) : tx("c.abx_finish"); go.disabled = r.distinguishable && !abxPrefChosen;
+    $("abx-prefst").textContent = pc ? tx("c.abx_pick", {codec: CODEC_TR[a.preference]}) : ""; }
 }
 let abxPrefChosen = false;
 async function abxCall(path, body) { try { AB = await api(path, body || {}); renderAbx(); abxPoll(); return AB; } catch (e) { toast(e.message, {err: true}); } }
 $("abx-open").onclick = async () => { abxPrefChosen = false; $("abx-dlg").showModal(); await abxPoll(); };
-$("abx-rec").onclick = async () => { $("abx-clipst").textContent = "Dinleniyor… 12 sn (müzik çalmaya devam etsin)"; $("abx-rec").disabled = true; await abxCall("/api/abx/clip", {source: "music"}); };
+$("abx-rec").onclick = async () => { $("abx-clipst").textContent = tx("c.abx_listening"); $("abx-rec").disabled = true; await abxCall("/api/abx/clip", {source: "music"}); };
 $("abx-def").onclick = () => abxCall("/api/abx/clip", {source: "default"});
 $("abx-dlg").addEventListener("click", ev => { const p = ev.target.closest("[data-play]"), a = ev.target.closest("[data-ans]"), f = ev.target.closest("[data-pref]");
   if (p) abxCall("/api/abx/play", {which: p.dataset.play});
@@ -886,21 +895,21 @@ $("abx-dlg").addEventListener("click", ev => { const p = ev.target.closest("[dat
 $("abx-go").onclick = async () => { if (!AB) return;
   if (AB.phase === "idle") return abxCall("/api/abx/start", {a: "aac", b: "sbc"});
   if (AB.phase === "result") { const apply = !!AB.preference; const r = await abxCall("/api/abx/finish", {apply});
-    if (r) { const f = r.finished; $("abx-last").textContent = `Son test: ${f.correct}/${f.n}${f.applied ? " · " + CODEC_TR[f.preference] + " kalıcı" : ""}`;
-      toast(f.applied ? `${CODEC_TR[f.preference]} kalıcı yapıldı ✓` : "Test kaydedildi — codec değişmedi"); $("abx-dlg").close(); apply && apply2State(); } } };
+    if (r) { const f = r.finished; $("abx-last").textContent = tx("c.abx_last", {c: f.correct, n: f.n}) + (f.applied ? tx("c.abx_last_kept", {codec: CODEC_TR[f.preference]}) : "");
+      toast(f.applied ? tx("c.abx_kept", {codec: CODEC_TR[f.preference]}) : tx("c.abx_saved")); $("abx-dlg").close(); apply && apply2State(); } } };
 async function apply2State() { try { apply(await api("/api/state"), {keepSel: true}); } catch {} }
 $("abx-cancel").onclick = async () => { if (AB && AB.phase !== "idle") await abxCall("/api/abx/abort"); $("abx-dlg").close(); };
 $("abx-dlg").addEventListener("close", () => clearTimeout(abxTimer));
 
 // tür etiketleri
-const GENRES = [["elektronik", "Elektronik"], ["hiphop", "Hip-hop / R&B"], ["rock", "Rock / Metal"], ["pop", "Pop"], ["klasik", "Klasik"], ["caz_akustik", "Caz / Akustik"], ["konuşma", "Konuşma / podcast"]];
+const GENRES = ["elektronik", "hiphop", "rock", "pop", "klasik", "caz_akustik", "konuşma"];   // API kimlikleri
 let genreId = null;
 function openGenres(id) { genreId = id; const p = V.profiles.find(x => x.id === id) || {genres: []};
-  $("genre-title").textContent = `“${p.name}” — tür etiketleri`;
-  $("genre-list").innerHTML = GENRES.map(([k, l]) => `<label class="switch"><input type="checkbox" value="${k}" ${(p.genres || []).includes(k) ? "checked" : ""}><span>${l}</span></label>`).join("");
+  $("genre-title").textContent = tx("c.genre_title", {name: autoName(p.name)});
+  $("genre-list").innerHTML = GENRES.map(k => `<label class="switch"><input type="checkbox" value="${k}" ${(p.genres || []).includes(k) ? "checked" : ""}><span>${tx("genretag." + k)}</span></label>`).join("");
   $("genre-dlg").showModal(); }
 $("genre-form").addEventListener("submit", async ev => { ev.preventDefault(); const genres = [...$("genre-list").querySelectorAll("input:checked")].map(x => x.value);
-  try { apply(await api("/api/profile/genres", {id: genreId, genres}), {keepSel: true}); $("genre-dlg").close(); toast(genres.length ? "Tür etiketleri kaydedildi" : "Tür etiketleri kaldırıldı"); } catch (e) { toast(e.message, {err: true}); } });
+  try { apply(await api("/api/profile/genres", {id: genreId, genres}), {keepSel: true}); $("genre-dlg").close(); toast(genres.length ? tx("c.genres_saved") : tx("c.genres_removed")); } catch (e) { toast(e.message, {err: true}); } });
 $("genre-cancel").onclick = () => $("genre-dlg").close();
 
 // ── durum değişikliği ──
@@ -909,7 +918,7 @@ function record() {}                               // geçmiş SUNUCUDA (kalıc�
 let sealNext = false;
 function change(mut, {rec = true} = {}) { if (rec) sealNext = true; mut(S()); drawGraph(); renderStrip(); renderInspector(); renderSpace(); clearTimeout(timer); timer = setTimeout(push, 40); }
 async function push() { const seal = sealNext; sealNext = false;
-  try { apply(await api("/api/state", {state: snap(), seal}), {keepSel: true}); } catch (e) { toast("Uygulanamadı: " + e.message, {err: true}); } }
+  try { apply(await api("/api/state", {state: snap(), seal}), {keepSel: true}); } catch (e) { toast(tx("c.apply_failed", {msg: e.message}), {err: true}); } }
 async function seal() { try { await api("/api/history/seal", {}); } catch {} }
 function apply(v, {keepSel = false} = {}) { const s0 = sel; V = v; if (!keepSel) sel = 0; else sel = s0; renderAll(); }
 async function setState(st) { apply(await api("/api/state", {state: st}), {keepSel: true}); }
@@ -927,7 +936,7 @@ svg.addEventListener("wheel", ev => { const n = ev.target.closest(".node"); if (
   change(() => { b.q = Math.round(clamp(b.q * (ev.deltaY < 0 ? 1.12 : 1 / 1.12), V.limits.q[0], V.limits.q[1]) * 100) / 100; }); }, {passive: false});
 svg.addEventListener("dblclick", ev => { const n = ev.target.closest(".node");
   if (n) { const i = +n.dataset.i; if (S().bands[i].enabled) return change(s => { s.bands[i].enabled = false; }); }
-  const free = S().bands.findIndex(b => !b.enabled); if (free < 0) return toast("10 bandın hepsi kullanımda — önce birini kapat", {err: true});
+  const free = S().bands.findIndex(b => !b.enabled); if (free < 0) return toast(tx("c.bands_full"), {err: true});
   const p = pt(ev); sel = free; change(s => Object.assign(s.bands[free], {enabled: true, type: "bell", q: 1.0, freq: Math.round(clamp(fx(p.x), 20, 20000)), gain: Math.round(clamp(dy(p.y), -18, 12) * 10) / 10})); });
 svg.addEventListener("focusin", ev => { const n = ev.target.closest(".node"); if (n && +n.dataset.i !== sel) { sel = +n.dataset.i; focusNode = true; renderAll(); } });
 $("strip").addEventListener("click", ev => { const b = ev.target.closest(".cell"); if (b) { sel = +b.dataset.i; focusNode = false; renderAll(); } });
@@ -953,7 +962,7 @@ for (const [id, key, sub] of [["cf-fcut", "fcut", "crossfeed"], ["cf-feed", "fee
 $("cf-presets").addEventListener("click", ev => { const c = ev.target.closest("button"); if (!c) return; const p = V.bs2b[c.dataset.p]; change(s => { s.crossfeed = {enabled: true, fcut: p.fcut, feed: p.feed}; }); });
 
 // hazır tarzlar
-async function usePreset(id) { try { apply(await api("/api/preset", {id})); describe(id); toast(`“${V.presets[id].label}” uygulandı`); } catch (e) { toast(e.message, {err: true}); } }
+async function usePreset(id) { try { apply(await api("/api/preset", {id})); describe(id); toast(tx("c.preset_applied", {name: loc(V.presets[id], "label")})); } catch (e) { toast(e.message, {err: true}); } }
 for (const el of ["pgrid", "space-presets"]) $(el).addEventListener("click", ev => { const c = ev.target.closest(".pcard"); if (c) usePreset(c.dataset.p); });
 for (const el of ["pgrid", "space-presets"]) $(el).addEventListener("focusin", ev => { const c = ev.target.closest(".pcard"); if (c) describe(c.dataset.p); });
 $("cats").addEventListener("click", ev => { const c = ev.target.closest("button"); if (!c) return; cat = c.dataset.c; store.set("cat", cat); renderPresets(); });
@@ -963,19 +972,19 @@ $("p-search").addEventListener("input", renderPresets);
 const dlg = $("save-dlg"); let saveMode = "new";
 function openSave() {
   const a = V.active; let name = "";
-  if (a && a.auto && a.derived_from) name = a.derived_from.kind === "preset" ? `${a.derived_from.name} (benim)` : `${a.derived_from.name} 2`;
-  else if (a && a.kind === "preset") name = `${a.name} (benim)`;
+  if (a && a.auto && a.derived_from) name = a.derived_from.kind === "preset" ? tx("c.mine_name", {name: dispName(a.derived_from)}) : `${a.derived_from.name} 2`;
+  else if (a && a.kind === "preset") name = tx("c.mine_name", {name: dispName(a)});
   else if (a && a.kind === "profile" && !a.auto) name = `${a.name} 2`;
-  else { let n = V.profiles.length + 1; while (V.profiles.some(p => p.name === `Profilim ${n}`)) n++; name = `Profilim ${n}`; }
-  $("save-title").textContent = a && a.auto ? `“${a.name}” çalışma kopyasını adlandır` : "Profil olarak kaydet";
+  else { let n = V.profiles.length + 1; while (V.profiles.some(p => p.name === tx("c.my_profile", {n}))) n++; name = tx("c.my_profile", {n}); }
+  $("save-title").textContent = a && a.auto ? tx("c.name_copy", {name: autoName(a.name)}) : tx("c.save_title");
   $("save-name").value = name; $("save-notes").value = ""; $("save-conflict").className = "conflict"; $("save-overwrite").hidden = true;
   dlg.showModal(); $("save-name").select();
 }
 async function doSave(overwrite) {
   const name = $("save-name").value.trim(); if (!name) { $("save-name").focus(); return; }
-  try { apply(await api("/api/profile/save", {name, overwrite, notes: $("save-notes").value.trim()}), {keepSel: true}); dlg.close(); toast(`“${name}” kaydedildi`); }
-  catch (e) { if (e.status === 409) { $("save-conflict").className = "conflict show"; $("save-conflict").textContent = `“${name}” adında bir profil zaten var. Üzerine yazılsın mı, yoksa başka bir ad mı vereceksin?`; $("save-overwrite").hidden = false; $("save-overwrite").focus(); }
-    else { $("save-conflict").className = "conflict show"; $("save-conflict").textContent = "Kaydedilemedi: " + e.message; } }
+  try { apply(await api("/api/profile/save", {name, overwrite, notes: $("save-notes").value.trim()}), {keepSel: true}); dlg.close(); toast(tx("c.saved_name", {name})); }
+  catch (e) { if (e.status === 409) { $("save-conflict").className = "conflict show"; $("save-conflict").textContent = tx("c.conflict", {name}); $("save-overwrite").hidden = false; $("save-overwrite").focus(); }
+    else { $("save-conflict").className = "conflict show"; $("save-conflict").textContent = tx("c.save_failed", {msg: e.message}); } }
 }
 $("save-form").addEventListener("submit", ev => { ev.preventDefault(); doSave(false); });
 $("save-overwrite").onclick = () => doSave(true);
@@ -983,33 +992,33 @@ $("save-cancel").onclick = () => dlg.close();
 $("save-name").addEventListener("input", () => { $("save-conflict").className = "conflict"; $("save-overwrite").hidden = true; });
 $("b-save-new").onclick = openSave;
 async function saveOver() { const a = V.active; if (!(a && a.auto && a.derived_from && a.derived_from.kind === "profile")) return openSave();
-  try { apply(await api("/api/profile/apply-parent", {}), {keepSel: true}); toast(`“${a.derived_from.name}” güncellendi (çalışma kopyası da duruyor)`); } catch (e) { toast(e.message, {err: true}); } }
+  try { apply(await api("/api/profile/apply-parent", {}), {keepSel: true}); toast(tx("c.parent_updated", {name: a.derived_from.name})); } catch (e) { toast(e.message, {err: true}); } }
 $("b-save-over").onclick = saveOver;
 
 // profil listesi
 $("plist").addEventListener("click", async ev => {
   const b = ev.target.closest("button[data-a]"); if (!b) return; const id = b.dataset.id, a = b.dataset.a; const det = b.closest("details"); if (det) det.open = false;
-  const name = (V.profiles.find(p => p.id === id) || {}).name || id;
+  const raw = (V.profiles.find(p => p.id === id) || {}).name || id, name = autoName(raw);
   try {
-    if (a === "load") { apply(await api("/api/profile/load", {id})); toast(`“${name}” yüklendi`); }
+    if (a === "load") { apply(await api("/api/profile/load", {id})); toast(tx("c.loaded", {name})); }
     else if (a === "genres") openGenres(id);
-    else if (a === "duplicate") { apply(await api("/api/profile/duplicate", {id}), {keepSel: true}); toast(`“${name}” çoğaltıldı`); }
+    else if (a === "duplicate") { apply(await api("/api/profile/duplicate", {id}), {keepSel: true}); toast(tx("c.duplicated", {name})); }
     else if (a === "delete") { const v = await api("/api/profile/delete", {id}); apply(v, {keepSel: true});
-      toast(`“${name}” silindi`, {ms: 8000, action: {label: "Geri al", run: async () => { apply(await api("/api/profile/restore", {token: v.trash}), {keepSel: true}); toast(`“${name}” geri yüklendi`); }}}); }
-    else if (a === "rename") { const li = b.closest("li"); const btn = li.querySelector(".load"); const inp = document.createElement("input"); inp.type = "text"; inp.value = name; inp.maxLength = 80; inp.setAttribute("aria-label", "Yeni ad"); inp.autocomplete = "off";
+      toast(tx("c.deleted", {name}), {ms: 8000, action: {label: tx("c.undo_short"), run: async () => { apply(await api("/api/profile/restore", {token: v.trash}), {keepSel: true}); toast(tx("c.restored", {name})); }}}); }
+    else if (a === "rename") { const li = b.closest("li"); const btn = li.querySelector(".load"); const inp = document.createElement("input"); inp.type = "text"; inp.value = raw; inp.maxLength = 80; inp.setAttribute("aria-label", tx("c.new_name")); inp.autocomplete = "off";
       btn.replaceWith(inp); inp.focus(); inp.select(); let done = false;
-      const finish = async ok => { if (done) return; done = true; const nn = inp.value.trim(); if (!ok || !nn || nn === name) return renderProfiles();
-        try { apply(await api("/api/profile/rename", {id, name: nn}), {keepSel: true}); toast(`Yeni ad: “${nn}”`); } catch (e) { toast(e.status === 409 ? `“${nn}” adı dolu — başka bir ad seç` : e.message, {err: true}); renderProfiles(); } };
+      const finish = async ok => { if (done) return; done = true; const nn = inp.value.trim(); if (!ok || !nn || nn === raw) return renderProfiles();
+        try { apply(await api("/api/profile/rename", {id, name: nn}), {keepSel: true}); toast(tx("c.renamed", {name: nn})); } catch (e) { toast(e.status === 409 ? tx("c.name_taken", {name: nn}) : e.message, {err: true}); renderProfiles(); } };
       inp.addEventListener("keydown", e => { if (e.key === "Enter") finish(true); if (e.key === "Escape") finish(false); }); inp.addEventListener("blur", () => finish(true)); }
-    else if (a === "export") { const r = await fetch("/api/profile/export?id=" + encodeURIComponent(id)); if (!r.ok) throw new Error("dışa aktarılamadı");
-      const url = URL.createObjectURL(await r.blob()); const link = document.createElement("a"); link.href = url; link.download = `bta-${id}.json`; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); toast(`“${name}” dışa aktarıldı`); }
+    else if (a === "export") { const r = await fetch("/api/profile/export?id=" + encodeURIComponent(id)); if (!r.ok) throw new Error(tx("c.export_failed"));
+      const url = URL.createObjectURL(await r.blob()); const link = document.createElement("a"); link.href = url; link.download = `bta-${id}.json`; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); toast(tx("c.exported", {name})); }
   } catch (e) { toast(e.message, {err: true}); }
 });
 async function importFile(file) {
-  if (!file) return; if (file.size > 200 * 1024) return toast("Dosya çok büyük (en fazla 200 KB)", {err: true});
+  if (!file) return; if (file.size > 200 * 1024) return toast(tx("c.file_too_big"), {err: true});
   try { const doc = JSON.parse(await file.text()); const v = await api("/api/profile/import", {doc}); apply(v, {keepSel: true});
-    toast(`İçe aktarıldı: “${(v.profiles.find(p => p.id === v.imported) || {}).name || v.imported}”`); }
-  catch (e) { toast("İçe aktarılamadı: " + (e instanceof SyntaxError ? "geçerli bir JSON değil" : e.message), {err: true}); }
+    toast(tx("c.imported", {name: (v.profiles.find(p => p.id === v.imported) || {}).name || v.imported})); }
+  catch (e) { toast(tx("c.import_failed", {msg: e instanceof SyntaxError ? tx("c.not_json") : e.message}), {err: true}); }
 }
 $("b-import").onclick = () => $("f-import").click();
 $("f-import").onchange = e => { importFile(e.target.files[0]); e.target.value = ""; };
@@ -1022,16 +1031,16 @@ mine.addEventListener("drop", e => { e.preventDefault(); mine.classList.remove("
 $("b-undo").onclick = async () => { try { apply(await api("/api/history/undo", {}), {keepSel: true}); } catch (e) { toast(e.message, {err: true}); } };
 $("b-redo").onclick = async () => { try { apply(await api("/api/history/redo", {}), {keepSel: true}); } catch (e) { toast(e.message, {err: true}); } };
 const ab = $("b-ab");
-async function bypass(on) { if ((ab.getAttribute("aria-pressed") === "true") === on) return; ab.setAttribute("aria-pressed", String(on)); ab.textContent = on ? "Şu an EQ'suz — bırak" : "EQ'suz dinle";
+async function bypass(on) { if ((ab.getAttribute("aria-pressed") === "true") === on) return; ab.setAttribute("aria-pressed", String(on)); ab.textContent = on ? tx("c.bypass_on") : tx("c.bypass");
   try { apply(await api("/api/bypass", {on}), {keepSel: true}); } catch (e) { toast(e.message, {err: true}); } }
 ab.addEventListener("pointerdown", () => bypass(true));
 for (const e of ["pointerup", "pointerleave", "pointercancel"]) ab.addEventListener(e, () => bypass(false));
 ab.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); bypass(true); } });
 ab.addEventListener("keyup", e => { if (e.key === " " || e.key === "Enter") bypass(false); });
-$("b-commit").onclick = async () => { const b = $("b-commit"); b.disabled = true; b.textContent = "Kuruluyor…";
-  try { apply(await api("/api/commit", {}), {keepSel: true}); toast("Açılışta bu ses kullanılacak ✓ (ses yarım saniye kesilmiş olabilir)"); } catch (e) { toast("Kurulamadı: " + e.message, {err: true}); renderTop(); } };
-const THEMES = ["auto", "dark", "light"], THEME_TR = {auto: "otomatik", dark: "koyu", light: "açık"};
-function setTheme(t) { document.documentElement.dataset.theme = t; $("b-theme").setAttribute("aria-label", "Tema: " + THEME_TR[t]); $("b-theme").title = "Tema: " + THEME_TR[t]; store.set("theme", t);
+$("b-commit").onclick = async () => { const b = $("b-commit"); b.disabled = true; b.textContent = tx("c.committing");
+  try { apply(await api("/api/commit", {}), {keepSel: true}); toast(tx("c.committed")); } catch (e) { toast(tx("c.commit_failed", {msg: e.message}), {err: true}); renderTop(); } };
+const THEMES = ["auto", "dark", "light"];
+function setTheme(t) { const name = tx("theme." + t); document.documentElement.dataset.theme = t; $("b-theme").setAttribute("aria-label", tx("c.theme_is", {name})); $("b-theme").title = tx("c.theme_is", {name}); store.set("theme", t);
   document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.body).backgroundColor; if (V) drawGraph(); }
 $("b-theme").onclick = () => setTheme(THEMES[(THEMES.indexOf(document.documentElement.dataset.theme) + 1) % 3]);
 $("b-help").onclick = () => $("help-dlg").showModal();
@@ -1045,7 +1054,7 @@ tabs.forEach((t, i) => { t.onclick = () => selectTab(t); t.onkeydown = e => { co
 const typing = t => t && (t.tagName === "INPUT" && !["checkbox", "range"].includes(t.type) || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable);
 document.addEventListener("keydown", e => {
   const mod = e.ctrlKey || e.metaKey;
-  if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); if (!e.shiftKey && V.active && V.active.auto) { renderSaved(V.saved); toast("Çalışma kopyası zaten otomatik kaydediliyor ✓"); return; } openSave(); return; }
+  if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); if (!e.shiftKey && V.active && V.active.auto) { renderSaved(V.saved); toast(tx("c.autosaved")); return; } openSave(); return; }
   if (mod && e.key.toLowerCase() === "z") { e.preventDefault(); (e.shiftKey ? $("b-redo") : $("b-undo")).click(); return; }
   if (mod && e.key.toLowerCase() === "y") { e.preventDefault(); $("b-redo").click(); return; }
   if (typing(e.target) || mod || e.altKey || document.querySelector("dialog[open]")) return;
@@ -1060,7 +1069,7 @@ document.addEventListener("keydown", e => {
     e.preventDefault(); focusNode = !!(e.target.closest && e.target.closest("#graph"));
     if (e.key === "Delete") return change(s => { s.bands[sel].enabled = false; });
     if (e.key.toLowerCase() === "e") return change(s => { s.bands[sel].enabled = !s.bands[sel].enabled; });
-    if (!b.enabled) return toast(`Bant ${sel + 1} kapalı — E ile aç`);
+    if (!b.enabled) return toast(tx("c.band_off_toast", {n: sel + 1}));
     const oct = e.shiftKey ? 1 / 96 : 1 / 24, gd = e.shiftKey ? 0.1 : 0.5;
     change(() => {
       if (e.key === "ArrowLeft") b.freq = Math.round(clamp(b.freq * Math.pow(2, -oct), lim.f[0], lim.f[1]) * 10) / 10;
@@ -1098,37 +1107,39 @@ function meters(lv) {
     m.style.setProperty("--mc", v && v.peak > -1 ? "var(--bad)" : v && v.peak > -6 ? "var(--warn)" : "var(--ok)"); }
   const f = a => a <= -119 ? "—" : (a < 0 ? "−" : "") + nf1.format(Math.abs(a));
   const mx = k => lv ? Math.max(lv.L[k], lv.R[k]) : -120;
-  $("m-val").innerHTML = `<span>tepe ${f(mx("peak"))}</span><span>RMS ${f(mx("rms"))}</span><span>TP ${f(mx("true_peak"))}</span>`;
+  $("m-val").innerHTML = `<span>${tx("c.peak", {v: f(mx("peak"))})}</span><span>RMS ${f(mx("rms"))}</span><span>TP ${f(mx("true_peak"))}</span>`;
 }
 function onFrame(fr) {
   lastFrame = performance.now();
-  if (fr.idle) { idle = true; setSig(false, "Sessiz — müzik çalınca burada görünür"); return; }
-  AF = fr; idle = !fr.signal; setSig(!!fr.signal, fr.signal ? "Müzik algılandı" : "Sessiz — müzik çalınca burada görünür");
-  meters(fr.levels && fr.levels.post); const clips = Math.max(0, fr.clips - clipBase); $("clip").textContent = "kırpılma " + nf0.format(clips); $("clip").classList.toggle("hot", clips > 0);
+  if (fr.idle) { idle = true; setSig(false, tx("c.sig_silent")); return; }
+  AF = fr; idle = !fr.signal; setSig(!!fr.signal, fr.signal ? tx("c.sig_music") : tx("c.sig_silent"));
+  meters(fr.levels && fr.levels.post); const clips = Math.max(0, fr.clips - clipBase); $("clip").textContent = tx("c.clips", {n: nf0.format(clips)}); $("clip").classList.toggle("hot", clips > 0);
   if (!raf) raf = requestAnimationFrame(paint);
 }
 function setSig(on, text) { $("sig").className = "sig" + (on ? " on" : ""); $("sig").lastElementChild.textContent = text; }
 function startAn() { if (es || !anOn() || document.visibilityState !== "visible" || !(V && V.analyzer && V.analyzer.available)) return;
   es = new EventSource("/api/analyzer/stream"); es.onmessage = m => { try { onFrame(JSON.parse(m.data)); } catch {} };
-  es.onerror = () => setSig(false, "Analiz bağlantısı yeniden deneniyor…"); }
-function stopAn(text) { if (es) { es.close(); es = null; } AF = null; paint(); meters(null); setSig(false, text || "Analiz kapalı"); }
-document.addEventListener("visibilitychange", () => document.visibilityState === "visible" ? startAn() : stopAn("Sekme gizli — analiz duraklatıldı"));
+  es.onerror = () => setSig(false, tx("c.sig_retry")); }
+function stopAn(text) { if (es) { es.close(); es = null; } AF = null; paint(); meters(null); setSig(false, text || tx("c.sig_off")); }
+document.addEventListener("visibilitychange", () => document.visibilityState === "visible" ? startAn() : stopAn(tx("c.sig_hidden")));
 $("an-en").onchange = e => { store.set("an-en", e.target.checked); drawGraph(); e.target.checked ? startAn() : stopAn(); for (const id of ["lg-post", "lg-pre"]) $(id).hidden = !e.target.checked; };
 for (const k of ["post", "pre", "hold", "ltas"]) { $("sh-" + k).checked = show[k]; $("sh-" + k).onchange = e => { show[k] = e.target.checked; store.set("sh-" + k, show[k]); $("lg-ltas").hidden = !show.ltas; paint(); }; }
-$("an-reset").onclick = async () => { await api("/api/analyzer/config", {reset_ltas: true}); toast("Parça ortalaması sıfırlandı"); };
-$("clip").onclick = () => { clipBase = AF ? AF.clips : 0; $("clip").textContent = "kırpılma 0"; $("clip").classList.remove("hot"); };
-const RESP_TR = {fast: "Hızlı", medium: "Orta", slow: "Yavaş"};
-function renderResp() { const r = V.analyzer; if (!r) return; $("an-resp").innerHTML = r.responses.map(k => `<button type="button" data-r="${k}" aria-pressed="${k === r.response}">${RESP_TR[k] || k}</button>`).join(""); }
+$("an-reset").onclick = async () => { await api("/api/analyzer/config", {reset_ltas: true}); toast(tx("c.ltas_reset")); };
+$("clip").onclick = () => { clipBase = AF ? AF.clips : 0; $("clip").textContent = tx("c.clips", {n: nf0.format(0)}); $("clip").classList.remove("hot"); };
+
+function renderResp() { const r = V.analyzer; if (!r) return; $("an-resp").innerHTML = r.responses.map(k => `<button type="button" data-r="${k}" aria-pressed="${k === r.response}">${tv("resp.", k)}</button>`).join(""); }
 $("an-resp").addEventListener("click", async ev => { const b = ev.target.closest("button"); if (!b) return; V.analyzer = await api("/api/analyzer/config", {response: b.dataset.r}); renderResp(); });
 new ResizeObserver(() => { const r = cvs.getBoundingClientRect(); if (r.width > 0) { const h = Math.round(W * r.height / r.width); const k = Math.max(1, W / r.width); if (h !== H || Math.abs(k - K) > 0.01) { H = h; K = k; L = R = 44 * K; T = 10 * K; B = 26 * K; $("graph").style.setProperty("--k", K.toFixed(3)); $("graph").setAttribute("viewBox", `0 0 ${W} ${H}`); if (V) drawGraph(); } } sizeCanvas(); paint(); }).observe(cvs);
 
 // ── açılış ──
 (async () => {
+  await I18N.load();
+  if (EN) document.documentElement.style.setProperty("--t-custom", JSON.stringify(tx("c.badge_custom")));
   setTheme(store.get("theme", "auto")); $("an-en").checked = store.get("an-en", true); $("lg-ltas").hidden = !show.ltas;
-  cat = store.get("cat", "Tümü"); const t = tabs.find(x => x.id === store.get("tab", "tab-prof")); if (t) selectTab(t);
+  cat = store.get("cat", "Tümü"); const tb = tabs.find(x => x.id === store.get("tab", "tab-prof")); if (tb) selectTab(tb);
   try { V = await api("/api/state"); if (!V.categories.includes(cat) && cat !== "Tümü") cat = "Tümü"; renderAll(); renderResp(); sizeCanvas(); pollAuto();
-    if (!(V.analyzer && V.analyzer.available)) { $("an-en").checked = false; $("an-en").disabled = true; setSig(false, "Analiz kullanılamıyor (pw-record yok)"); } else if (anOn()) startAn(); else stopAn();
-  } catch (e) { toast("Sunucuya bağlanılamadı: " + e.message, {err: true, ms: 15000}); }
+    if (!(V.analyzer && V.analyzer.available)) { $("an-en").checked = false; $("an-en").disabled = true; setSig(false, tx("c.sig_unavailable")); } else if (anOn()) startAn(); else stopAn();
+  } catch (e) { toast(tx("c.no_server", {msg: e.message}), {err: true, ms: 15000}); }
 })();
 </script>
 </body>

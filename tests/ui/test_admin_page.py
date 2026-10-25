@@ -54,7 +54,7 @@ class TestAdminPage(unittest.TestCase):
         sess, errors = self.sess, []
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, executable_path=CHROME)
-            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True,
+            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True, locale="tr-TR",
                                 accept_downloads=True)
             pg = ctx.new_page()
             pg.on("pageerror", lambda e: errors.append(str(e)))
@@ -77,7 +77,7 @@ class TestAdminPage(unittest.TestCase):
             self.assertEqual(pg.locator("#tl li[data-v]").first.get_attribute("data-v"), "3")   # en yeni üstte
             self.assertIn("şu an", pg.locator("#tl li.cur").inner_text())
             self.assertIn("bant 1", pg.inner_text("#tl"))
-            pg.screenshot(path=os.path.join(UI, "admin-dark-1440.png"), full_page=True)
+            pg.screenshot(path=os.path.join(UI, "admin-dark-1440-tr.png"), full_page=True)
 
             # 3 — sürüme dön (yıkıcı değil)
             pg.click('#tl [data-restore="1"]')

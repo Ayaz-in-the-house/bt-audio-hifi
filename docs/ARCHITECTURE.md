@@ -70,3 +70,20 @@ Host kontrolü + yalnız JSON POST + CSP (U36, U47, U63) · profil kimliği rege
 sanitize + şema kontrolü · model **sha256 sabitli** (`models.lock.json`), yalnız kullanıcı komutuyla indirilir
 (`bta model fetch`), uyuşmazsa silinir · ONNX tek iş parçacığı, sağlayıcı CPU. Ağ: sınıflama tamamen yerel; ses
 verisi makineden çıkmaz.
+
+## Arayüz dili (ADR-i18n, 2026-10-25)
+
+**Karar:** arayüz iki dilli (EN/TR), bağımlılıksız sözlük katmanı: `tools/i18n/{en,tr}.json` + `tools/i18n/i18n.js`
+(`data-i18n*` öznitelikleri, `I18N.t(anahtar, değişkenler)`); dil = `?lang=` (geçici) > `localStorage bta.lang` >
+`navigator.language` (`tr*` → TR) > EN. Sunucu **makine alanlarını değiştirmez** (`id`, `kind`, `group`, `code`, `error`,
+kayıtlı profiller, `state.json` aynı); görünen metinlerin İngilizcesini **paralel alan** olarak ekler: hazır tarz
+`label_en`/`desc_en`/`source_en` (`console.PRESETS_EN`), bs2b `label_en`, uyarı `text_en`, hata `error_en`
+(`consoleserver.ERRORS_EN`, tüm `{"error": …}` yanıtlarına `_send` ekler), sürüm farkı `diff_en`, sınıflayıcı
+`reason_en`. İstemci EN'de `*_en` alanını, TR'de özgün alanı gösterir. Sabit küçük kümeler (tür, mod, grup, karakter
+etiketi, enstrüman) istemci sözlüğünde kimlikle eşlenir. Sözlük yolu tam-yol izin listesidir (`I18N_FILES`, U86).
+**Neden:** uyarı/hata metinleri sayı ve çalışma zamanı değeri gömüyor — kod → şablon eşlemesi biçimlendirmeyi JS'e
+taşır ve TR metninde sapma riski doğurur; paralel alan metni üreten kodun yanında tutar ve Python'da test edilir (U84,
+U85). TR görünümü bayt bayt korunur (U83). **Reddedilen:** `Accept-Language` ile sunucu tarafı seçim (yanıt dile göre
+değişir, test ve önbellek karmaşıklaşır); harici i18n kütüphanesi (bağımlılık + sürüm sabitleme); yalnız İngilizce
+(kullanıcı Türkçe kullanıyor). İngilizce metin çeviri değil, ses ürünü diliyle yazıldı: [i18n-glossary.md](i18n-glossary.md).
+Kapsam dışı: `tools/bass-tune.html`, `tools/loudness-match.html` (eski sayfalar, yalnız TR — FEATURES G8).

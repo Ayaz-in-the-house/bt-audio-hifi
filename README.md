@@ -120,9 +120,9 @@ bin/bta console                # ⭐ console — opens in the browser (127.0.0.1
 bin/bta model fetch            # (optional) local genre classifier for auto mode (YAMNet, sha256-pinned)
 ```
 
-A fresh install starts with the **Hi-fi balanced + space** preset (second after *Neutral*): a measured, moderate bass shelf
+A fresh install starts with the **Balanced hi-fi + soundstage** preset (second after *Flat*): a measured, moderate bass shelf
 (+6 dB below 105 Hz, Harman over-ear amount), gentle bs2b crossfeed and 10 % extra width, loudness +6 dB to offset the
-preamp. Pick *Neutral* for no processing at all.
+preamp. Pick *Flat* for no processing at all.
 
 Requires: Python 3.11+, numpy, scipy · onnxruntime for auto mode · playwright for the tests.
 
@@ -144,7 +144,7 @@ Full catalogue (gray areas included): [docs/FEATURES.md](docs/FEATURES.md).
 
 ## Documentation
 
-The in-depth docs and the UI are currently in Turkish ([README in Turkish](README.tr.md)); an English UI is a planned gray area.
+The console and admin UI are bilingual (English / Turkish): they open in English unless your browser language is Turkish, and the TR / EN switch in the header remembers your choice. The in-depth docs are in Turkish ([README in Turkish](README.tr.md)); UI terminology: [docs/i18n-glossary.md](docs/i18n-glossary.md).
 
 - **Start here:** [docs/README.md](docs/README.md) (documentation hub, for agents and developers)
 - Layers: [headphone](docs/layers/L1-headphone.md) · [Bluetooth](docs/layers/L2-bluetooth.md) · [Linux](docs/layers/L3-linux-os.md) ·

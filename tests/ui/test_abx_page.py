@@ -59,7 +59,7 @@ class TestAbxPage(unittest.TestCase):
         sess, errors = self.sess, []
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, executable_path=CHROME)
-            pg = b.new_page(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True)
+            pg = b.new_page(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True, locale="tr-TR")
             pg.on("pageerror", lambda e: errors.append(str(e)))
             pg.on("console", lambda m: errors.append(m.text) if m.type == "error" and "409" not in m.text else None)
             pg.goto(self.url)
@@ -90,7 +90,7 @@ class TestAbxPage(unittest.TestCase):
                 if i == 0:
                     pg.click('[data-play="A"]')
                     pg.wait_for_function("document.querySelector('[data-play=\"A\"]').classList.contains('done')", timeout=5000)
-                    pg.screenshot(path=os.path.join(UI, "abx-trial-dark.png"))
+                    pg.screenshot(path=os.path.join(UI, "abx-trial-dark-tr.png"))
                 pg.click('[data-play="X"]')
                 pg.wait_for_function("!document.querySelector('[data-ans=\"A\"]').disabled", timeout=5000)
                 ans = x if i < 10 else ("B" if x == "A" else "A")

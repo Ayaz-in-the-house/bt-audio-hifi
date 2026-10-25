@@ -44,6 +44,7 @@ yok (klavye uykusu); kayda geçirildi, müdahale edilmedi.
 | 10-25 16:00 | **defter onarımı (E35)** | `STATE-LOG.md` ve `lessons/errors.md` 14af43c'de ezilmişti → geri yüklendi (E1–E35, 44 satır); U79 kapısı eklendi | bu commit |
 | 10-25 16:00 | **varsayılan: Hi-fi dengeli + uzay** | Kullanıcı 'ne yaptığımı bilmiyorum, dolgun + uzaylı varsayılan' istedi. Ölçülen önceki hâl: otomatik mod 'ikisi birden' açıktı, çalan sesi `konusma` sınıflayıp **Konuşma / podcast** tarzını yüklemişti (100 Hz yüksek geçiren → bas yok). Yeni: otomatik mod KAPALI (`auto.json` off), Harman bas (kulakiçi 2019, 105 Hz +9 dB raf) + crossfeed bs2b 700 Hz/4,5 dB + genişlik 1,1; preamp −8,98, ses +9 dB; profil `Hi-fi dengeli + uzay`, **açılışta kullan** (commit 15:59). Ölçüm (kulaklık monitörü 10 sn, müzik): tepe −11,0 dBFS, RMS −30,5, kırpılma 0 örnek | bu commit |
 | 10-25 16:20 | **analizör bağlantısı (E36/U81) + README 'nereye gidebilir'** | Yeniden başlatma sonrası panel spektrumu boştu (dokunuşlar bağlantısız) → doğrulamalı bağlama + abonede onarım. README (iki dil) tanıtımın hemen ardına katman katman beklenen kazanç + donanım tavanı bölümü | bu commit |
+| 10-25 21:30 | **iki dilli arayüz (EN/TR)** | Konsol + yönetim İngilizce/Türkçe; İngilizce metin sektör diliyle yeniden yazıldı (düz çeviri değil, `docs/i18n-glossary.md`); ADR `docs/ARCHITECTURE.md` (paralel `*_en` alanlar); U82–U86 + T-U09; README görselleri EN, TR olanlar `-tr` | `b80fc68`…`e0c44d7` |
 
 ## Sıradaki (kullanıcı müsait olduğunda — 2026-10-25 itibarıyla iş DURDURULDU)
 

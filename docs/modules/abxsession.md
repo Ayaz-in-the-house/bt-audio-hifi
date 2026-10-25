@@ -64,3 +64,4 @@ Tek kullanıcılı kör test durum makinesi: idle → trial (12 deneme) → resu
 
 - [`tests/test_abxsession.py`](../../tests/test_abxsession.py) — U69, U70
 - [`tests/ui/test_abx_page.py`](../../tests/ui/test_abx_page.py) — T-U08
+- [`tests/ui/test_i18n_page.py`](../../tests/ui/test_i18n_page.py) — T-U04, T-U06, T-U08, T-U09

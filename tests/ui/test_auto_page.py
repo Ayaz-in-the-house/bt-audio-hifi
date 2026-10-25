@@ -51,7 +51,7 @@ class TestAutoPage(unittest.TestCase):
         sess, eng, errors = self.sess, self.eng, []
         with sync_playwright() as p:
             b = p.chromium.launch(headless=True, executable_path=CHROME)
-            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True)
+            ctx = b.new_context(viewport={"width": 1440, "height": 1000}, color_scheme="dark", bypass_csp=True, locale="tr-TR")
             pg = ctx.new_page()
             pg.on("pageerror", lambda e: errors.append(str(e)))
             pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)

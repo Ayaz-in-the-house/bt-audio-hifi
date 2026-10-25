@@ -178,3 +178,16 @@ Her özellik adımından önce ve sonra `bta snapshot <label>`; `bta diff` çık
 | U80 | console | ilk kurulum varsayılanı (`test_first_run`) | hiç durumu olmayan kurulum `hifi_uzay` ile başlar (105 Hz +6 dB raf, crossfeed 700/4,5, genişlik 1,1) ve ses yükseltme 6 dB'ye tohumlanır; var olan durum/ayar DEĞİŞMEZ; preset Nötr'den sonra 2. sırada | kullanıcı: "kuran kişi için bu ilk varsayılan olsun" · "nötrün yanına, 2. seçenek" · "bası biraz azalt" |
 | U81 | analyzer | dokunuş bağlantısı doğrulanır ve onarılır (`test_analyzer` TestLinkHeal) | kaynak portlar geç belirse de bağlanır (30 sn); `pw-link -l` ile doğrulanmayan bağlantı başarısızlıktır; canlı ama bağlantısız dokunuş yeni abonede onarılır | 10-25: yeniden başlatma sonrası dokunuşlar bağlantısız kaldı, panel müzik çalarken boştu (E36) |
 | T-L45 | canlı | servis | birim etkin · 8766 cevap · ikinci `bta console` süreç sayısını artırmaz · müzikte ≤ %3 çekirdek | ürün katmanı |
+
+### Arayüz dili EN/TR (App-i18n · 2026-10-25) — plan, KODDAN ÖNCE
+
+Karar: [ARCHITECTURE.md → Arayüz dili](ARCHITECTURE.md#arayüz-dili-adr-i18n-2026-10-25). Sözlükler `tools/i18n/{en,tr}.json`, terim seçimleri [i18n-glossary.md](i18n-glossary.md).
+
+| id | katman | ne | beklenen | neden |
+|---|---|---|---|---|
+| U82 | arayüz | sözlükler (`test_i18n` I1) | `en.json` ↔ `tr.json` anahtar farkı 0; boş değer yok; `{yer tutucu}` kümeleri eş; EN değerinde Türkçe harf yok; sayfalarda kullanılan her `data-i18n*` / `t("…")` anahtarı sözlükte | eksik çeviri sessizce anahtar adı gösterir |
+| U83 | arayüz | sayfalarda çevrilmemiş metin (`test_i18n` I2 + I4 durağan) | `console.html` + `admin.html`: `data-i18n` dışında görünür metin 0, çevrilmemiş `title`/`aria-label`/`placeholder` 0 (yorumlar hariç); betikte görünür Türkçe dize 0 (makine değerleri izin listesinde); `tr.json` değerleri sayfadaki bugünkü Türkçe metinle bayt bayt aynı | çevrilmeyen kalıntı; Türkçe görünüm bozulmasın |
+| U84 | console | hazır tarzlar iki dilde (`test_i18n` I6) | 32 kimlik aynı sırada; her tarzın `label_en`/`desc_en`/`source_en` alanı dolu ve Türkçe harfsiz; TR `label`/`desc`/`source`/`group`/`kind` değişmez; bs2b `label_en`; her grup ve tür etiketi sözlükte | `id`'ler API sözleşmesi, kayıtlı profiller tarz kimliği taşır |
+| U85 | sunucu | sunucu metinleri iki dilde (`test_i18n` I7) | koruma uyarılarında `text_en` (nokta ondalık); sunucuya ulaşan modüllerde raise edilen HER ileti `error_en()` ile çevrilir; HTTP hata gövdesi `error` + `error_en`; sürüm farkı `diff_en`; sınıflayıcı `reason_en` | yalnız istemci çevrilirse uyarılar/hatalar Türkçe kalır |
+| U86 | sunucu | sözlük yolu güvenliği (`test_i18n`) | yalnız `/i18n/en.json`, `/i18n/tr.json`, `/i18n/i18n.js` (tam yol izin listesi, `nosniff`); başka ad, yol geçişi, büyük harf, sondaki `/` → 404; yabancı Host → 403 | U36: sunucu dosya sistemi yolu açmaz |
+| T-U09 | arayüz | dil seçimi uçtan uca (`tests/ui/test_i18n_page`, başsız) | `en-US` ilk açılış → EN (I3); `tr-TR` → TR (I4); TR/EN düğmesi + yeniden yükleme → seçim korunur (I5); `?lang=en` geçersiz kılar; EN'de 1440 ve 390 px yatay taşma yok (I8); JS hatası 0 | yabancı kullanıcı + kalıcılık + uzun İngilizce metin |
